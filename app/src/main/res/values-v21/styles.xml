@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BlueApp" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+
+        <item name="android:statusBarColor">?android:attr/colorActivatedHighlight</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+    </style>
+</resources>
