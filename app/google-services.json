@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "61554817845",
+    "firebase_url": "https://mydbandroid577962564843.firebaseio.com",
+    "project_id": "mydbandroid577962564843",
+    "storage_bucket": "mydbandroid577962564843.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61554817845:android:5814347a52c8d0b5",
+        "android_client_info": {
+          "package_name": "com.example.baruch.android5779_6256_4843"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61554817845-fdggocm0071h8ds2lvupjpvs49rfikha.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.baruch.android5779_6256_4843",
+            "certificate_hash": "59067c5ebd24c8089effc7929e5bfa6097d598bf"
+          }
+        },
+        {
+          "client_id": "61554817845-bh6fpv97tjl7kq7kb6iadv0c7vo0c0nr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1Kn0u4oQhRuEE789mouPGaaEMwzvyins"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61554817845-bh6fpv97tjl7kq7kb6iadv0c7vo0c0nr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61554817845:android:5783f25d52b80e91",
+        "android_client_info": {
+          "package_name": "com.example.baruch.android5779_6256_4843_part2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "61554817845-qd4hc21k6qm6e5j6ned0couv7ui63ups.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.baruch.android5779_6256_4843_part2",
+            "certificate_hash": "c2a336f184d75d4889d8a1468bf31fb338e070d4"
+          }
+        },
+        {
+          "client_id": "61554817845-bh6fpv97tjl7kq7kb6iadv0c7vo0c0nr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1Kn0u4oQhRuEE789mouPGaaEMwzvyins"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "61554817845-bh6fpv97tjl7kq7kb6iadv0c7vo0c0nr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
