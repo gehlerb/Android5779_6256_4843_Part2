@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.CreateAccount"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:layout_width="250dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ride_taxi_logo"
+        />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/firstName_hint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/firstNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginVertical="15dp"
+                android:drawableLeft="@drawable/person_icon"
+                android:drawableStart="@drawable/person_icon"
+                android:ems="10"
+                android:hint="@string/firstNameEditText"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/lastName_hint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/lastNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginVertical="15dp"
+                android:drawableLeft="@drawable/person_icon"
+                android:drawableStart="@drawable/person_icon"
+                android:ems="10"
+                android:hint="@string/last_nameEditText"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/email_hint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginVertical="15dp"
+                android:drawableLeft="@drawable/email_icon"
+                android:drawableStart="@drawable/email_icon"
+                android:ems="10"
+                android:hint="@string/e_mailEditText"
+                android:inputType="textEmailAddress" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/phoneNumber_hint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/phoneNumberEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginVertical="15dp"
+                android:drawableLeft="@drawable/phone_icon"
+                android:drawableStart="@drawable/phone_icon"
+                android:ems="10"
+                android:hint="@string/phone_numberEditText"
+                android:inputType="phone" />
+        </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/password_hint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/createPasswordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginVertical="15dp"
+            android:drawableLeft="@drawable/password_icon"
+            android:drawableStart="@drawable/password_icon"
+            android:ems="10"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/confirm_password_hint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/confirmPasswordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginVertical="15dp"
+            android:drawableLeft="@drawable/password_icon"
+            android:drawableStart="@drawable/password_icon"
+            android:ems="10"
+            android:hint="@string/confirm_the_password"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/createAccountButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:padding="15dp"
+        android:background="@drawable/rounded_button"
+        android:text="@string/create_account"/>
+
+</LinearLayout>
