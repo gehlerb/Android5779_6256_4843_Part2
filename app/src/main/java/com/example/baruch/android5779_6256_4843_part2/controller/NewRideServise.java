@@ -1,15 +1,11 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
-import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
 import com.example.baruch.android5779_6256_4843_part2.model.datasource.Firebase_DBManager;
@@ -26,7 +22,7 @@ public class NewRideServise extends Service {
     public int onStartCommand(Intent intent, int flags, int startId){
         Backend backend = BackendFactory.getBackend();
 
-        backend.notifyToRideList(new Firebase_DBManager.NotifyDataChange<Ride>() {
+        backend.notifyTonewRide(new Firebase_DBManager.NotifyDataChange<Ride>() {
             @Override
             public void OnDataChanged(Ride ride) {
                 Toast.makeText(getBaseContext(), ride.getClientLastName(), Toast.LENGTH_LONG).show();

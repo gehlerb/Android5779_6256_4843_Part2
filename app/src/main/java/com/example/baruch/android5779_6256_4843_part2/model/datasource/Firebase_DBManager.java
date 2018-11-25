@@ -9,6 +9,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+
+import java.util.Calendar;
 
 public class Firebase_DBManager implements Backend {
 
@@ -46,7 +49,7 @@ public class Firebase_DBManager implements Backend {
     private static ChildEventListener rideRefChildEventListener;
 
     @Override
-    public void notifyToRideList(final NotifyDataChange<Ride> notifyDataChange) {
+    public void notifyTonewRide(final NotifyDataChange<Ride> notifyDataChange) {
             rideRefChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -73,11 +76,11 @@ public class Firebase_DBManager implements Backend {
                     notifyDataChange.onFailure(databaseError.toException());
                 }
             };
-            OrdersTaxiRef.addChildEventListener(rideRefChildEventListener);
+            OrdersTaxiRef.orderByChild("timestamp").startAt(Calendar.getInstance().getTime().getTime()).addChildEventListener(rideRefChildEventListener);
         }
 
     @Override
-    public void stopNotifyToRideList() {
+    public void stopNotifyToNewRide() {
         if (rideRefChildEventListener != null) {
             OrdersTaxiRef.removeEventListener(rideRefChildEventListener);
             rideRefChildEventListener = null;

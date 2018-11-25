@@ -8,9 +8,9 @@ import java.util.List;
 public interface Backend {
     void addNewDriverRequestToDataBase(Driver driver, Action action);
 
-    void notifyToRideList(final NotifyDataChange<Ride> notifyDataChange);
+    void notifyTonewRide(final NotifyDataChange<Ride> notifyDataChange);
 
-    void stopNotifyToRideList();
+    void stopNotifyToNewRide();
 
     public interface Action<T> {
         void onSuccess(T obj);
