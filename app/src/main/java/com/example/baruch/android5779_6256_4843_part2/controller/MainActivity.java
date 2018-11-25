@@ -1,9 +1,12 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private Button loginButton;
     private TextView createAccountTextView;
 
+
+    private static final String CHANNEL_ID="1234";
     private static final String userPreferences="userPreferences";
     private static final String userEmail="email";
     private static final String userPassword="password";
@@ -29,12 +34,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startService(new Intent(this,NewRideService.class));
 
+        startService(new Intent(this,NewRideService.class));
         findViews();
         sharedPreferences=getSharedPreferences(userPreferences, Context.MODE_PRIVATE);
         showUserData();
     }
+
 
     //Show data in EditTexts when app is launched, if data is there in Android Shared Preferences
     private void showUserData() {

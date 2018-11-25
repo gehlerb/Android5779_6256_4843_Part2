@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android5779_6256_4843_Part2</string>
+    <string name="app_name">RideTaxi&#xD;Driver</string>
     <string name="firstNameEditText">First name</string>
     <string name="last_nameEditText">Last Name</string>
     <string name="e_mailEditText">E-mail</string>
@@ -11,5 +11,4 @@
     <string name="confirm_the_password">Confirm your password</string>
     <string name="create_account">Create Account</string>
     <string name="all_fields_required">All fields are required!</string>
->>>>>>> 61aa016ede2d89b3dfdac7546b63cd4aed9957f9
 </resources>

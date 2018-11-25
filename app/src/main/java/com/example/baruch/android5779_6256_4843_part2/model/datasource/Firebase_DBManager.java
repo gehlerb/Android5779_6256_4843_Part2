@@ -48,7 +48,7 @@ public class Firebase_DBManager implements Backend {
     private static ChildEventListener rideRefChildEventListener;
 
     @Override
-    public void notifyTonewRide(final NotifyDataChange<Ride> notifyDataChange) {
+    public void notifyNewRide(final NotifyDataChange<Ride> notifyDataChange) {
             rideRefChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -79,7 +79,7 @@ public class Firebase_DBManager implements Backend {
         }
 
     @Override
-    public void stopNotifyToNewRide() {
+    public void stopNotifyNewRide() {
         if (rideRefChildEventListener != null) {
             OrdersTaxiRef.removeEventListener(rideRefChildEventListener);
             rideRefChildEventListener = null;
