@@ -11,7 +11,7 @@ import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFacto
 import com.example.baruch.android5779_6256_4843_part2.model.datasource.Firebase_DBManager;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
-public class NewRideServise extends Service {
+public class NewRideService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

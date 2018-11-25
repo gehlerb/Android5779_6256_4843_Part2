@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.MainActivity"/>
-        <service android:name=".controller.NewRideServise">
+        <service android:name=".controller.NewRideService">
         </service>
     </application>
 
