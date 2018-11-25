@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Android5779_6256_4843_Part2</string>
-<<<<<<< HEAD
-=======
     <string name="firstNameEditText">First name</string>
     <string name="last_nameEditText">Last Name</string>
     <string name="e_mailEditText">E-mail</string>

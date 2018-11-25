@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startService(new Intent(this,NewRideService.class));
 
         findViews();
         sharedPreferences=getSharedPreferences(userPreferences, Context.MODE_PRIVATE);
