@@ -27,8 +27,6 @@ public class Ride {
 
     private final Long timestamp = Calendar.getInstance().getTime().getTime();
 
-
-
     public ClientRequestStatus getRideState() {
         return mRideState;
     }

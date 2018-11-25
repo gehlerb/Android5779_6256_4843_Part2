@@ -8,16 +8,14 @@ import java.util.List;
 public interface Backend {
     void addNewDriverRequestToDataBase(Driver driver, Action action);
 
-    void notifyTonewRide(final NotifyDataChange<Ride> notifyDataChange);
+    void notifyNewRide(final NotifyDataChange<Ride> notifyDataChange);
 
-    void stopNotifyToNewRide();
+    void stopNotifyNewRide();
 
     public interface Action<T> {
         void onSuccess(T obj);
 
         void onFailure(Exception exception);
-
-        void onProgress(String status, double percent);
     }
 
     public interface NotifyDataChange<T> {

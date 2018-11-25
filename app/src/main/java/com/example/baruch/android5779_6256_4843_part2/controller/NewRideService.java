@@ -19,10 +19,17 @@ public class NewRideService extends Service {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+
+        
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         Backend backend = BackendFactory.getBackend();
 
-        backend.notifyTonewRide(new Firebase_DBManager.NotifyDataChange<Ride>() {
+        backend.notifyNewRide(new Firebase_DBManager.NotifyDataChange<Ride>() {
             @Override
             public void OnDataChanged(Ride ride) {
                 Toast.makeText(getBaseContext(), ride.getClientLastName(), Toast.LENGTH_LONG).show();
