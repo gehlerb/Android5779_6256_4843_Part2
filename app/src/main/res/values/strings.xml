@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Android5779_6256_4843_Part2</string>
+<<<<<<< HEAD
+=======
+    <string name="firstNameEditText">First name</string>
+    <string name="last_nameEditText">Last Name</string>
+    <string name="e_mailEditText">E-mail</string>
+    <string name="phone_numberEditText">Phone Number</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button">Login</string>
+    <string name="create_account_text_view"><u>Create an account</u></string>
+    <string name="confirm_the_password">Confirm your password</string>
+    <string name="create_account">Create Account</string>
+    <string name="all_fields_required">All fields are required!</string>
+>>>>>>> 61aa016ede2d89b3dfdac7546b63cd4aed9957f9
 </resources>
