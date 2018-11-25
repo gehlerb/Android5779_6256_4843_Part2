@@ -23,7 +23,8 @@
         android:layout_marginTop="120dp"
         android:layout_marginBottom="10dp"
         android:padding="7dp"
-        android:background="@drawable/rounded_button"/>
+        android:background="@drawable/rounded_button"
+        android:textCursorDrawable="@null"/>
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -35,7 +36,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
         android:padding="7dp"
-        android:background="@drawable/rounded_button"/>
+        android:background="@drawable/rounded_button"
+        android:textCursorDrawable="@null"/>
 
     <Button
         android:id="@+id/loginButton"
@@ -43,6 +45,7 @@
         android:layout_height="28sp"
         android:layout_gravity="center"
         android:background="@drawable/rounded_button"
+        android:textColor="@color/primary_material_light"
         android:text="@string/login_button" />
 
     <TextView
@@ -54,7 +57,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
-        android:textSize="16dp"
+        android:textSize="18dp"
         android:clickable="true"
         android:focusable="true" />
 </LinearLayout>

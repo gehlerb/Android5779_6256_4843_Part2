@@ -133,6 +133,7 @@
         android:layout_margin="20dp"
         android:padding="15dp"
         android:background="@drawable/rounded_button"
+        android:textColor="@color/primary_material_light"
         android:text="@string/create_account"/>
 
 </LinearLayout>

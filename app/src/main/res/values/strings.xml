@@ -7,7 +7,7 @@
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
     <string name="login_button">Login</string>
-    <string name="create_account_text_view">Create an account</string>
+    <string name="create_account_text_view"><u>Create an account</u></string>
     <string name="confirm_the_password">Confirm your password</string>
     <string name="create_account">Create Account</string>
     <string name="all_fields_required">All fields are required!</string>
