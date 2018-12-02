@@ -26,14 +26,17 @@ public class NewRideService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+    
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onCreate() {
         super.onCreate();
+        //checks the version of the sdk is updated, do new foreground style
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startMyOwnForeground();
+        //if the version is not updated do old style foreground
         else {
             Notification.Builder nBuilder = new Notification.Builder(getBaseContext());
             nBuilder.setSmallIcon(R.drawable.ride_taxi_logo);
@@ -71,10 +74,11 @@ public class NewRideService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Backend backend = BackendFactory.getBackend();
 
-        backend.notifyNewRide(new Firebase_DBManager.NotifyDataChange<Ride>() {
+        backend.notifyNewRide(new Backend.NotifyDataChange<Ride>() {
             @Override
             public void OnDataChanged(Ride ride) {
                 Toast.makeText(getBaseContext(), ride.getClientLastName(), Toast.LENGTH_LONG).show();
+
             }
 
             @Override
@@ -84,7 +88,6 @@ public class NewRideService extends Service {
         });
         return Service.START_STICKY;
     }
-
 }
 
 
