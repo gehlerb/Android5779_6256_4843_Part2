@@ -6,16 +6,20 @@ import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 import java.util.List;
 
 public interface Backend {
-    void addNewDriverRequestToDataBase(Driver driver, Action action);
+    void isDriverInDataBase(Driver driver,Action action);
+
+    void isDriverAlreadyRegistered(Driver driver,Action action);
+
+    void addNewDriverToDataBase(Driver driver, Action action);
 
     void notifyNewRide(final NotifyDataChange<Ride> notifyDataChange);
 
     void stopNotifyNewRide();
 
-    public interface Action<T> {
-        void onSuccess(T obj);
+    public interface Action {
+        void onSuccess();
 
-        void onFailure(Exception exception);
+        void onFailure();
     }
 
     public interface NotifyDataChange<T> {
@@ -23,5 +27,7 @@ public interface Backend {
 
         void onFailure(Exception exception);
     }
+
+
 
 }

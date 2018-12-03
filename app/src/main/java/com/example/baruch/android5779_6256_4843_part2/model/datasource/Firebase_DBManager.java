@@ -1,14 +1,20 @@
 package com.example.baruch.android5779_6256_4843_part2.model.datasource;
 
+import android.support.annotation.NonNull;
+
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
@@ -33,17 +39,79 @@ public class Firebase_DBManager implements Backend {
         return firebase_dbManager;
     }
 
-
-    @Override
-    public void addNewDriverRequestToDataBase(Driver driver, Action action) {
-
-    }
-
     private static DatabaseReference OrdersTaxiRef;
+    private static DatabaseReference DriversRef;
     static {
         FirebaseDatabase database =FirebaseDatabase.getInstance();
         OrdersTaxiRef=database.getReference("orders");
+        DriversRef=database.getReference("drivers");
     }
+
+
+    @Override
+    public void isDriverInDataBase(final Driver driver, final Action action) {
+        Query query=DriversRef.orderByChild("email").equalTo(driver.getEmail());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    Driver checkDriver=dataSnapshot.getChildren().iterator().next().getValue(Driver.class);
+                    if(checkDriver.getPassword().equals(driver.getPassword()))
+                        action.onSuccess();
+                    else
+                        action.onFailure();
+                }
+                else
+                    action.onFailure();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void isDriverAlreadyRegistered(Driver driver, final Action action) {
+        Query query=DriversRef.orderByChild("email").equalTo(driver.getEmail());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                    action.onFailure();
+                else
+                    action.onSuccess();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void addNewDriverToDataBase(final Driver driver, final Action action) {
+        String key=DriversRef.push().getKey();
+        driver.setKey(key);
+        DriversRef.child(key).setValue(driver).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                action.onSuccess();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                action.onFailure();
+            }
+        });
+
+
+    }
+
+
 
     private static ChildEventListener rideRefChildEventListener;
 
