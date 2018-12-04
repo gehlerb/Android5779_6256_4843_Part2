@@ -12,6 +12,7 @@ public class driver_rides_manager extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_rides_manager);
+
         startService(new Intent(this,NewRideService.class));
     }
 }

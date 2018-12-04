@@ -2,14 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.baruch.android5779_6256_4843_part2">
     <application
+        android:name=".controller.appChannels"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ride_taxi_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/BlueApp">
-        <service android:name=".controller.NewRideService" />
-
         <activity android:name=".controller.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.CreateAccount" />
-        <activity android:name=".controller.driver_rides_manager"></activity>
+        <activity android:name=".controller.driver_rides_manager"/>
+        <service android:name=".controller.NewRideService" />
     </application>
-
 </manifest>
