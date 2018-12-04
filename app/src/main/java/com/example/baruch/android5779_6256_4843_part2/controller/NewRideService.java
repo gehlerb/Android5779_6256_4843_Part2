@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
@@ -43,7 +44,9 @@ public class NewRideService extends Service {
         PendingIntent pendingIntent=PendingIntent.getActivity(this,
                 0,notificationIntent,0);
 
-        Intent exitApplication=new Intent(Intent.ACTION_MAIN);
+        Intent exitApplicationIntent=new Intent(this,ExitApp.class);
+        PendingIntent exitApplicationPendingIntent=PendingIntent.getActivity(this,0,
+                exitApplicationIntent,0);
 
         Notification notification = new NotificationCompat.Builder(this,
                 FOREGROUND_CHANNEL_ID)
@@ -53,6 +56,7 @@ public class NewRideService extends Service {
                 .setSmallIcon(R.drawable.ride_taxi_logo)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
+                .addAction(R.drawable.ic_stop_grey,"Disconnect",exitApplicationPendingIntent)
                 .build();
 
         startForeground(1,notification);
@@ -61,6 +65,7 @@ public class NewRideService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
 
         Backend backend = BackendFactory.getBackend();
 
