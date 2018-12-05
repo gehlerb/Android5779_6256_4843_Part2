@@ -126,7 +126,8 @@ public class Firebase_DBManager implements Backend {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                Ride ride = dataSnapshot.getValue(Ride.class);
+                notifyDataChange.OnDataChanged(ride);
             }
 
             @Override

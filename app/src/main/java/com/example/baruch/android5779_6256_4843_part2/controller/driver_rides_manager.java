@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.util.ArrayList;
@@ -44,9 +45,22 @@ public class driver_rides_manager extends AppCompatActivity {
 
         backend = BackendFactory.getBackend();
         backend.notifyWaitingRidesList(new Backend.NotifyDataChange<Ride>() {
-
+            //TODO find simple implemntion
             @Override
             public void OnDataChanged(Ride ride) {
+                for (int i =0 ;i < rieds.size();++i){
+                    if(ride.getKey().equals( rieds.get(i).getKey())){
+                        if (ride.getRideState()== ClientRequestStatus.WAITING){
+                            rieds.set(i,ride);
+                            adapter.notifyItemChanged(i);
+                        }
+                        else {
+                            rieds.remove(i);
+                            adapter.notifyItemRemoved(i);
+                        }
+                        break;
+                    }
+                }
             }
 
             @Override
@@ -57,8 +71,14 @@ public class driver_rides_manager extends AppCompatActivity {
 
             @Override
             public void onDataRemoved(Ride ride) {
-
-            }
+                for (int i =0 ;i < rieds.size();++i){
+                    if(ride.getKey().equals( rieds.get(i).getKey())){
+                            rieds.remove(i);
+                            adapter.notifyItemRemoved(i);
+                        }
+                        break;
+                    }
+                }
 
             @Override
             public void onFailure(Exception exception) {

@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
@@ -39,11 +38,10 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         Ride ride = mRides.get(position);
 
-        TextView textView = viewHolder.nameTextView;
-        textView.setText(ride.getClientLastName());
-        Button button = viewHolder.messageButton;
-        button.setText("test");
-        button.setEnabled(false);
+        TextView fromTextView = viewHolder.fromTextView;
+        TextView toTextView = viewHolder.toTextView;
+        fromTextView.setText(ride.getPickupAddress().getAddress());
+        toTextView.setText(ride.getDestinationAddress().getAddress());
     }
 
     @Override
@@ -53,14 +51,13 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView nameTextView;
-        public Button messageButton;
+        public TextView fromTextView;
+        public TextView toTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-            nameTextView = (TextView) itemView.findViewById(R.id.ride_client_name);
-            messageButton = (Button) itemView.findViewById(R.id.message_button);
+            toTextView = (TextView) itemView.findViewById(R.id.to_textview);
+            fromTextView = (TextView) itemView.findViewById(R.id.from_textview);
         }
     }
 }
