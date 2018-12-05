@@ -74,7 +74,7 @@ public class driver_rides_manager extends AppCompatActivity {
                 for (int i =0 ;i < rieds.size();++i){
                     if(ride.getKey().equals( rieds.get(i).getKey())){
                             rieds.remove(i);
-                            adapter.notifyItemRemoved(i);
+                            adapter.notifyDataSetChanged();
                         }
                         break;
                     }
