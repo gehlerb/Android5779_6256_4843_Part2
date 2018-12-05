@@ -16,15 +16,20 @@ public interface Backend {
 
     void stopNotifyNewRide();
 
+    void notifyWaitingRidesList(final NotifyDataChange<Ride> notifyDataChange);
+
     public interface Action {
         void onSuccess();
 
         void onFailure();
-
     }
 
     public interface NotifyDataChange<T> {
         void OnDataChanged(T obj);
+
+        void onDataAdded(T obj);
+
+        void onDataRemoved(T obj);
 
         void onFailure(Exception exception);
     }

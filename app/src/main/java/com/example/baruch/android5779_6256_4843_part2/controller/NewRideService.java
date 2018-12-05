@@ -71,7 +71,7 @@ public class NewRideService extends Service {
 
         backend.notifyNewRide(new Backend.NotifyDataChange<Ride>() {
             @Override
-            public void OnDataChanged(Ride ride) {
+            public void onDataAdded(Ride ride) {
                 Toast.makeText(getBaseContext(), ride.getClientLastName(), Toast.LENGTH_LONG).show();
 
                 Intent notificationIntent=new Intent(NewRideService.this,driver_rides_manager.class);
@@ -92,6 +92,16 @@ public class NewRideService extends Service {
                         .build();
 
                 notificationManager.notify(2, newRideNotification);
+            }
+
+            @Override
+            public void OnDataChanged(Ride obj) {
+
+            }
+
+            @Override
+            public void onDataRemoved(Ride obj) {
+
             }
 
             @Override
