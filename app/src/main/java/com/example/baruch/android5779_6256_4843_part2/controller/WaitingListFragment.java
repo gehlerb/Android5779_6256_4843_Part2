@@ -70,7 +70,7 @@ public class WaitingListFragment extends Fragment {
                 for (int i =0 ;i < rieds.size();++i){
                     if(ride.getKey().equals( rieds.get(i).getKey())){
                         rieds.remove(i);
-                        adapter.notifyDataSetChanged();
+                        adapter.notifyItemRemoved(i);
                     }
                     break;
                 }
