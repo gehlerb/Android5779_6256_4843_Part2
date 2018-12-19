@@ -49,15 +49,40 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         return mRides.size();
     }
 
+    // Define listener member variable
+    private OnItemClickListener listener;
+    // Define the listener interface
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+    // Define the method that allows the parent activity or fragment to define the listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView fromTextView;
         public TextView toTextView;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
             toTextView = (TextView) itemView.findViewById(R.id.to_textview);
             fromTextView = (TextView) itemView.findViewById(R.id.from_textview);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Triggers click upwards to the adapter on click
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(itemView, position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

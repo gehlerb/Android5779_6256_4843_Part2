@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
@@ -30,6 +31,15 @@ public class WaitingListFragment extends Fragment {
         RecyclerView rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesWaitingList);
 
         final RideAdapter adapter = new RideAdapter(rieds);
+
+        adapter.setOnItemClickListener(new RideAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                String name = rieds.get(position).getClientFirstName()+'\n'+
+                        rieds.get(position).getDestinationAddress().getAddress();
+                Toast.makeText(getActivity(), name , Toast.LENGTH_SHORT).show();
+            }
+        });
 
         rvRieds.setAdapter(adapter);
         rvRieds.setLayoutManager(new LinearLayoutManager(this.getActivity()));
