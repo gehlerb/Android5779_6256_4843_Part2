@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/colorPrimaryDark"
-        android:text="WAITING RIDES"
+        android:text="@string/waiting_rides"
         android:textAlignment="center"
         android:textSize="24dp"
         android:textStyle="bold"

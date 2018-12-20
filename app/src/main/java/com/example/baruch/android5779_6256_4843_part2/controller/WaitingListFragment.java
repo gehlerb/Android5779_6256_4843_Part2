@@ -35,6 +35,7 @@ public class WaitingListFragment extends Fragment {
         adapter.setOnItemClickListener(new RideAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                //TODO implementaion
                 String name = rieds.get(position).getClientFirstName()+'\n'+
                         rieds.get(position).getDestinationAddress().getAddress();
                 Toast.makeText(getActivity(), name , Toast.LENGTH_SHORT).show();
