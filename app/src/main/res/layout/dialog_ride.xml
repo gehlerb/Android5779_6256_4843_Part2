@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/from_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="15dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:maxLines="1"
+        android:drawableLeft="@drawable/location_icon"
+        android:drawableStart="@drawable/location_icon"
+        />
+
+    <TextView
+        android:id="@+id/to_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="15dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:maxLines="1"
+        />
+
+
+
+    <TextView
+        android:id="@+id/name_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="15dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:maxLines="1"
+        />
+
+
+    <TextView
+        android:id="@+id/emai_addr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="15dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:maxLines="1"
+        />
+
+
+    <TextView
+        android:id="@+id/phone_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="25dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:maxLines="1"
+        />
+
+    <Button
+        android:id="@+id/get_order_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:padding="15dp"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/primary_material_light"
+        android:text="@string/get_order"/>
+
+</LinearLayout>

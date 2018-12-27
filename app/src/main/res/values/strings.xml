@@ -11,4 +11,6 @@
     <string name="confirm_the_password">Confirm your password</string>
     <string name="create_account">Create Account</string>
     <string name="all_fields_required">All fields are required!</string>
+    <string name="waiting_rides">WAITING RIDES</string>
+    <string name="get_order">GET ORDER</string>
 </resources>

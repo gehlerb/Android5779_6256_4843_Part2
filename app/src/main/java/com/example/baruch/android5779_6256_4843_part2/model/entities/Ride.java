@@ -102,6 +102,7 @@ public class Ride {
     public String getClientLastName() {
         return mClientLastName;
     }
+
     public void setClientLastName(String ClientLastName) {
         mClientLastName = ClientLastName;
     }

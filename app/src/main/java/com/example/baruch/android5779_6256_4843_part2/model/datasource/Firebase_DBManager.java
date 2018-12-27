@@ -17,6 +17,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class Firebase_DBManager implements Backend {
 
@@ -111,40 +112,40 @@ public class Firebase_DBManager implements Backend {
 
     }
 
-
-
     private static ChildEventListener rideRefChildEventListener;
 
     @Override
     public void notifyNewRide(final NotifyDataChange<Ride> notifyDataChange) {
-            rideRefChildEventListener = new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Ride ride = dataSnapshot.getValue(Ride.class);
-                    notifyDataChange.OnDataChanged(ride);
-                }
+        OrdersTaxiRef.orderByChild("timestamp").startAt(Calendar.getInstance()
+                .getTime().getTime()).addChildEventListener( new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Ride ride = dataSnapshot.getValue(Ride.class);
+                notifyDataChange.onDataAdded(ride);
+            }
 
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Ride ride = dataSnapshot.getValue(Ride.class);
+                notifyDataChange.OnDataChanged(ride);
+            }
 
-                }
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
 
-                }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
 
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                notifyDataChange.onFailure(databaseError.toException());
+            }
+        });
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    notifyDataChange.onFailure(databaseError.toException());
-                }
-            };
-            OrdersTaxiRef.orderByChild("timestamp").startAt(Calendar.getInstance().getTime().getTime()).addChildEventListener(rideRefChildEventListener);
-        }
+    }
 
     @Override
     public void stopNotifyNewRide() {
@@ -152,5 +153,40 @@ public class Firebase_DBManager implements Backend {
             OrdersTaxiRef.removeEventListener(rideRefChildEventListener);
             rideRefChildEventListener = null;
         }
+    }
+
+    @Override
+    public void notifyWaitingRidesList(final NotifyDataChange<Ride> notifyDataChange){
+        OrdersTaxiRef.orderByChild("rideState").equalTo("WAITING")
+                .addChildEventListener(new ChildEventListener(){
+
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Ride ride = dataSnapshot.getValue(Ride.class);
+                        notifyDataChange.onDataAdded(ride);
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        Ride ride = dataSnapshot.getValue(Ride.class);
+                        notifyDataChange.OnDataChanged(ride);
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        Ride ride = dataSnapshot.getValue(Ride.class);
+                        notifyDataChange.onDataRemoved(ride);
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        notifyDataChange.onFailure(databaseError.toException());
+                    }
+                });
     }
 }
