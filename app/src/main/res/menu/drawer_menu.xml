@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/current_rides"
+            android:icon="@drawable/ic_taxi_black_24dp"
+            android:title="Available Rides" />
+
+        <item
+            android:id="@+id/history_rides"
+            android:icon="@drawable/ic_history_black_24dp"
+            android:title="History" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_share_black_24dp"
+                android:title="Share" />
+            <item
+                android:id="@+id/contact_us"
+                android:icon="@drawable/ic_contact_us_black_24dp"
+                android:title="Contact us" />
+        </menu>
+    </item>
+</menu>

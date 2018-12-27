@@ -13,4 +13,6 @@
     <string name="all_fields_required">All fields are required!</string>
     <string name="waiting_rides">WAITING RIDES</string>
     <string name="get_order">GET ORDER</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
