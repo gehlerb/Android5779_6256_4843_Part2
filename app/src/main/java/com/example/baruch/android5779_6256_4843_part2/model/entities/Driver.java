@@ -1,6 +1,11 @@
 package com.example.baruch.android5779_6256_4843_part2.model.entities;
 
-public class Driver {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Driver implements Parcelable {
     private String mFirstName;
     private String mLastName;
     private String mEmail;
@@ -8,6 +13,28 @@ public class Driver {
     private String mPassword;
     private String mTelephone;
     private AddressAndLocation mLocation;
+
+    public Driver(){};
+    protected Driver(Parcel in) {
+        mFirstName = in.readString();
+        mLastName = in.readString();
+        mEmail = in.readString();
+        mKey = in.readString();
+        mPassword = in.readString();
+        mTelephone = in.readString();
+    }
+
+    public static final Creator<Driver> CREATOR = new Creator<Driver>() {
+        @Override
+        public Driver createFromParcel(Parcel in) {
+            return new Driver(in);
+        }
+
+        @Override
+        public Driver[] newArray(int size) {
+            return new Driver[size];
+        }
+    };
 
     public String getFirstName() {
         return mFirstName;
@@ -63,5 +90,20 @@ public class Driver {
 
     public void setLocation(AddressAndLocation location) {
         mLocation = new AddressAndLocation(location);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mFirstName);
+        dest.writeString(mLastName);
+        dest.writeString(mEmail);
+        dest.writeString(mKey);
+        dest.writeString(mPassword);
+        dest.writeString(mTelephone);
     }
 }

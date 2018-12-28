@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.CreateAccount" />
-        <activity android:name=".controller.driver_rides_manager" />
+        <activity android:name=".controller.driver_rides_manager"
+            android:launchMode="singleTop"/>
 
         <service android:name=".controller.NewRideService" />
 

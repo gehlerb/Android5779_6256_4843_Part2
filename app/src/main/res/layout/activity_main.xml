@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/taxi_background"
-    tools:context=".controller.MainActivity">
+    tools:context=".controller.MainActivity"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
 <LinearLayout
     android:layout_width="match_parent"

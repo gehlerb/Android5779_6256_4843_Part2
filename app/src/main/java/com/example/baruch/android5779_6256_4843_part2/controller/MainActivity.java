@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 
 
 public class MainActivity extends AppCompatActivity {
+    private final String TRANSFER_DRIVER_DETAILS="transfer driver details";
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button loginButton;
@@ -112,11 +113,12 @@ public class MainActivity extends AppCompatActivity {
         driver.setPassword(passwordEditText.getText().toString());
     }
 
-    private void isDriverInDataBase(Driver driver) {
+    private void isDriverInDataBase(final Driver driver) {
         backend.isDriverInDataBase(driver, new Backend.Action() {
             @Override
             public void onSuccess() {
                 Intent intent = new Intent(MainActivity.this, driver_rides_manager.class);
+                intent.putExtra(TRANSFER_DRIVER_DETAILS,driver);
                 startActivity(intent);
             }
 

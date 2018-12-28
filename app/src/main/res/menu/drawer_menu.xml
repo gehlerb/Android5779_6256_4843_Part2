@@ -4,7 +4,7 @@
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/current_rides"
+            android:id="@+id/available_rides"
             android:icon="@drawable/ic_taxi_black_24dp"
             android:title="Available Rides" />
 
