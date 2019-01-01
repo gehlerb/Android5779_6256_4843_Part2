@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 
 public class Driver implements Parcelable {
+    private String mId;
     private String mFirstName;
     private String mLastName;
     private String mEmail;
@@ -15,7 +16,9 @@ public class Driver implements Parcelable {
     private AddressAndLocation mLocation;
 
     public Driver(){};
+
     protected Driver(Parcel in) {
+        mId=in.readString();
         mFirstName = in.readString();
         mLastName = in.readString();
         mEmail = in.readString();
@@ -35,6 +38,14 @@ public class Driver implements Parcelable {
             return new Driver[size];
         }
     };
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String id) {
+        mId = id;
+    }
 
     public String getFirstName() {
         return mFirstName;
@@ -89,8 +100,10 @@ public class Driver implements Parcelable {
     }
 
     public void setLocation(AddressAndLocation location) {
+        if(location!=null)
         mLocation = new AddressAndLocation(location);
     }
+
 
     @Override
     public int describeContents() {
@@ -99,6 +112,7 @@ public class Driver implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mId);
         dest.writeString(mFirstName);
         dest.writeString(mLastName);
         dest.writeString(mEmail);
@@ -106,4 +120,7 @@ public class Driver implements Parcelable {
         dest.writeString(mPassword);
         dest.writeString(mTelephone);
     }
+
+
+
 }

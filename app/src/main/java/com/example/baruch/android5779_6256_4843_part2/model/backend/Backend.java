@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface Backend {
 
-    Driver getDriverFromDataBase(Driver driver,Action action);
-
     void isDriverInDataBase(Driver driver,Action action);
 
     void isDriverAlreadyRegistered(Driver driver,Action action);

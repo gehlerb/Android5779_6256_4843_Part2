@@ -21,11 +21,8 @@ import java.util.ArrayList;
 
 public class driver_rides_manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    //TODO move to fregment
 
     private final String TRANSFER_DRIVER_DETAILS="transfer driver details";
-    private ArrayList<Ride> rieds;
-    private Backend backend;
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Driver mdriver;

@@ -23,6 +23,7 @@ import static android.widget.Toast.LENGTH_LONG;
 
 public class CreateAccount extends AppCompatActivity {
 
+    private EditText idEditText;
     private EditText firstNameEditText;
     private EditText lastNameEditText;
     private EditText emailEditText;
@@ -44,6 +45,31 @@ public class CreateAccount extends AppCompatActivity {
     }
 
     private void findViews() {
+        idEditText=(EditText) findViewById(R.id.idEditText);
+        idEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!Exceptions.checkOnlyNumbers(s.toString()))
+                {
+                    idEditText.setError("Only Digits");
+                }
+                else
+                {
+                    idEditText.setError(null);
+                }
+            }
+        });
+
         firstNameEditText = (EditText) findViewById(R.id.firstNameEditText);
         firstNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -114,7 +140,32 @@ public class CreateAccount extends AppCompatActivity {
 
             }
         });
+
         phoneNumberEditText = (EditText) findViewById(R.id.phoneNumberEditText);
+        phoneNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!Exceptions.checkOnlyNumbers(s.toString()))
+                {
+                    phoneNumberEditText.setError("Only Digits");
+                }
+                else
+                {
+                    phoneNumberEditText.setError(null);
+                }
+            }
+        });
+
         passwordEditText=(EditText)findViewById(R.id.createPasswordEditText);
         confirmPasswordEditText=(EditText)findViewById(R.id.confirmPasswordEditText);
         confirmPasswordEditText.addTextChangedListener(new TextWatcher() {
@@ -190,6 +241,7 @@ public class CreateAccount extends AppCompatActivity {
     }
 
     private void setNewDriver() {
+        driver.setId(idEditText.getText().toString());
         driver.setFirstName(firstNameEditText.getText().toString());
         driver.setLastName(lastNameEditText.getText().toString());
         driver.setTelephone(phoneNumberEditText.getText().toString());
@@ -199,15 +251,20 @@ public class CreateAccount extends AppCompatActivity {
     }
 
     private boolean isEmptyInput() {
-        return TextUtils.isEmpty(firstNameEditText.getText())||
+        return TextUtils.isEmpty(idEditText.getText())||
+                TextUtils.isEmpty(firstNameEditText.getText())||
                 TextUtils.isEmpty(lastNameEditText.getText())||
                 TextUtils.isEmpty(emailEditText.getText())||
                 TextUtils.isEmpty(phoneNumberEditText.getText())||
-                TextUtils.isEmpty(passwordEditText.getText());
+                TextUtils.isEmpty(passwordEditText.getText())||
+                TextUtils.isEmpty(confirmPasswordEditText.getText());
     }
 
     private boolean isErrorInput() {
-        return firstNameEditText.getError()!=null||lastNameEditText.getError()!=null
-                ||emailEditText.getError()!=null||phoneNumberEditText.getError()!=null;
+        return idEditText.getError()!=null||firstNameEditText.getError()!=null
+                ||phoneNumberEditText.getError()!=null
+                ||lastNameEditText.getError()!=null
+                ||emailEditText.getError()!=null
+                ||phoneNumberEditText.getError()!=null;
     }
 }

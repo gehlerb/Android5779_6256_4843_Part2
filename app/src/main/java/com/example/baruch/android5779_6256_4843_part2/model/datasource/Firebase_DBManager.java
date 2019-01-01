@@ -50,11 +50,6 @@ public class Firebase_DBManager implements Backend {
 
 
     @Override
-    public Driver getDriverFromDataBase(Driver driver, Action action) {
-        return null;
-    }
-
-    @Override
     public void isDriverInDataBase(final Driver driver, final Action action) {
         Query query=DriversRef.orderByChild("email").equalTo(driver.getEmail());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -62,8 +57,13 @@ public class Firebase_DBManager implements Backend {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     Driver checkDriver=dataSnapshot.getChildren().iterator().next().getValue(Driver.class);
-                    if(checkDriver.getPassword().equals(driver.getPassword()))
+                    if(checkDriver.getPassword().equals(driver.getPassword())){
+                        driver.setFirstName(checkDriver.getFirstName());
+                        driver.setLastName(checkDriver.getLastName());
+                        driver.setTelephone(checkDriver.getTelephone());
+                        driver.setLocation(checkDriver.getLocation());
                         action.onSuccess();
+                    }
                     else
                         action.onFailure();
                 }
