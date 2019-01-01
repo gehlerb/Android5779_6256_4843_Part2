@@ -10,8 +10,6 @@ public class Driver implements Parcelable {
     private String mFirstName;
     private String mLastName;
     private String mEmail;
-    private String mKey;
-    private String mPassword;
     private String mTelephone;
     private AddressAndLocation mLocation;
 
@@ -22,8 +20,6 @@ public class Driver implements Parcelable {
         mFirstName = in.readString();
         mLastName = in.readString();
         mEmail = in.readString();
-        mKey = in.readString();
-        mPassword = in.readString();
         mTelephone = in.readString();
     }
 
@@ -71,22 +67,6 @@ public class Driver implements Parcelable {
         mEmail = email;
     }
 
-    public String getKey() {
-        return mKey;
-    }
-
-    public void setKey(String key) {
-        mKey = key;
-    }
-
-    public String getPassword() {
-        return mPassword;
-    }
-
-    public void setPassword(String password) {
-        mPassword = password;
-    }
-
     public String getTelephone() {
         return mTelephone;
     }
@@ -116,8 +96,6 @@ public class Driver implements Parcelable {
         dest.writeString(mFirstName);
         dest.writeString(mLastName);
         dest.writeString(mEmail);
-        dest.writeString(mKey);
-        dest.writeString(mPassword);
         dest.writeString(mTelephone);
     }
 

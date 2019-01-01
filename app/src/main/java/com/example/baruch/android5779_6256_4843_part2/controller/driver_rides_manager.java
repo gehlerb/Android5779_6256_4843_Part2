@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
+import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
@@ -26,23 +27,38 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Driver mdriver;
+    private static Backend backend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_rides_manager);
+        backend=BackendFactory.getBackend();
 
         startService(new Intent(this,NewRideService.class));
         setMenu();
+
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new WaitingListFragment()).commit();
             navigationView.setCheckedItem(R.id.available_rides);
         }
 
-        Intent intent=getIntent();
-        mdriver=intent.getParcelableExtra(TRANSFER_DRIVER_DETAILS);
+        setCurrentDriver();
+    }
 
+    private void setCurrentDriver() {
+        backend.getCurrentUser(new Backend.ActionResult() {
+            @Override
+            public void onSuccess(Driver driver) {
+                    mdriver=driver;
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
     }
 
     private void setMenu() {

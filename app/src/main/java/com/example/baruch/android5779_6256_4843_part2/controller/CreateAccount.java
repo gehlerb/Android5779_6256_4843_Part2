@@ -1,13 +1,11 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +29,7 @@ public class CreateAccount extends AppCompatActivity {
     private EditText passwordEditText;
     private EditText confirmPasswordEditText;
     private Button createAccountButton;
-    private Driver driver;
+    private Driver mDriver;
     private static Backend backend;
 
     @Override
@@ -40,7 +38,7 @@ public class CreateAccount extends AppCompatActivity {
         setContentView(R.layout.activity_create_account);
 
         backend= BackendFactory.getBackend();
-        driver=new Driver();
+        mDriver =new Driver();
         findViews();
     }
 
@@ -200,53 +198,32 @@ public class CreateAccount extends AppCompatActivity {
                     return;
                 }
                 setNewDriver();
-                isDiverInDatabase(driver);
+                backend.register(mDriver,passwordEditText.getText().toString(),new Backend.Action(){
+
+                   @Override
+                   public void onSuccess() {
+                       Toast.makeText(getBaseContext(),"Welcome to RideTaxi Community!",LENGTH_LONG).show();
+                       Intent intent=new Intent(CreateAccount.this,driver_rides_manager.class);
+                       startActivity(intent);
+                   }
+
+                   @Override
+                   public void onFailure() {
+
+                   }
+               });
 
             }
         });
     }
 
-    private void isDiverInDatabase(final Driver driver) {
-        createAccountButton.setEnabled(false);
-        backend.isDriverAlreadyRegistered(driver, new Backend.Action() {
-            @Override
-            public void onSuccess() {
-                addNewDriverToDataBase(driver);
-            }
-
-            @Override
-            public void onFailure() {
-                Toast.makeText(getBaseContext(),"Sorry, this email already has an account!",LENGTH_LONG).show();
-                createAccountButton.setEnabled(true);
-            }
-        });
-
-    }
-
-    private void addNewDriverToDataBase(Driver driver) {
-        backend.addNewDriverToDataBase(driver, new Backend.Action() {
-            @Override
-            public void onSuccess() {
-                Toast.makeText(getBaseContext(),"Welcome to Ride Taxi Community!",LENGTH_LONG).show();
-                Intent intent=new Intent(CreateAccount.this,driver_rides_manager.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onFailure() {
-            }
-        });
-
-
-    }
 
     private void setNewDriver() {
-        driver.setId(idEditText.getText().toString());
-        driver.setFirstName(firstNameEditText.getText().toString());
-        driver.setLastName(lastNameEditText.getText().toString());
-        driver.setTelephone(phoneNumberEditText.getText().toString());
-        driver.setEmail(emailEditText.getText().toString());
-        driver.setPassword(passwordEditText.getText().toString());
+        mDriver.setId(idEditText.getText().toString());
+        mDriver.setFirstName(firstNameEditText.getText().toString());
+        mDriver.setLastName(lastNameEditText.getText().toString());
+        mDriver.setTelephone(phoneNumberEditText.getText().toString());
+        mDriver.setEmail(emailEditText.getText().toString());
 
     }
 

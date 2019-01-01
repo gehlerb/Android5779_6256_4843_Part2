@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_margin="20dp"
+        android:layout_margin="15dp"
         android:layout_gravity="center"
         android:layout_width="250dp"
         android:layout_height="70dp"
@@ -25,12 +25,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
-            android:layout_marginVertical="15dp"
+            android:layout_marginVertical="10dp"
             android:drawableLeft="@drawable/ic_id_card"
             android:drawableStart="@drawable/ic_id_card"
             android:ems="10"
             android:hint="@string/id_number"
-            android:inputType="textPersonName" />
+            android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="35dp"
-                android:layout_marginVertical="15dp"
+                android:layout_marginVertical="10dp"
                 android:drawableLeft="@drawable/person_icon"
                 android:drawableStart="@drawable/person_icon"
                 android:ems="10"
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="35dp"
-                android:layout_marginVertical="15dp"
+                android:layout_marginVertical="10dp"
                 android:drawableLeft="@drawable/person_icon"
                 android:drawableStart="@drawable/person_icon"
                 android:ems="10"
@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="35dp"
-                android:layout_marginVertical="15dp"
+                android:layout_marginVertical="10dp"
                 android:drawableLeft="@drawable/email_icon"
                 android:drawableStart="@drawable/email_icon"
                 android:ems="10"
@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="35dp"
-                android:layout_marginVertical="15dp"
+                android:layout_marginVertical="10dp"
                 android:drawableLeft="@drawable/phone_icon"
                 android:drawableStart="@drawable/phone_icon"
                 android:ems="10"
@@ -116,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
-            android:layout_marginVertical="15dp"
+            android:layout_marginVertical="10dp"
             android:drawableLeft="@drawable/password_icon"
             android:drawableStart="@drawable/password_icon"
             android:ems="10"
@@ -134,7 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
-            android:layout_marginVertical="15dp"
+            android:layout_marginVertical="10dp"
             android:drawableLeft="@drawable/password_icon"
             android:drawableStart="@drawable/password_icon"
             android:ems="10"
@@ -148,7 +148,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
+        android:layout_margin="15dp"
         android:padding="15dp"
         android:background="@drawable/rounded_button"
         android:textColor="@color/primary_material_light"

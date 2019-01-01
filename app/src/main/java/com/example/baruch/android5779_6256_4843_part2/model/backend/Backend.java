@@ -7,11 +7,12 @@ import java.util.List;
 
 public interface Backend {
 
-    void isDriverInDataBase(Driver driver,Action action);
-
-    void isDriverAlreadyRegistered(Driver driver,Action action);
-
-    void addNewDriverToDataBase(Driver driver, Action action);
+    public void register(Driver driver,String password,Action action);
+    public void signIn(String email,String password,Action action);
+    public void signOut();
+    public void getCurrentUser(ActionResult actionResult);
+    public void updateProfile(Driver driver,Action action);
+    public void sendEmailVerification();
 
     void notifyNewRide(final NotifyDataChange<Ride> notifyDataChange);
 
@@ -35,6 +36,9 @@ public interface Backend {
         void onFailure(Exception exception);
     }
 
-
+    public interface ActionResult{
+        void onSuccess(Driver driver);
+        void onFailure();
+    }
 
 }
