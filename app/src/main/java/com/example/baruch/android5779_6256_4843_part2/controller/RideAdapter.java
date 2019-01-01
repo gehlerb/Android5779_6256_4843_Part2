@@ -122,7 +122,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> im
         }
 
         private boolean filterByDis(Location driver, Location passenger, int dis) {
-            if (driver.distanceTo(passenger) <= dis) {
+            if (driver.distanceTo(passenger) <= dis*1000) {
                 return true;
             } else {
                 return false;
