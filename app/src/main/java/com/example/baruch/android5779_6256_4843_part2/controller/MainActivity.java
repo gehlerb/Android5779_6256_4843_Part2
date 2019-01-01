@@ -93,8 +93,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 storeUserData();
-                setDriver();
-                isDriverInDataBase(driver);
+                backend.signIn(emailEditText.getText().toString(), passwordEditText.getText().toString(),
+                        new Backend.Action() {
+                    @Override
+                    public void onSuccess() {
+                            openNextActivity();
+                    }
+
+                    @Override
+                    public void onFailure() {
+                            Toast.makeText(getBaseContext(),"Incorrect email or password!",Toast.LENGTH_LONG).show();
+                    }
+                });
+
 
             }
         });
@@ -108,28 +119,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setDriver() {
-        driver.setEmail(emailEditText.getText().toString());
-        driver.setPassword(passwordEditText.getText().toString());
+    private void openNextActivity() {
+        Intent intent=new Intent(MainActivity.this,driver_rides_manager.class);
+        startActivity(intent);
     }
 
-    private void isDriverInDataBase(final Driver driver) {
-        backend.isDriverInDataBase(driver, new Backend.Action() {
-            @Override
-            public void onSuccess() {
-                Intent intent = new Intent(MainActivity.this, driver_rides_manager.class);
-                intent.putExtra(TRANSFER_DRIVER_DETAILS,driver);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onFailure() {
-                Toast.makeText(getBaseContext(),"Check your email and password or create an account",Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-    }
 
     private void storeUserData() {
         String email=emailEditText.getText().toString();
