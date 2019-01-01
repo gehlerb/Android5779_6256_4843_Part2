@@ -1,5 +1,6 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,15 +32,42 @@ public class WaitingListFragment extends Fragment {
     View view;
     ArrayList<Ride> rieds;
     Backend backend;
+    SeekBar seekBarDis;
+    RecyclerView rvRieds;
+    int progressSeekBar;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
 
         rieds = new ArrayList<Ride>();
 
-        RecyclerView rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesWaitingList);
+        rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesWaitingList);
 
-        final RideAdapter adapter = new RideAdapter(rieds);
+        seekBarDis = (SeekBar)view.findViewById(R.id.seekBarDis);
+        
+        driver_rides_manager activity = (driver_rides_manager) getActivity();
+        final RideAdapter adapter = new RideAdapter(rieds, activity.getMdriver().getLocation().
+                getmLatitudeAndLongitudeLocation().getLocation());
+
+        seekBarDis.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressSeekBar=progress;
+                adapter.getFilter().filter(Integer.toString(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
         adapter.setOnItemClickListener(new RideAdapter.OnItemClickListener() {
             @Override
@@ -77,7 +107,7 @@ public class WaitingListFragment extends Fragment {
             @Override
             public void onDataAdded(Ride ride) {
                 rieds.add(0,ride);
-                adapter.notifyDataSetChanged();
+                adapter.getFilter().filter(Integer.toString(progressSeekBar));
             }
 
             @Override

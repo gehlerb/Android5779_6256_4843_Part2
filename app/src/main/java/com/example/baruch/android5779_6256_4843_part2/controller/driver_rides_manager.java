@@ -1,6 +1,7 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,7 +15,9 @@ import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.AddressAndLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.LatitudeAndLongitudeLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.util.ArrayList;
@@ -30,21 +33,35 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
     private NavigationView navigationView;
     private Driver mdriver;
 
+    public Driver getMdriver() {
+        return mdriver;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_rides_manager);
 
+        Intent intent=getIntent();
+        mdriver=intent.getParcelableExtra(TRANSFER_DRIVER_DETAILS);
+
         startService(new Intent(this,NewRideService.class));
         setMenu();
+
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new WaitingListFragment()).commit();
             navigationView.setCheckedItem(R.id.available_rides);
         }
-
-        Intent intent=getIntent();
-        mdriver=intent.getParcelableExtra(TRANSFER_DRIVER_DETAILS);
+        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //
+        AddressAndLocation al=new AddressAndLocation();
+        Location loc=new Location("");
+        loc.setLongitude(35.1915378);
+        loc.setLatitude(31.7652707);
+        al.setmLatitudeAndLongitudeLocation(new LatitudeAndLongitudeLocation(loc));
+        mdriver.setLocation(al);
+        //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     }
 

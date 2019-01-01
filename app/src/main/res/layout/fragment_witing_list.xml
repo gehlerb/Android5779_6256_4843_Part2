@@ -18,6 +18,13 @@
         android:textStyle="bold"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <SeekBar
+        android:id="@+id/seekBarDis"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:max="200"
+        android:progress="10"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvRidesWaitingList"
         android:layout_width="match_parent"
@@ -26,5 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
 </LinearLayout>

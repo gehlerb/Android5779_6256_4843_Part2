@@ -1,6 +1,7 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,15 +12,29 @@ import android.widget.TextView;
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
+import android.widget.Filter;
+import android.widget.Filterable;
+
+public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> implements Filterable{
 
     private List<Ride> mRides;
+    private List<Ride> orgiRides;
+    private Filter rideFilterByDis;
+    private Location driverLocation;
+
 
     // Pass in the contact array into the constructor
-    public RideAdapter(List<Ride> rides) {
+    public RideAdapter(List<Ride> rides,Location dl) {
         mRides = rides;
+        orgiRides=rides;
+        driverLocation=dl;
+    }
+
+    public void setDriverLocation(Location driverLocation) {
+        this.driverLocation = driverLocation;
     }
 
     @NonNull
@@ -85,4 +100,53 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
             });
         }
     }
+
+    private class RideFilterByDis extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+
+            List<Ride> nRideList = new ArrayList<Ride>();
+            int dis = Integer.parseInt(constraint.toString());
+
+            for (Ride p : orgiRides) {
+                if (filterByDis(driverLocation, p.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation(), dis))
+                    nRideList.add(p);
+            }
+
+            results.values = nRideList;
+            results.count = nRideList.size();
+
+            return results;
+        }
+
+        private boolean filterByDis(Location driver, Location passenger, int dis) {
+            if (driver.distanceTo(passenger) <= dis) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            if (results.count == 0) {
+                //notifyDataSetInvalidated();
+                notifyDataSetChanged();
+            } else {
+                mRides = (List<Ride>) results.values;
+                notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (rideFilterByDis == null)
+            rideFilterByDis = new RideFilterByDis();
+
+        return rideFilterByDis;
+    }
+
 }
