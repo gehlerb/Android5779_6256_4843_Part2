@@ -99,7 +99,7 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
                 break;
             case R.id.history_rides:
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new WaitingListFragment()).commit();
+                        new HistoryListFragment()).commit();
                 break;
 
             case R.id.nav_share:
