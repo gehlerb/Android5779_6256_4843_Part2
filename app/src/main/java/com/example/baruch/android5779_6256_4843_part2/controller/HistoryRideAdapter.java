@@ -56,6 +56,17 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
         return null;
     }
 
+    // Define listener member variable
+    private HistoryRideAdapter.OnItemClickListener listener;
+    // Define the listener interface
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+    // Define the method that allows the parent activity or fragment to define the listener
+    public void setOnItemClickListener(HistoryRideAdapter.OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView nameTextView;
@@ -65,6 +76,19 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
             super(itemView);
             nameTextView = (TextView) itemView.findViewById(R.id.name_textview);
             addToContacts = (Button) itemView.findViewById(R.id.add_to_contacts);
+
+            addToContacts.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Triggers click upwards to the adapter on click
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(itemView, position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

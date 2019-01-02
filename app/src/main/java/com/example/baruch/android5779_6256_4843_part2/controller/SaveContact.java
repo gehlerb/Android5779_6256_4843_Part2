@@ -2,158 +2,37 @@ package com.example.baruch.android5779_6256_4843_part2.controller;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.DialogInterface;
 import android.content.OperationApplicationException;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.baruch.android5779_6256_4843_part2.R;
-import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
-import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.widget.Toast.LENGTH_LONG;
-
-public class HistoryListFragment extends Fragment {
-    private View view;
-    private List<Ride> rieds;
-    private Backend backend;
-    private RecyclerView rvRieds;
-    private SwipeRefreshLayout swipeContainer;
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        view = inflater.inflate(R.layout.fragment_history_list, container, false) ;
-        rieds = new ArrayList<Ride>();
-        rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesHIstoryList);
-        swipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.swipeContainer);
-
-        AccessContact();
-
-        driver_rides_manager activity = (driver_rides_manager) getActivity();
-
-        final HistoryRideAdapter adapter = new HistoryRideAdapter(rieds);
-
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Refresh().execute();
-            }
-        });
-
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
-
-        rvRieds.setAdapter(adapter);
-        rvRieds.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        rvRieds.setHasFixedSize(true);
-
-        RecyclerView.ItemDecoration itemDecoration = new
-                DividerItemDecoration(this.getActivity(), DividerItemDecoration.VERTICAL);
-        rvRieds.addItemDecoration(itemDecoration);
-
-        adapter.setOnItemClickListener(new HistoryRideAdapter.OnItemClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onItemClick(View view, int position) {
-                SaveContact sc=new SaveContact();
-                saveContact(view,rieds.get(position));
-                Toast.makeText(getActivity().getApplicationContext(), rieds.get(position).getClientFirstName(),LENGTH_LONG).show();
-            }
-        });
-
-        backend = BackendFactory.getBackend();
-        backend.notifyWaitingRidesList(new Backend.NotifyDataChange<Ride>() {
-            //TODO find simple implemntion
-            @Override
-            public void OnDataChanged(Ride ride) {
-                for (int i =0 ;i < rieds.size();++i){
-                    if(ride.getKey().equals( rieds.get(i).getKey())){
-                        if (ride.getRideState()== ClientRequestStatus.WAITING){
-                            rieds.set(i,ride);
-                            adapter.notifyDataSetChanged();
-                        }
-                        else {
-                            rieds.remove(i);
-                            adapter.notifyDataSetChanged();
-                        }
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onDataAdded(Ride ride) {
-                rieds.add(0,ride);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onDataRemoved(Ride ride) {
-                for (int i =0 ;i < rieds.size();++i){
-                    if(ride.getKey().equals( rieds.get(i).getKey())){
-                        rieds.remove(i);
-                        adapter.notifyDataSetChanged();
-                    }
-                    break;
-                }
-            }
-
-            @Override
-            public void onFailure(Exception exception) {
-            }
-        });
-
-        return view;
-    }
-
-    private class Refresh extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
-        @Override
-        protected void onPostExecute(Boolean result) {
-            swipeContainer.setRefreshing(result);
-        }
-    }
-
-    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+public class SaveContact extends AppCompatActivity {
+    final static String LOG_TAG = "EzraTag";
     final private int REQUEST_MULTIPLE_PERMISSIONS = 124;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AccessContact();
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void saveContact(View view, Ride ride) {
@@ -217,19 +96,30 @@ public class HistoryListFragment extends Fragment {
         //PUSH EVERYTHING TO CONTACTS
         try
         {
-            ContentProviderResult[] res = getActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+            ContentProviderResult[] res = getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
             if (res!=null && res[0]!=null) {
                 newContactUri = res[0].uri;
             }
         }
         catch (RemoteException e)
         {
+            // error
+            Log.e(LOG_TAG, "Error (1) adding contact.");
             newContactUri = null;
         }
         catch (OperationApplicationException e)
         {
+            // error
+            Log.e(LOG_TAG, "Error (2) adding contact.");
             newContactUri = null;
         }
+        Log.d(LOG_TAG, "Contact added to system contacts.");
+
+        if (newContactUri == null) {
+            Log.e(LOG_TAG, "Error creating contact");
+
+        }
+
     }
     /* From Android 6.0 Marshmallow,
     the application will not be granted any permissions at installation time.
@@ -240,6 +130,8 @@ public class HistoryListFragment extends Fragment {
     {
         List<String> permissionsNeeded = new ArrayList<String>();
         final List<String> permissionsList = new ArrayList<String>();
+        if (!addPermission(permissionsList, Manifest.permission.READ_CONTACTS))
+            permissionsNeeded.add("Read Contacts");
         if (!addPermission(permissionsList, Manifest.permission.WRITE_CONTACTS))
             permissionsNeeded.add("Write Contacts");
         if (permissionsList.size() > 0) {
@@ -264,7 +156,7 @@ public class HistoryListFragment extends Fragment {
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean addPermission(List<String> permissionsList, String permission) {
-        if (getActivity().checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
             permissionsList.add(permission);
 
             if (!shouldShowRequestPermissionRationale(permission))
@@ -273,15 +165,11 @@ public class HistoryListFragment extends Fragment {
         return true;
     }
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(this)
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", null)
                 .create()
                 .show();
     }
-
-    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 }
-
