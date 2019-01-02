@@ -13,12 +13,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
+import com.example.baruch.android5779_6256_4843_part2.model.location.GoogleLocation;
+import com.example.baruch.android5779_6256_4843_part2.model.location.LocationHandler;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.AddressAndLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
-import java.util.ArrayList;
 
 public class driver_rides_manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,8 +27,9 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
     private final String TRANSFER_DRIVER_DETAILS="transfer driver details";
     private DrawerLayout drawer;
     private NavigationView navigationView;
-    private Driver mdriver;
+    private Driver mDriver;
     private static Backend backend;
+    private LocationHandler location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +46,29 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
             navigationView.setCheckedItem(R.id.available_rides);
         }
 
+        location=new GoogleLocation(this);
         setCurrentDriver();
     }
+
+
 
     private void setCurrentDriver() {
         backend.getCurrentUser(new Backend.ActionResult() {
             @Override
             public void onSuccess(Driver driver) {
-                    mdriver=driver;
+                    mDriver =driver;
+
+                location.getAddressAndLocation(new LocationHandler.ActionResult() {
+                    @Override
+                    public void onSuccess(AddressAndLocation addressAndLocation) {
+                        mDriver.setLocation(addressAndLocation);
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
             }
 
             @Override
@@ -108,5 +125,11 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        location.stopTracking();
     }
 }
