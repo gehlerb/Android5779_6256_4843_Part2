@@ -1,12 +1,9 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -23,7 +20,6 @@ import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Exceptions;
-import com.google.firebase.database.DatabaseReference;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -120,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openNextActivity() {
-        Intent intent=new Intent(MainActivity.this,driver_rides_manager.class);
+        Intent intent=new Intent(MainActivity.this,RidesManagerActivity.class);
         startActivity(intent);
     }
 

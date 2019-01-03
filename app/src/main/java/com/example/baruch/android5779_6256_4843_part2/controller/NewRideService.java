@@ -9,19 +9,19 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
-import static com.example.baruch.android5779_6256_4843_part2.controller.appChannels.FOREGROUND_CHANNEL_ID;
-import static com.example.baruch.android5779_6256_4843_part2.controller.appChannels.NEW_RIDE_CHANNEL_ID;
+import static com.example.baruch.android5779_6256_4843_part2.controller.AppChannels.FOREGROUND_CHANNEL_ID;
+import static com.example.baruch.android5779_6256_4843_part2.controller.AppChannels.NEW_RIDE_CHANNEL_ID;
 
 public class NewRideService extends Service {
 
+    private final String TRANSFER_DRIVER_DETAILS="transfer driver details";
     private NotificationManagerCompat notificationManager;
 
     @Nullable
@@ -40,7 +40,7 @@ public class NewRideService extends Service {
 
 
     private void startListenToDatabase() {
-        Intent notificationIntent=new Intent(this,driver_rides_manager.class);
+        Intent notificationIntent=new Intent(this,RidesManagerActivity.class);
         PendingIntent pendingIntent=PendingIntent.getActivity(this,
                 0,notificationIntent,0);
 
@@ -66,6 +66,7 @@ public class NewRideService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        Driver driver=intent.getParcelableExtra(TRANSFER_DRIVER_DETAILS);
 
         Backend backend = BackendFactory.getBackend();
 
@@ -73,9 +74,8 @@ public class NewRideService extends Service {
 
             @Override
             public void onDataAdded(Ride ride) {
-                Toast.makeText(getBaseContext(), ride.getClientLastName(), Toast.LENGTH_LONG).show();
 
-                Intent notificationIntent=new Intent(NewRideService.this,driver_rides_manager.class);
+                Intent notificationIntent=new Intent(NewRideService.this,RidesManagerActivity.class);
                 PendingIntent pendingIntent=PendingIntent.getActivity(NewRideService.this,
                         0,notificationIntent,0);
 

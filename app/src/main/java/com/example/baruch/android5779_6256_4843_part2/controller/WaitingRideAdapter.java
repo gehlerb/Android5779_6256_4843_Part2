@@ -18,7 +18,7 @@ import java.util.List;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> implements Filterable{
+public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.ViewHolder> implements Filterable{
 
     private List<Ride> mRides;
     private List<Ride> orgiRides;
@@ -27,7 +27,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> im
 
 
     // Pass in the contact array into the constructor
-    public RideAdapter(List<Ride> rides,Location dl) {
+    public WaitingRideAdapter(List<Ride> rides, Location dl) {
         mRides = rides;
         orgiRides=rides;
         driverLocation=dl;

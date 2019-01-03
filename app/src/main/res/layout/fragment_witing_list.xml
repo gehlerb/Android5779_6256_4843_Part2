@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".controller.driver_rides_manager">
+    tools:context=".controller.RidesManagerActivity">
 
     <TextView
         android:layout_width="match_parent"

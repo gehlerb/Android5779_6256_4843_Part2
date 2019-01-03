@@ -1,7 +1,6 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,22 +13,16 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
-import com.example.baruch.android5779_6256_4843_part2.model.location.GoogleLocation;
-import com.example.baruch.android5779_6256_4843_part2.model.location.LocationHandler;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
-
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.AddressAndLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
-
-import com.example.baruch.android5779_6256_4843_part2.model.entities.AddressAndLocation;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.LatitudeAndLongitudeLocation;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
+import com.example.baruch.android5779_6256_4843_part2.model.location.GoogleLocation;
+import com.example.baruch.android5779_6256_4843_part2.model.location.LocationHandler;
 
 
 
-public class driver_rides_manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class RidesManagerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     private final String TRANSFER_DRIVER_DETAILS="transfer driver details";
@@ -39,7 +32,7 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
     private static Backend backend;
     private LocationHandler location;
 
-    public Driver getMdriver() {
+    public Driver getmDriver() {
         return mDriver;
     }
 
@@ -49,16 +42,10 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
         setContentView(R.layout.activity_driver_rides_manager);
         backend=BackendFactory.getBackend();
 
-        Intent intent=getIntent();
-        mDriver=intent.getParcelableExtra(TRANSFER_DRIVER_DETAILS);
-
-        startService(new Intent(this,NewRideService.class));
         setMenu();
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new WaitingListFragment()).commit();
-            navigationView.setCheckedItem(R.id.available_rides);
+
         }
 
         location=new GoogleLocation(this);
@@ -77,6 +64,13 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
                     @Override
                     public void onSuccess(AddressAndLocation addressAndLocation) {
                         mDriver.setLocation(addressAndLocation);
+                        Intent startService=new Intent(RidesManagerActivity.this,NewRideService.class);
+                        startService.putExtra(TRANSFER_DRIVER_DETAILS,mDriver);
+                        startService(startService);
+                        getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new WaitingListFragment()).commit();
+                        navigationView.setCheckedItem(R.id.available_rides);
+
                     }
 
                     @Override

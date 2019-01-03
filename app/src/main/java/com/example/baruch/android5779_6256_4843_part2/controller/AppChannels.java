@@ -5,7 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 
-public class appChannels extends Application {
+public class AppChannels extends Application {
 
     public static final String FOREGROUND_CHANNEL_ID="foregroundServiceChannel";
     public static final String NEW_RIDE_CHANNEL_ID="newRideChannel";

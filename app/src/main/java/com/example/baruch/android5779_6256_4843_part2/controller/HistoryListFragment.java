@@ -14,22 +14,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
@@ -60,7 +55,7 @@ public class HistoryListFragment extends Fragment {
         searchView=(EditText) view.findViewById(R.id.search_name);
         AccessContact();
 
-        driver_rides_manager activity = (driver_rides_manager) getActivity();
+        RidesManagerActivity activity = (RidesManagerActivity) getActivity();
 
         final HistoryRideAdapter adapter = new HistoryRideAdapter(rieds);
 
@@ -110,7 +105,6 @@ public class HistoryListFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onItemClick(View view, int position) {
-                SaveContact sc=new SaveContact();
                 saveContact(view,rieds.get(position));
                 Toast.makeText(getActivity().getApplicationContext(), rieds.get(position).getClientFirstName(),LENGTH_LONG).show();
             }

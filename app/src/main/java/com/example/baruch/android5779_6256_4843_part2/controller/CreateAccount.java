@@ -203,7 +203,7 @@ public class CreateAccount extends AppCompatActivity {
                    @Override
                    public void onSuccess() {
                        Toast.makeText(getBaseContext(),"Welcome to RideTaxi Community!",LENGTH_LONG).show();
-                       Intent intent=new Intent(CreateAccount.this,driver_rides_manager.class);
+                       Intent intent=new Intent(CreateAccount.this,RidesManagerActivity.class);
                        startActivity(intent);
                    }
 

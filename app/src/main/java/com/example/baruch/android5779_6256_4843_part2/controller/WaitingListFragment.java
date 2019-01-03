@@ -1,24 +1,18 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +30,7 @@ import static com.example.baruch.android5779_6256_4843_part2.model.entities.Clie
 
 public class WaitingListFragment extends Fragment {
     private View view;
-    private List<Ride> rieds;
+    private List<Ride> mRideList;
     private Backend backend;
     private SeekBar seekBarDis;
     private RecyclerView rvRieds;
@@ -48,7 +42,7 @@ public class WaitingListFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
-        rieds = new ArrayList<Ride>();
+        mRideList = new ArrayList<Ride>();
         rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesWaitingList);
         seekBarDis = (SeekBar)view.findViewById(R.id.seekBarDis);
         TextViewShowProgress =(TextView) view.findViewById(R.id.showProgress);
@@ -57,8 +51,8 @@ public class WaitingListFragment extends Fragment {
         progressSeekBar=seekBarDis.getProgress();
         TextViewShowProgress.setText(Integer.toString(progressSeekBar));
 
-        driver_rides_manager activity = (driver_rides_manager) getActivity();
-        final RideAdapter adapter = new RideAdapter(rieds, activity.getMdriver().getLocation().
+        RidesManagerActivity activity = (RidesManagerActivity) getActivity();
+        final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList, activity.getmDriver().getLocation().
                 getmLatitudeAndLongitudeLocation().getLocation());
 
         seekBarDis.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -94,10 +88,10 @@ public class WaitingListFragment extends Fragment {
                 android.R.color.holo_red_light);
 
 
-        adapter.setOnItemClickListener(new RideAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new WaitingRideAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                  showCustomDialog(rieds.get(position),position);
+                  showCustomDialog(mRideList.get(position),position);
             }
         });
 
@@ -114,14 +108,14 @@ public class WaitingListFragment extends Fragment {
             //TODO find simple implemntion
             @Override
             public void OnDataChanged(Ride ride) {
-                for (int i =0 ;i < rieds.size();++i){
-                    if(ride.getKey().equals( rieds.get(i).getKey())){
+                for (int i = 0; i < mRideList.size(); ++i){
+                    if(ride.getKey().equals( mRideList.get(i).getKey())){
                         if (ride.getRideState()== ClientRequestStatus.WAITING){
-                            rieds.set(i,ride);
+                            mRideList.set(i,ride);
                             adapter.getFilter().filter(Integer.toString(progressSeekBar));
                         }
                         else {
-                            rieds.remove(i);
+                            mRideList.remove(i);
                             adapter.getFilter().filter(Integer.toString(progressSeekBar));
                         }
                         break;
@@ -131,15 +125,15 @@ public class WaitingListFragment extends Fragment {
 
             @Override
             public void onDataAdded(Ride ride) {
-                rieds.add(0,ride);
+                mRideList.add(0,ride);
                 adapter.getFilter().filter(Integer.toString(progressSeekBar));
             }
 
             @Override
             public void onDataRemoved(Ride ride) {
-                for (int i =0 ;i < rieds.size();++i){
-                    if(ride.getKey().equals( rieds.get(i).getKey())){
-                        rieds.remove(i);
+                for (int i = 0; i < mRideList.size(); ++i){
+                    if(ride.getKey().equals( mRideList.get(i).getKey())){
+                        mRideList.remove(i);
                         adapter.getFilter().filter(Integer.toString(progressSeekBar));
                     }
                     break;

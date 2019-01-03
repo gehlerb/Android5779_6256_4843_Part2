@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".controller.driver_rides_manager"
+    tools:context=".controller.RidesManagerActivity"
     tools:openDrawer="start">
 
     <LinearLayout
