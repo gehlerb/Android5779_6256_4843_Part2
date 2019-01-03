@@ -51,6 +51,9 @@ public class WaitingListFragment extends Fragment {
         TextViewShowProgress =(TextView) view.findViewById(R.id.showProgress);
         swipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.swipeContainer);
 
+        progressSeekBar=seekBarDis.getProgress();
+        TextViewShowProgress.setText(Integer.toString(progressSeekBar));
+
         driver_rides_manager activity = (driver_rides_manager) getActivity();
         final RideAdapter adapter = new RideAdapter(rieds, activity.getMdriver().getLocation().
                 getmLatitudeAndLongitudeLocation().getLocation());

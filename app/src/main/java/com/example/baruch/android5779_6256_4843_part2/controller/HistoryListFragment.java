@@ -21,10 +21,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
@@ -44,6 +49,7 @@ public class HistoryListFragment extends Fragment {
     private Backend backend;
     private RecyclerView rvRieds;
     private SwipeRefreshLayout swipeContainer;
+    private EditText searchView;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -51,7 +57,7 @@ public class HistoryListFragment extends Fragment {
         rieds = new ArrayList<Ride>();
         rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesHIstoryList);
         swipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.swipeContainer);
-
+        searchView=(EditText) view.findViewById(R.id.search_name);
         AccessContact();
 
         driver_rides_manager activity = (driver_rides_manager) getActivity();
@@ -69,6 +75,27 @@ public class HistoryListFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+        searchView.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (count < before) {
+                    adapter.resetData();
+                }
+                adapter.getFilter().filter(searchView.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+        });
+
 
 
         rvRieds.setAdapter(adapter);

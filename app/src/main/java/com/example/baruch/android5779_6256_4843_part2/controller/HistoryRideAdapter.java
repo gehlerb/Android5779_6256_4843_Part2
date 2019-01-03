@@ -1,8 +1,10 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +16,14 @@ import android.widget.TextView;
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter.ViewHolder> implements Filterable {
 
     private List<Ride> mRides;
     private List<Ride> orgiRides;
-    private Filter rideFilterByDis;
+    private Filter rideFilterByName;
 
     public HistoryRideAdapter(List<Ride> rides) {
         mRides = rides;
@@ -49,11 +52,6 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
     @Override
     public int getItemCount() {
         return mRides.size();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return null;
     }
 
     // Define listener member variable
@@ -90,5 +88,57 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
                 }
             });
         }
+    }
+
+    public void resetData() {
+        mRides = orgiRides;
+    }
+
+    private class RideFilterByName extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            FilterResults results = new FilterResults();
+
+            List<Ride> nRideList = new ArrayList<Ride>();
+            if(TextUtils.isEmpty(constraint.toString())){
+                results.values=orgiRides;
+                results.count = nRideList.size();
+            }
+            else {
+                for (Ride p : orgiRides) {
+                    if (filterByName(p, constraint.toString()))
+                        nRideList.add(p);
+                }
+
+                results.values = nRideList;
+                results.count = nRideList.size();
+            }
+            return results;
+        }
+
+        private boolean filterByName(Ride ride,String filterString) {
+            String name=ride.getClientFirstName()+ride.getClientLastName();
+            return (name.toLowerCase().contains(filterString));
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            if (results.count == 0) {
+                //notifyDataSetInvalidated();
+                notifyDataSetChanged();
+            } else {
+                mRides = (List<Ride>) results.values;
+                notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (rideFilterByName == null)
+            rideFilterByName = new RideFilterByName();
+        return rideFilterByName;
     }
 }
