@@ -25,10 +25,13 @@ import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.util.ArrayList;
 
+import static com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus.IN_PROCESS;
+
 public class WaitingListFragment extends Fragment {
     View view;
     ArrayList<Ride> rieds;
     Backend backend;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
@@ -42,7 +45,7 @@ public class WaitingListFragment extends Fragment {
         adapter.setOnItemClickListener(new RideAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                  showCustomDialog(rieds.get(position));
+                  showCustomDialog(rieds.get(position),position);
             }
         });
 
@@ -101,7 +104,7 @@ public class WaitingListFragment extends Fragment {
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-    private void showCustomDialog(Ride ride) {
+    private void showCustomDialog(final Ride ride,final int position) {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_ride);
@@ -119,6 +122,18 @@ public class WaitingListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "Follow Clicked", Toast.LENGTH_SHORT).show();
+                ride.setRideState(IN_PROCESS);
+                backend.updateClientRequestToDataBase(ride, new Backend.Action() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
             }
         });
 

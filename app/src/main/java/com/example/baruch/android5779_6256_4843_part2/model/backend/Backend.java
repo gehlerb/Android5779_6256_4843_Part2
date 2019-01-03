@@ -7,13 +7,14 @@ import java.util.List;
 
 public interface Backend {
 
-    public void register(Driver driver,String password,Action action);
-    public void signIn(String email,String password,Action action);
-    public void signOut();
-    public void getCurrentUser(ActionResult actionResult);
-    public void updateProfile(Driver driver,Action action);
-    public void sendEmailVerification();
+    void register(Driver driver,String password,Action action);
+    void signIn(String email,String password,Action action);
+    void signOut();
+    void getCurrentUser(ActionResult actionResult);
+    void updateProfile(Driver driver,Action action);
+    void sendEmailVerification();
 
+    void updateClientRequestToDataBase(final Ride ride, final Action action);
     void notifyNewRide(final NotifyDataChange<Ride> notifyDataChange);
 
     void stopNotifyNewRide();

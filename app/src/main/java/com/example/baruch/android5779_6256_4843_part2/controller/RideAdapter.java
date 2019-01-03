@@ -60,6 +60,9 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         this.listener = listener;
     }
 
+    public void remove(int position){
+        mRides.remove(position);
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

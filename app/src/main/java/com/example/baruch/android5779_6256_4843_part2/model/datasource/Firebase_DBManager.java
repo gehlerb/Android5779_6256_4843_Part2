@@ -211,4 +211,20 @@ public class Firebase_DBManager implements Backend {
                     }
                 });
     }
+
+    @Override
+    public void updateClientRequestToDataBase(final Ride ride, final Action action) {
+        String key=ride.getKey();
+        OrdersTaxiRef.child(key).setValue(ride).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                action.onSuccess();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                action.onFailure();
+            }
+        });
+    }
 }
