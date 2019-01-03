@@ -30,4 +30,11 @@ public class LatitudeAndLongitudeLocation {
     public void setmLongitude(double mLongitude) {
         this.mLongitude = mLongitude;
     }
+
+    public Location getLocation(){
+        Location res= new Location ("");
+        res.setLatitude(mLatitude);
+        res.setLongitude(mLongitude);
+        return res;
+    }
 }

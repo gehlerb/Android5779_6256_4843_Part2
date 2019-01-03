@@ -12,22 +12,19 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/colorPrimaryDark"
-        android:text="@string/waiting_rides"
+        android:text="@string/history"
         android:textAlignment="center"
         android:textSize="22dp"
         android:textStyle="bold"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <TextView
-        android:id="@+id/showProgress"
+
+    <EditText
+        android:id="@+id/search_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"/>
-    <SeekBar
-        android:id="@+id/seekBarDis"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:max="35"
-        android:progress="10"/>
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+    </EditText>
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -36,7 +33,7 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvRidesWaitingList"
+            android:id="@+id/rvRidesHIstoryList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

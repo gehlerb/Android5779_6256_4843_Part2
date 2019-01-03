@@ -1,6 +1,7 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -16,9 +17,16 @@ import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.location.GoogleLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.location.LocationHandler;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
+
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.AddressAndLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
+
+import com.example.baruch.android5779_6256_4843_part2.model.entities.AddressAndLocation;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.LatitudeAndLongitudeLocation;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
+
 
 
 public class driver_rides_manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,11 +39,18 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
     private static Backend backend;
     private LocationHandler location;
 
+    public Driver getMdriver() {
+        return mDriver;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_rides_manager);
         backend=BackendFactory.getBackend();
+
+        Intent intent=getIntent();
+        mDriver=intent.getParcelableExtra(TRANSFER_DRIVER_DETAILS);
 
         startService(new Intent(this,NewRideService.class));
         setMenu();
@@ -56,7 +71,7 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
         backend.getCurrentUser(new Backend.ActionResult() {
             @Override
             public void onSuccess(Driver driver) {
-                    mDriver =driver;
+                    mDriver=driver;
 
                 location.getAddressAndLocation(new LocationHandler.ActionResult() {
                     @Override
@@ -112,7 +127,7 @@ public class driver_rides_manager extends AppCompatActivity implements Navigatio
                 break;
             case R.id.history_rides:
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new WaitingListFragment()).commit();
+                        new HistoryListFragment()).commit();
                 break;
 
             case R.id.nav_share:

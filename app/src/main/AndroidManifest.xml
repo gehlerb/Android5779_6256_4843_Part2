@@ -4,6 +4,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-feature android:name="android.hardware.location.gps" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+
     <application
         android:name=".controller.appChannels"
         android:allowBackup="true"
@@ -22,10 +24,8 @@
         <activity android:name=".controller.CreateAccount" />
         <activity android:name=".controller.driver_rides_manager"
             android:launchMode="singleTop"/>
-
         <service android:name=".controller.NewRideService" />
-
-        <activity android:name=".controller.ExitApp"></activity>
+        <activity android:name=".controller.ExitApp"/>
     </application>
 
 </manifest>

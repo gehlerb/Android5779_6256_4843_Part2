@@ -4,9 +4,13 @@ import android.content.Context;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
@@ -15,48 +19,34 @@ import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.widget.Filter;
-import android.widget.Filterable;
-
-public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> implements Filterable{
+public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter.ViewHolder> implements Filterable {
 
     private List<Ride> mRides;
     private List<Ride> orgiRides;
-    private Filter rideFilterByDis;
-    private Location driverLocation;
+    private Filter rideFilterByName;
 
-
-    // Pass in the contact array into the constructor
-    public RideAdapter(List<Ride> rides,Location dl) {
+    public HistoryRideAdapter(List<Ride> rides) {
         mRides = rides;
         orgiRides=rides;
-        driverLocation=dl;
     }
-
-    public void setDriverLocation(Location driverLocation) {
-        this.driverLocation = driverLocation;
-    }
-
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HistoryRideAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View rideView = inflater.inflate(R.layout.item_ride, parent, false);
+        View rideView = inflater.inflate(R.layout.item_ride_history, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(rideView);
+        HistoryRideAdapter.ViewHolder viewHolder = new HistoryRideAdapter.ViewHolder(rideView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull HistoryRideAdapter.ViewHolder holder, int position) {
         Ride ride = mRides.get(position);
 
-        TextView fromTextView = viewHolder.fromTextView;
-        TextView toTextView = viewHolder.toTextView;
-        fromTextView.setText(ride.getPickupAddress().getAddress());
-        toTextView.setText(ride.getDestinationAddress().getAddress());
+        TextView nameTextView = holder.nameTextView;
+        nameTextView.setText(ride.getClientFirstName()+" "+ride.getClientLastName());
     }
 
     @Override
@@ -65,31 +55,27 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> im
     }
 
     // Define listener member variable
-    private OnItemClickListener listener;
+    private HistoryRideAdapter.OnItemClickListener listener;
     // Define the listener interface
     public interface OnItemClickListener {
         void onItemClick(View itemView, int position);
     }
     // Define the method that allows the parent activity or fragment to define the listener
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public void setOnItemClickListener(HistoryRideAdapter.OnItemClickListener listener) {
         this.listener = listener;
-    }
-
-    public void remove(int position){
-        mRides.remove(position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView fromTextView;
-        public TextView toTextView;
+        public TextView nameTextView;
+        public Button addToContacts;
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            toTextView = (TextView) itemView.findViewById(R.id.to_textview);
-            fromTextView = (TextView) itemView.findViewById(R.id.from_textview);
+            nameTextView = (TextView) itemView.findViewById(R.id.name_textview);
+            addToContacts = (Button) itemView.findViewById(R.id.add_to_contacts);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            addToContacts.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Triggers click upwards to the adapter on click
@@ -104,32 +90,37 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> im
         }
     }
 
-    private class RideFilterByDis extends Filter {
+    public void resetData() {
+        mRides = orgiRides;
+    }
+
+    private class RideFilterByName extends Filter {
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
+
             FilterResults results = new FilterResults();
 
             List<Ride> nRideList = new ArrayList<Ride>();
-            int dis = Integer.parseInt(constraint.toString());
-
-            for (Ride p : orgiRides) {
-                if (filterByDis(driverLocation, p.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation(), dis))
-                    nRideList.add(p);
+            if(TextUtils.isEmpty(constraint.toString())){
+                results.values=orgiRides;
+                results.count = nRideList.size();
             }
+            else {
+                for (Ride p : orgiRides) {
+                    if (filterByName(p, constraint.toString()))
+                        nRideList.add(p);
+                }
 
-            results.values = nRideList;
-            results.count = nRideList.size();
-
+                results.values = nRideList;
+                results.count = nRideList.size();
+            }
             return results;
         }
 
-        private boolean filterByDis(Location driver, Location passenger, int dis) {
-            if (driver.distanceTo(passenger) <= dis*1000) {
-                return true;
-            } else {
-                return false;
-            }
+        private boolean filterByName(Ride ride,String filterString) {
+            String name=ride.getClientFirstName()+ride.getClientLastName();
+            return (name.toLowerCase().contains(filterString));
         }
 
         @Override
@@ -146,10 +137,8 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> im
 
     @Override
     public Filter getFilter() {
-        if (rideFilterByDis == null)
-            rideFilterByDis = new RideFilterByDis();
-
-        return rideFilterByDis;
+        if (rideFilterByName == null)
+            rideFilterByName = new RideFilterByName();
+        return rideFilterByName;
     }
-
 }
