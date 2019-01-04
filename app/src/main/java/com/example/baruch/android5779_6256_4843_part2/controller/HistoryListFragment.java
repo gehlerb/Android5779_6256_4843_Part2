@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
@@ -44,7 +45,7 @@ public class HistoryListFragment extends Fragment {
     private Backend backend;
     private RecyclerView rvRieds;
     private SwipeRefreshLayout swipeContainer;
-    private EditText searchView;
+    private SearchView searchView;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -52,7 +53,7 @@ public class HistoryListFragment extends Fragment {
         rieds = new ArrayList<Ride>();
         rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesHIstoryList);
         swipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.swipeContainer);
-        searchView=(EditText) view.findViewById(R.id.search_name);
+        searchView=(SearchView) view.findViewById(R.id.search_name);
         AccessContact();
 
         RidesManagerActivity activity = (RidesManagerActivity) getActivity();
@@ -65,33 +66,23 @@ public class HistoryListFragment extends Fragment {
                 new Refresh().execute();
             }
         });
-
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        searchView.addTextChangedListener(new TextWatcher() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+              @Override
+              public boolean onQueryTextSubmit(String query) {
+                  return false;
+              }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (count < before) {
-                    adapter.resetData();
-                }
-                adapter.getFilter().filter(searchView.getText().toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-        });
-
-
+              @Override
+              public boolean onQueryTextChange(String newText) {
+                  adapter.getFilter().filter(newText);
+                  return false;
+              }
+          });
 
         rvRieds.setAdapter(adapter);
         rvRieds.setLayoutManager(new LinearLayoutManager(this.getActivity()));

@@ -49,7 +49,7 @@ public class WaitingListFragment extends Fragment {
         swipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.swipeContainer);
 
         progressSeekBar=seekBarDis.getProgress();
-        TextViewShowProgress.setText(Integer.toString(progressSeekBar));
+        TextViewShowProgress.setText(Integer.toString(progressSeekBar)+" km");
 
         RidesManagerActivity activity = (RidesManagerActivity) getActivity();
         final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList, activity.getmDriver().getLocation().
@@ -59,7 +59,7 @@ public class WaitingListFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressSeekBar=progress;
-                TextViewShowProgress.setText(Integer.toString(progress));
+                TextViewShowProgress.setText(Integer.toString(progress)+" km");
                 adapter.getFilter().filter(Integer.toString(progress));
             }
 
@@ -116,6 +116,7 @@ public class WaitingListFragment extends Fragment {
                         }
                         else {
                             mRideList.remove(i);
+                            Toast.makeText(getActivity(), "OnDataChanged", Toast.LENGTH_SHORT).show();
                             adapter.getFilter().filter(Integer.toString(progressSeekBar));
                         }
                         break;
@@ -186,12 +187,12 @@ public class WaitingListFragment extends Fragment {
                 backend.updateClientRequestToDataBase(ride, new Backend.Action() {
                     @Override
                     public void onSuccess() {
-
+                        Toast.makeText(getActivity(), "onSuccess", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure() {
-
+                        Toast.makeText(getActivity(), "onFailure", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

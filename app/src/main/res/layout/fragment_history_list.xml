@@ -18,13 +18,14 @@
         android:textStyle="bold"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <EditText
+    <SearchView
         android:id="@+id/search_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp">
-    </EditText>
+        android:paddingTop="10dp"
+        android:queryHint="Search...">
+    </SearchView>
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
@@ -68,12 +69,12 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView nameTextView;
-        public Button addToContacts;
+        public ImageButton addToContacts;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             nameTextView = (TextView) itemView.findViewById(R.id.name_textview);
-            addToContacts = (Button) itemView.findViewById(R.id.add_to_contacts);
+            addToContacts = (ImageButton) itemView.findViewById(R.id.add_to_contacts);
 
             addToContacts.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,14 +102,17 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
 
             FilterResults results = new FilterResults();
 
-            List<Ride> nRideList = new ArrayList<Ride>();
             if(TextUtils.isEmpty(constraint.toString())){
                 results.values=orgiRides;
-                results.count = nRideList.size();
+                results.count = orgiRides.size();
             }
             else {
+                constraint = constraint.toString().toUpperCase();
+                List<Ride> nRideList = new ArrayList<Ride>();
+                String fullName;
                 for (Ride p : orgiRides) {
-                    if (filterByName(p, constraint.toString()))
+                    fullName=p.getClientFirstName()+' '+p.getClientLastName();
+                    if (fullName.toUpperCase().contains(constraint))
                         nRideList.add(p);
                 }
 
@@ -118,20 +122,10 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
             return results;
         }
 
-        private boolean filterByName(Ride ride,String filterString) {
-            String name=ride.getClientFirstName()+ride.getClientLastName();
-            return (name.toLowerCase().contains(filterString));
-        }
-
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            if (results.count == 0) {
-                //notifyDataSetInvalidated();
-                notifyDataSetChanged();
-            } else {
                 mRides = (List<Ride>) results.values;
                 notifyDataSetChanged();
-            }
         }
     }
 
