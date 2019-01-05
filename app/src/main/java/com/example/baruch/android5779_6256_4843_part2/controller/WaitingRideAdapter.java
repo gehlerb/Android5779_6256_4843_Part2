@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,6 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
     private List<Ride> orgiRides;
     private Filter rideFilterByDis;
     private Location driverLocation;
-
 
     // Pass in the contact array into the constructor
     public WaitingRideAdapter(List<Ride> rides, Location dl) {
@@ -55,8 +56,18 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
 
         TextView fromTextView = viewHolder.fromTextView;
         TextView toTextView = viewHolder.toTextView;
+        TextView disTextView=viewHolder.disTextView;
+        TextView disPickDestTextView=viewHolder.disPickDestTextView;
+
+        Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation();
+        Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().getLocation();
+        double dis=pickup.distanceTo(driverLocation)/1000;
+        disTextView.setText(new DecimalFormat("##.#").format(dis));
+        dis=pickup.distanceTo(dest)/1000;
+        disPickDestTextView.setText(new DecimalFormat("##.#").format(dis)+ " km");
         fromTextView.setText(ride.getPickupAddress().getAddress());
         toTextView.setText(ride.getDestinationAddress().getAddress());
+
     }
 
     @Override
@@ -83,12 +94,15 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
 
         public TextView fromTextView;
         public TextView toTextView;
+        public TextView disTextView;
+        public TextView disPickDestTextView;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             toTextView = (TextView) itemView.findViewById(R.id.to_textview);
             fromTextView = (TextView) itemView.findViewById(R.id.from_textview);
-
+            disTextView = (TextView) itemView.findViewById(R.id.dis_textview);
+            disPickDestTextView = (TextView) itemView.findViewById(R.id.dis_pick_dest);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

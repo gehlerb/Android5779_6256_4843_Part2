@@ -2,6 +2,7 @@ package com.example.baruch.android5779_6256_4843_part2.controller;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,8 +22,10 @@ import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,8 @@ public class WaitingListFragment extends Fragment {
     private RecyclerView rvRieds;
     private TextView TextViewShowProgress;
     private SwipeRefreshLayout swipeContainer;
+    private TextView currentLoc;
+    private Driver currentDriver;
     int progressSeekBar;
 
 
@@ -47,13 +52,17 @@ public class WaitingListFragment extends Fragment {
         seekBarDis = (SeekBar)view.findViewById(R.id.seekBarDis);
         TextViewShowProgress =(TextView) view.findViewById(R.id.showProgress);
         swipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.swipeContainer);
-
+        currentLoc=(TextView)view.findViewById(R.id.current_loc);
         progressSeekBar=seekBarDis.getProgress();
         TextViewShowProgress.setText(Integer.toString(progressSeekBar)+" km");
 
         RidesManagerActivity activity = (RidesManagerActivity) getActivity();
         final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList, activity.getmDriver().getLocation().
                 getmLatitudeAndLongitudeLocation().getLocation());
+
+        currentLoc.setText("  " + activity.getmDriver().getLocation().getAddress());
+
+        currentDriver = activity.getmDriver();
 
         seekBarDis.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -172,13 +181,18 @@ public class WaitingListFragment extends Fragment {
         dialog.setContentView(R.layout.dialog_ride);
         dialog.setCancelable(true);
 
-        ((TextView) dialog.findViewById(R.id.from_textview)).setText(ride.getPickupAddress().getAddress());
-        ((TextView) dialog.findViewById(R.id.to_textview)).setText(ride.getDestinationAddress().getAddress());
-        ((TextView) dialog.findViewById(R.id.name_textview)).setText(ride.getClientFirstName()+' ' +ride.getClientLastName());
+        ((TextView) dialog.findViewById(R.id.from_textview)).setText(" "+ride.getPickupAddress().getAddress());
+        ((TextView) dialog.findViewById(R.id.to_textview)).setText(" "+ ride.getDestinationAddress().getAddress());
+        ((TextView) dialog.findViewById(R.id.name_textview)).setText(" "+ride.getClientFirstName()+' ' +ride.getClientLastName());
+        ((TextView) dialog.findViewById(R.id.emai_addr)).setText(" "+ride.getClientEmail());
 
-        ((TextView) dialog.findViewById(R.id.emai_addr)).setText(ride.getClientEmail());
+        Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation();
+        Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().getLocation();
+        double dis=pickup.distanceTo(currentDriver.getLocation().getmLatitudeAndLongitudeLocation().getLocation())/1000;
+        ((TextView) dialog.findViewById(R.id.dis_textview)).setText(new DecimalFormat("##.#").format(dis));
+        dis=pickup.distanceTo(dest)/1000;
+        ((TextView) dialog.findViewById(R.id.dis_pick_dest_dialog)).setText(new DecimalFormat("##.#").format(dis)+ " km");
         ((TextView) dialog.findViewById(R.id.phone_number)).setText(ride.getClientTelephone());
-
         ((Button) dialog.findViewById(R.id.get_order_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

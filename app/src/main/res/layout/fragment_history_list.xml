@@ -8,16 +8,6 @@
     android:orientation="vertical"
     tools:context=".controller.RidesManagerActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="@string/history"
-        android:textAlignment="center"
-        android:textSize="22dp"
-        android:textStyle="bold"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <SearchView
         android:id="@+id/search_name"
         android:layout_width="match_parent"

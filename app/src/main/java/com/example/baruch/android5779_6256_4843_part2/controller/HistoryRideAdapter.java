@@ -45,9 +45,10 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
     @Override
     public void onBindViewHolder(@NonNull HistoryRideAdapter.ViewHolder holder, int position) {
         Ride ride = mRides.get(position);
-
+        TextView pickAddrTextview = holder.pickAddrTextview;
         TextView nameTextView = holder.nameTextView;
         nameTextView.setText(ride.getClientFirstName()+" "+ride.getClientLastName());
+        pickAddrTextview.setText(ride.getPickupAddress().getAddress());
     }
 
     @Override
@@ -69,11 +70,13 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView nameTextView;
+        public TextView pickAddrTextview;
         public ImageButton addToContacts;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             nameTextView = (TextView) itemView.findViewById(R.id.name_textview);
+            pickAddrTextview = (TextView)itemView.findViewById(R.id.pickAddr_textview);
             addToContacts = (ImageButton) itemView.findViewById(R.id.add_to_contacts);
 
             addToContacts.setOnClickListener(new View.OnClickListener() {
@@ -110,9 +113,11 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
                 constraint = constraint.toString().toUpperCase();
                 List<Ride> nRideList = new ArrayList<Ride>();
                 String fullName;
+                String pickAddr;
                 for (Ride p : orgiRides) {
                     fullName=p.getClientFirstName()+' '+p.getClientLastName();
-                    if (fullName.toUpperCase().contains(constraint))
+                    pickAddr=p.getPickupAddress().getAddress();
+                    if (fullName.toUpperCase().contains(constraint) || pickAddr.toUpperCase().contains(constraint))
                         nRideList.add(p);
                 }
 

@@ -11,7 +11,7 @@
     android:paddingTop="10dp">
 
     <LinearLayout
-        android:layout_width="30dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_horizontal"
@@ -36,32 +36,74 @@
             android:src="@drawable/shape_round_solid" />
     </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4"
+        android:layout_weight="6"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/from_textview"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_margin="20dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:gravity="bottom"
             android:textColor="@android:color/black"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/dis_pick_dest"
+            android:gravity="center_vertical|right"
+            android:textSize="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </TextView>
 
         <TextView
             android:id="@+id/to_textview"
+            android:maxLines="1"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_margin="20dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:gravity="top"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+        </View>
+
+        <TextView
+            android:id="@+id/dis_textview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:gravity="bottom"
+            android:text="237.6"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:text="km"
+            android:textAlignment="center"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </View>
     </LinearLayout>
 </LinearLayout>

@@ -95,9 +95,35 @@ public class HistoryListFragment extends Fragment {
         adapter.setOnItemClickListener(new HistoryRideAdapter.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(final View view, final int position) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Add " +rieds.get(position).getClientFirstName()+' ' +
+                    rieds.get(position).getClientLastName()+" to contacts?");
+                builder.setCancelable(true);
+
+                builder.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                saveContact(view,rieds.get(position));
+                                dialog.cancel();
+                            }
+                        });
+
+                builder.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert = builder.create();
+                alert.show();
                 saveContact(view,rieds.get(position));
-                Toast.makeText(getActivity().getApplicationContext(), rieds.get(position).getClientFirstName(),LENGTH_LONG).show();
+
+
             }
         });
 

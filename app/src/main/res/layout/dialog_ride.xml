@@ -3,80 +3,173 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="wrap_content"
+    android:layout_height="400dp"
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/from_textview"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textSize="15dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:maxLines="1"
-        android:drawableLeft="@drawable/location_icon"
-        android:drawableStart="@drawable/location_icon"
-        />
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:layout_weight="2">
 
-    <TextView
-        android:id="@+id/to_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textSize="15dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:maxLines="1"
-        />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp">
 
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/shape_round_outline" />
 
+            <View
+                android:layout_width="2dp"
+                android:layout_height="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark" />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/shape_round_solid" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/from_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/dis_pick_dest_dialog"
+                android:gravity="center_vertical|right"
+                android:textSize="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+            </TextView>
+
+            <TextView
+                android:id="@+id/to_textview"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="top"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3">
+            </View>
+
+            <TextView
+                android:id="@+id/dis_textview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:gravity="bottom"
+                android:text="27.6"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:text="km"
+                android:textAlignment="center"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+            </View>
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/name_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textSize="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="20dp"
+        android:gravity="right|center"
         android:textColor="@color/colorPrimaryDark"
         android:maxLines="1"
+        android:textStyle="bold"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:drawableRight="@drawable/person_icon"
         />
 
 
     <TextView
         android:id="@+id/emai_addr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:textSize="15dp"
+        android:textSize="20dp"
         android:textColor="@color/colorPrimaryDark"
         android:maxLines="1"
+        android:layout_weight="1"
+        android:drawableRight="@drawable/email_icon"
+        android:gravity="right|center"
         />
 
 
     <TextView
         android:id="@+id/phone_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:textColor="@color/colorPrimaryDark"
         android:maxLines="1"
+        android:layout_weight="1"
+        android:drawableRight="@drawable/phone_icon"
+        android:gravity="right|center"
         />
 
     <Button
         android:id="@+id/get_order_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_margin="20dp"
         android:padding="15dp"
         android:background="@drawable/rounded_button"
         android:textColor="@color/primary_material_light"
-        android:text="@string/get_order"/>
+        android:text="@string/get_order"
+        android:layout_weight="1"/>
 
 </LinearLayout>
