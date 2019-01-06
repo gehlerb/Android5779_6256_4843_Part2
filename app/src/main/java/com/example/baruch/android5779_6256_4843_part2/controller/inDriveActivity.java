@@ -18,7 +18,7 @@ import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import static android.widget.Toast.LENGTH_LONG;
 
-public class inDrive extends AppCompatActivity {
+public class inDriveActivity extends AppCompatActivity {
 
     private ImageButton callImageBtn;
     private ImageButton sendSmsImageBtn;

@@ -33,7 +33,7 @@
         <service android:name=".controller.NewRideService" />
 
         <activity android:name=".controller.ExitApp" />
-        <activity android:name=".controller.inDrive"></activity>
+        <activity android:name=".controller.inDriveActivity"></activity>
     </application>
 
 </manifest>
