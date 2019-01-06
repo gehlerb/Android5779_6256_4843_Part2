@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -228,15 +229,16 @@ public class WaitingListFragment extends Fragment {
         int hours = (int)(difference / 3600);
         int minutes = (int)(difference % 3600) / 60;
 
-        String time=" ";
-        if (days>0)
-            time +=days+"d ";
-        if (hours>0)
-            time+= hours+"h ";
-        time+=minutes+"m ago ";
-        ((TextView) dialog.findViewById(R.id.time_textView)).setText(time);
-        Toast.makeText(getActivity(),String.valueOf( hours)+" "+ String.valueOf(minutes)
-                , Toast.LENGTH_SHORT).show();
+
+        if (days>0) {
+            ((EditText) dialog.findViewById(R.id.d_textView)).setVisibility(View.VISIBLE);
+            ((EditText) dialog.findViewById(R.id.days_textView)).setText(String.valueOf(days));
+        }
+        if (hours>0) {
+            ((EditText) dialog.findViewById(R.id.h_textView)).setVisibility(View.VISIBLE);
+            ((EditText) dialog.findViewById(R.id.hours_textView)).setText(String.valueOf(hours));
+        }
+        ((TextView) dialog.findViewById(R.id.minutes_TextView)).setText(String.valueOf(minutes));
 
         dialog.show();
     }
