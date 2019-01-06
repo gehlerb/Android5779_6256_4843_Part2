@@ -2,9 +2,12 @@ package com.example.baruch.android5779_6256_4843_part2.controller;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.icu.text.SimpleDateFormat;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +30,8 @@ import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus.IN_PROCESS;
@@ -98,9 +103,10 @@ public class WaitingListFragment extends Fragment {
 
 
         adapter.setOnItemClickListener(new WaitingRideAdapter.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void onItemClick(View view, int position) {
-                  showCustomDialog(mRideList.get(position),position);
+            public void onItemClick(View view, Ride ride) {
+                  showCustomDialog(ride);
             }
         });
 
@@ -175,7 +181,8 @@ public class WaitingListFragment extends Fragment {
         }
     }
 
-    private void showCustomDialog(final Ride ride,final int position) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void showCustomDialog(final Ride ride) {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_ride);
@@ -196,7 +203,6 @@ public class WaitingListFragment extends Fragment {
         ((Button) dialog.findViewById(R.id.get_order_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Follow Clicked", Toast.LENGTH_SHORT).show();
                 ride.setRideState(IN_PROCESS);
                 backend.updateClientRequestToDataBase(ride, new Backend.Action() {
                     @Override
@@ -211,6 +217,25 @@ public class WaitingListFragment extends Fragment {
                 });
             }
         });
+
+
+        Date date1=new Date(ride.getTimestamp());
+        Date dateNow=new Date(Calendar.getInstance().getTime().getTime());
+        int difference = (int)((dateNow.getTime() - date1.getTime())/1000);
+        int days =(int)(difference/86400);
+        difference=difference%86400;
+        int hours = (int)(difference / 3600);
+        int minutes = (int)(difference % 3600) / 60;
+
+        String time=" Before ";
+        if (days>0)
+            time +=days+" d ";
+        if (hours>0)
+            time+= hours+" h ";
+        time+=minutes+" m ";
+        ((TextView) dialog.findViewById(R.id.time_textView)).setText(time);
+        Toast.makeText(getActivity(),String.valueOf( hours)+" "+ String.valueOf(minutes)
+                , Toast.LENGTH_SHORT).show();
 
         dialog.show();
     }

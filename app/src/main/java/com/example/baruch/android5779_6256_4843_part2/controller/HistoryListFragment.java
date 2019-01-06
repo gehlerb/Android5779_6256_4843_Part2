@@ -54,8 +54,8 @@ public class HistoryListFragment extends Fragment {
         rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesHIstoryList);
         swipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.swipeContainer);
         searchView=(SearchView) view.findViewById(R.id.search_name);
+        backend = BackendFactory.getBackend();
         AccessContact();
-
         RidesManagerActivity activity = (RidesManagerActivity) getActivity();
 
         final HistoryRideAdapter adapter = new HistoryRideAdapter(rieds);
@@ -100,8 +100,8 @@ public class HistoryListFragment extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setMessage("Add " +rieds.get(position).getClientFirstName()+' ' +
                     rieds.get(position).getClientLastName()+" to contacts?");
-                builder.setCancelable(true);
 
+                builder.setCancelable(true);
                 builder.setPositiveButton(
                         "Yes",
                         new DialogInterface.OnClickListener() {
@@ -123,11 +123,9 @@ public class HistoryListFragment extends Fragment {
                 alert.show();
                 saveContact(view,rieds.get(position));
 
-
             }
         });
 
-        backend = BackendFactory.getBackend();
         backend.notifyWaitingRidesList(new Backend.NotifyDataChange<Ride>() {
             //TODO find simple implemntion
             @Override

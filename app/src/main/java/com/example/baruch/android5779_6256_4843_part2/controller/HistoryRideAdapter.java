@@ -25,11 +25,13 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
     private List<Ride> mRides;
     private List<Ride> orgiRides;
     private Filter rideFilterByName;
+    private HistoryRideAdapter.OnItemClickListener listener;
 
     public HistoryRideAdapter(List<Ride> rides) {
         mRides = rides;
         orgiRides=rides;
     }
+
     @NonNull
     @Override
     public HistoryRideAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,13 +58,10 @@ public class HistoryRideAdapter  extends RecyclerView.Adapter<HistoryRideAdapter
         return mRides.size();
     }
 
-    // Define listener member variable
-    private HistoryRideAdapter.OnItemClickListener listener;
-    // Define the listener interface
     public interface OnItemClickListener {
         void onItemClick(View itemView, int position);
     }
-    // Define the method that allows the parent activity or fragment to define the listener
+
     public void setOnItemClickListener(HistoryRideAdapter.OnItemClickListener listener) {
         this.listener = listener;
     }

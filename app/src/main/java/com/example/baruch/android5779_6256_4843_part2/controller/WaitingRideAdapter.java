@@ -2,7 +2,9 @@ package com.example.baruch.android5779_6256_4843_part2.controller;
 
 import android.content.Context;
 import android.location.Location;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import android.widget.Filter;
@@ -26,8 +29,8 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
     private List<Ride> orgiRides;
     private Filter rideFilterByDis;
     private Location driverLocation;
+    private OnItemClickListener listener;
 
-    // Pass in the contact array into the constructor
     public WaitingRideAdapter(List<Ride> rides, Location dl) {
         mRides = rides;
         orgiRides=rides;
@@ -75,13 +78,10 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
         return mRides.size();
     }
 
-    // Define listener member variable
-    private OnItemClickListener listener;
-    // Define the listener interface
     public interface OnItemClickListener {
-        void onItemClick(View itemView, int position);
+        void onItemClick(View itemView, Ride ride);
     }
-    // Define the method that allows the parent activity or fragment to define the listener
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
@@ -106,11 +106,10 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Triggers click upwards to the adapter on click
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(itemView, position);
+                            listener.onItemClick(itemView, mRides.get(position));
                         }
                     }
                 }
@@ -120,6 +119,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
 
     private class RideFilterByDis extends Filter {
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
@@ -131,6 +131,15 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
                 if (filterByDis(driverLocation, p.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation(), dis))
                     nRideList.add(p);
             }
+
+            nRideList.sort(new Comparator<Ride>() {
+                @Override
+                public int compare(Ride o1, Ride o2) {
+                    Location pickup1=o1.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation();
+                    Location pickup2=o2.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation();
+                    return (int)(pickup1.distanceTo(driverLocation)-pickup2.distanceTo(driverLocation));
+                }
+            });
 
             results.values = nRideList;
             results.count = nRideList.size();
@@ -148,13 +157,9 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            if (results.count == 0) {
-                //notifyDataSetInvalidated();
-                notifyDataSetChanged();
-            } else {
+
                 mRides = (List<Ride>) results.values;
                 notifyDataSetChanged();
-            }
         }
     }
 
