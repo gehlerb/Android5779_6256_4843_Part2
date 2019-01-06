@@ -2,11 +2,17 @@ package com.example.baruch.android5779_6256_4843_part2.controller;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.icu.text.SimpleDateFormat;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -22,11 +28,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
+import com.example.baruch.android5779_6256_4843_part2.model.SharedViewModel;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.AddressAndLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
+import com.example.baruch.android5779_6256_4843_part2.model.location.GoogleLocation;
+import com.example.baruch.android5779_6256_4843_part2.model.location.LocationHandler;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -45,12 +55,11 @@ public class WaitingListFragment extends Fragment {
     private TextView TextViewShowProgress;
     private SwipeRefreshLayout swipeContainer;
     private TextView currentLoc;
-    private Driver currentDriver;
     int progressSeekBar;
 
 
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+
         view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
         mRideList = new ArrayList<Ride>();
         rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesWaitingList);
@@ -61,13 +70,9 @@ public class WaitingListFragment extends Fragment {
         progressSeekBar=seekBarDis.getProgress();
         TextViewShowProgress.setText(Integer.toString(progressSeekBar)+" km");
 
-        RidesManagerActivity activity = (RidesManagerActivity) getActivity();
-        final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList, activity.getmDriver().getLocation().
-                getmLatitudeAndLongitudeLocation().getLocation());
+        final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList);
 
-        currentLoc.setText("  " + activity.getmDriver().getLocation().getAddress());
-
-        currentDriver = activity.getmDriver();
+       currentLoc.setText("  " + GlobalVariables.getCurrentLocation().getAddress());
 
         seekBarDis.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -164,6 +169,7 @@ public class WaitingListFragment extends Fragment {
         return view;
     }
 
+
     private class Refresh extends AsyncTask<Void, Void, Boolean>{
 
         @Override
@@ -195,7 +201,7 @@ public class WaitingListFragment extends Fragment {
 
         Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation();
         Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().getLocation();
-        double dis=pickup.distanceTo(currentDriver.getLocation().getmLatitudeAndLongitudeLocation().getLocation())/1000;
+        double dis=pickup.distanceTo(new Location(GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().getLocation()))/1000;
         ((TextView) dialog.findViewById(R.id.dis_textview)).setText(new DecimalFormat("##.#").format(dis));
         dis=pickup.distanceTo(dest)/1000;
         ((TextView) dialog.findViewById(R.id.dis_pick_dest_dialog)).setText(new DecimalFormat("##.#").format(dis)+ " km");

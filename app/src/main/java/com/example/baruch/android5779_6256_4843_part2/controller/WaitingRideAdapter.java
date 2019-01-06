@@ -31,10 +31,10 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
     private Location driverLocation;
     private OnItemClickListener listener;
 
-    public WaitingRideAdapter(List<Ride> rides, Location dl) {
+    public WaitingRideAdapter(List<Ride> rides) {
         mRides = rides;
         orgiRides=rides;
-        driverLocation=dl;
+        driverLocation=GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().getLocation();
     }
 
     public void setDriverLocation(Location driverLocation) {

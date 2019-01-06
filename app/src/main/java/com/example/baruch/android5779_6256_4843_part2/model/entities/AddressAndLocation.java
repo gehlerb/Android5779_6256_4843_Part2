@@ -12,7 +12,7 @@ public class AddressAndLocation {
     }
 
     private LatitudeAndLongitudeLocation mLatitudeAndLongitudeLocation;
-    private String mAddress;
+    private String mAddress=" ";
 
 
     public AddressAndLocation(AddressAndLocation addressAndLocation) {

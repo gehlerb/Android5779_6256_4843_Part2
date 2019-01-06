@@ -112,7 +112,6 @@ public class Firebase_DBManager implements Backend {
     @Override
     public void getCurrentUser(final ActionResult actionResult) {
         FirebaseUser user=auth.getCurrentUser();
-        final Driver driver;
         DriversRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

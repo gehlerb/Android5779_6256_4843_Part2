@@ -23,12 +23,12 @@ import com.example.baruch.android5779_6256_4843_part2.model.entities.Exceptions;
 
 
 public class MainActivity extends AppCompatActivity {
-    private final String TRANSFER_DRIVER_DETAILS="transfer driver details";
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button loginButton;
     private TextView createAccountTextView;
-    private Driver driver;
+    private Driver mDriver;
+    private boolean isLocated=false;
     private static Backend backend;
 
 
@@ -41,8 +41,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        GlobalVariables.setCurrentLocation(this, new Backend.Action() {
+            @Override
+            public void onSuccess() {
+                isLocated=true;
+            }
 
-        driver=new Driver();
+            @Override
+            public void onFailure() {
+
+            }
+        });
+
         backend= BackendFactory.getBackend();
         findViews();
         sharedPreferences=getSharedPreferences(userPreferences, Context.MODE_PRIVATE);
@@ -116,10 +126,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openNextActivity() {
-        Intent intent=new Intent(MainActivity.this,RidesManagerActivity.class);
-        startActivity(intent);
-    }
+        if (isLocated) {
+            final Intent intent = new Intent(MainActivity.this, RidesManagerActivity.class);
+            backend.getCurrentUser(new Backend.ActionResult() {
+                @Override
+                public void onSuccess(Driver driver) {
+                    mDriver = driver;
 
+                    GlobalVariables.setDriver(mDriver);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            });
+        }
+    }
 
     private void storeUserData() {
         String email=emailEditText.getText().toString();

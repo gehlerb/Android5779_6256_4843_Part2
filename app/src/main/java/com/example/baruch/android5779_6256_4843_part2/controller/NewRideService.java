@@ -13,11 +13,10 @@ import android.support.v4.app.NotificationManagerCompat;
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
-import static com.example.baruch.android5779_6256_4843_part2.controller.AppChannels.FOREGROUND_CHANNEL_ID;
-import static com.example.baruch.android5779_6256_4843_part2.controller.AppChannels.NEW_RIDE_CHANNEL_ID;
+import static com.example.baruch.android5779_6256_4843_part2.controller.GlobalVariables.FOREGROUND_CHANNEL_ID;
+import static com.example.baruch.android5779_6256_4843_part2.controller.GlobalVariables.NEW_RIDE_CHANNEL_ID;
 
 public class NewRideService extends Service {
 
@@ -65,8 +64,6 @@ public class NewRideService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        Driver driver=intent.getParcelableExtra(TRANSFER_DRIVER_DETAILS);
 
         Backend backend = BackendFactory.getBackend();
 
