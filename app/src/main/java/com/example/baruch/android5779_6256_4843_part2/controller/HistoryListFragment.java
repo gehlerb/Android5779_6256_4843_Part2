@@ -158,7 +158,7 @@ public class HistoryListFragment extends Fragment {
             @Override
             public void onFailure(Exception exception) {
             }
-        },activity.getmDriver().getId());
+        },GlobalVariables.getDriver().getId());
 
         return view;
     }

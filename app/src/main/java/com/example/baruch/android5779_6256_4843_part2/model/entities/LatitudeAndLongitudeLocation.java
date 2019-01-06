@@ -8,9 +8,7 @@ public class LatitudeAndLongitudeLocation implements Parcelable {
     private double mLatitude = 0.0;
     private double mLongitude = 0.0;
 
-    public LatitudeAndLongitudeLocation() {
-
-    }
+    public LatitudeAndLongitudeLocation() { }
 
     public LatitudeAndLongitudeLocation(Location location){
         mLatitude=location.getLatitude();
@@ -33,7 +31,7 @@ public class LatitudeAndLongitudeLocation implements Parcelable {
         this.mLongitude = mLongitude;
     }
 
-    public Location getLocation(){
+    public Location location(){
         Location res= new Location ("");
         res.setLatitude(mLatitude);
         res.setLongitude(mLongitude);

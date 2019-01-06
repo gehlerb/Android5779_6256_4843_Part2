@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.text.DecimalFormat;
@@ -34,7 +33,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
     public WaitingRideAdapter(List<Ride> rides) {
         mRides = rides;
         orgiRides=rides;
-        driverLocation=GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().getLocation();
+        driverLocation=GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
     }
 
     public void setDriverLocation(Location driverLocation) {
@@ -62,8 +61,8 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
         TextView disTextView=viewHolder.disTextView;
         TextView disPickDestTextView=viewHolder.disPickDestTextView;
 
-        Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation();
-        Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().getLocation();
+        Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
+        Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().location();
         double dis=pickup.distanceTo(driverLocation)/1000;
         disTextView.setText(new DecimalFormat("##.#").format(dis));
         dis=pickup.distanceTo(dest)/1000;
@@ -128,15 +127,15 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
             int dis = Integer.parseInt(constraint.toString());
 
             for (Ride p : orgiRides) {
-                if (filterByDis(driverLocation, p.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation(), dis))
+                if (filterByDis(driverLocation, p.getPickupAddress().getmLatitudeAndLongitudeLocation().location(), dis))
                     nRideList.add(p);
             }
 
             nRideList.sort(new Comparator<Ride>() {
                 @Override
                 public int compare(Ride o1, Ride o2) {
-                    Location pickup1=o1.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation();
-                    Location pickup2=o2.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation();
+                    Location pickup1=o1.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
+                    Location pickup2=o2.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
                     return (int)(pickup1.distanceTo(driverLocation)-pickup2.distanceTo(driverLocation));
                 }
             });

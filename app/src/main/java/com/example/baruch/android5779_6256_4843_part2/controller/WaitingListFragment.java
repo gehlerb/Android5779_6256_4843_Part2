@@ -188,9 +188,9 @@ public class WaitingListFragment extends Fragment {
         ((TextView) dialog.findViewById(R.id.name_textview)).setText(" "+ride.getClientFirstName()+' ' +ride.getClientLastName());
         ((TextView) dialog.findViewById(R.id.emai_addr)).setText(" "+ride.getClientEmail());
 
-        Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().getLocation();
-        Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().getLocation();
-        double dis=pickup.distanceTo(new Location(GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().getLocation()))/1000;
+        Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
+        Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().location();
+        double dis=pickup.distanceTo(new Location(GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().location()))/1000;
         ((TextView) dialog.findViewById(R.id.dis_textview)).setText(new DecimalFormat("##.#").format(dis));
         dis=pickup.distanceTo(dest)/1000;
         ((TextView) dialog.findViewById(R.id.dis_pick_dest_dialog)).setText(new DecimalFormat("##.#").format(dis)+ " km");

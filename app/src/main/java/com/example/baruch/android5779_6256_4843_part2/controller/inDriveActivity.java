@@ -3,6 +3,7 @@ package com.example.baruch.android5779_6256_4843_part2.controller;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -10,11 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Chronometer;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
+
+import java.text.DecimalFormat;
 
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -22,16 +29,41 @@ public class inDriveActivity extends AppCompatActivity {
 
     private ImageButton callImageBtn;
     private ImageButton sendSmsImageBtn;
+    private TextView to_textview;
+    private TextView fromTextView;
+    private TextView disPickDestTextView;
+    private TextView nameTextView;
+    private EditText smsBudyEditText;
+    private Chronometer chronometer;
+    private Button startDriveBtn;
+    private Button finishDriveBtn;
+
     private Ride ride;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_drive);
+
         callImageBtn = (ImageButton) findViewById(R.id.call_image_btn);
         sendSmsImageBtn = (ImageButton) findViewById(R.id.send_sms_image_btn);
+        nameTextView=(TextView)findViewById(R.id.name_in_drive_textView);
+        to_textview=(TextView)findViewById(R.id.to_textview);
+        fromTextView=(TextView)findViewById(R.id.from_textview);
+        disPickDestTextView=(TextView)findViewById(R.id.dis_pick_dest);
+        smsBudyEditText=(EditText)findViewById(R.id.sms_budy_edit_text);
+        startDriveBtn=(Button)findViewById(R.id.start_drive);
+        finishDriveBtn=(Button)findViewById(R.id.finish_drive);
+        chronometer=(Chronometer)findViewById(R.id.chronometer);
         ride = getIntent().getParcelableExtra("Ride");
-        Toast.makeText(getBaseContext(), ride.getClientFirstName(), LENGTH_LONG).show();
+
+        nameTextView.setText(ride.getClientFirstName()+ " "+ ride.getClientLastName());
+        to_textview.setText(ride.getDestinationAddress().getAddress());
+        fromTextView.setText(ride.getDestinationAddress().getAddress());
+        Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
+        Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().location();
+        double dis=pickup.distanceTo(dest)/1000;
+        disPickDestTextView.setText(new DecimalFormat("##.#").format(dis)+ " km");
 
         callImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +74,21 @@ public class inDriveActivity extends AppCompatActivity {
         sendSmsImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendSms(ride.getClientTelephone(),"TEST");
+                sendSms(ride.getClientTelephone(),smsBudyEditText.getText().toString());
+            }
+        });
+
+        startDriveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chronometer.start();
+            }
+        });
+
+        finishDriveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chronometer.stop();
             }
         });
     }

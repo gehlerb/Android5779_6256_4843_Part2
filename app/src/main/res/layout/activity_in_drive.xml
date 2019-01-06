@@ -61,7 +61,8 @@
                     android:gravity="bottom"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textSize="40dp"/>
 
                 <TextView
                     android:id="@+id/dis_pick_dest"
@@ -80,13 +81,14 @@
                     android:layout_weight="1"
                     android:gravity="top"
                     android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textSize="40dp"/>
 
             </LinearLayout>
         </LinearLayout>
 
         <TextView
-            android:id="@+id/name_textView"
+            android:id="@+id/name_in_drive_textView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"
@@ -103,6 +105,15 @@
             android:layout_weight="1"
             android:background="@android:color/background_light"
             android:src="@drawable/phone_icon" />
+
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:textSize="30dp"
+            android:textAlignment="center" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -127,7 +138,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:orientation="horizontal">
             <Button
                 android:id="@+id/start_drive"
@@ -136,7 +147,9 @@
                 android:layout_weight="1"
                 android:text="START"
                 android:background="@drawable/rounded_button"
-                android:textColor="@color/primary_material_light"/>
+                android:textColor="@color/primary_material_light"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="20dp"/>
             <Button
                 android:id="@+id/finish_drive"
                 android:layout_width="0dp"
@@ -144,7 +157,9 @@
                 android:layout_weight="1"
                 android:text="FINISH"
                 android:background="@drawable/rounded_button"
-                android:textColor="@color/primary_material_light"/>
+                android:textColor="@color/primary_material_light"
+                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="20dp"/>
         </LinearLayout>
     </LinearLayout>
 
