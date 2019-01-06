@@ -157,17 +157,19 @@
         android:maxLines="1"
         android:layout_weight="1"
         android:drawableRight="@drawable/phone_icon"
-        android:gravity="right|center"
-        />
+        android:gravity="right|center" />
+
     <TextView
         android:id="@+id/time_textView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
+        android:drawableRight="@drawable/ic_time"
         android:gravity="right|center_vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:drawableRight="@drawable/ic_time"/>
+        android:textStyle="bold" />
+
     <Button
         android:id="@+id/get_order_button"
         android:layout_width="match_parent"

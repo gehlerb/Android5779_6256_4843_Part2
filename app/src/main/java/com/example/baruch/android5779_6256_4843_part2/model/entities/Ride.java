@@ -21,6 +21,17 @@ public class Ride {
     private String mClientTelephone;
     private String mClientEmail;
     private String mKey;
+    private String mDriverKey;
+
+    public String getDriverKey() {
+        return mDriverKey;
+    }
+
+    public void setDriverKey(String mDriverKey) {
+        this.mDriverKey = mDriverKey;
+    }
+
+
     public Long getTimestamp() {
         return timestamp;
     }

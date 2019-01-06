@@ -21,6 +21,8 @@ public interface Backend {
 
     void notifyWaitingRidesList(final NotifyDataChange<Ride> notifyDataChange);
 
+    void notifyRidesListByDriverKey(final NotifyDataChange<Ride> notifyDataChange, String driverKey);
+
     public interface Action {
         void onSuccess();
 

@@ -213,6 +213,41 @@ public class Firebase_DBManager implements Backend {
     }
 
     @Override
+    public void notifyRidesListByDriverKey(final NotifyDataChange<Ride> notifyDataChange, String driverKey) {
+        OrdersTaxiRef.orderByChild("driverKey").equalTo("1234")
+                .addChildEventListener(new ChildEventListener() {
+
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Ride ride = dataSnapshot.getValue(Ride.class);
+                        notifyDataChange.onDataAdded(ride);
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        Ride ride = dataSnapshot.getValue(Ride.class);
+                        notifyDataChange.OnDataChanged(ride);
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        Ride ride = dataSnapshot.getValue(Ride.class);
+                        notifyDataChange.onDataRemoved(ride);
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        notifyDataChange.onFailure(databaseError.toException());
+                    }
+                });
+    }
+
+    @Override
     public void updateClientRequestToDataBase(final Ride ride, final Action action) {
         String key=ride.getKey();
         OrdersTaxiRef.child(key).setValue(ride).addOnSuccessListener(new OnSuccessListener<Void>() {

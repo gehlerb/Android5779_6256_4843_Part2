@@ -204,6 +204,7 @@ public class WaitingListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ride.setRideState(IN_PROCESS);
+                ride.setDriverKey(currentDriver.getId());
                 backend.updateClientRequestToDataBase(ride, new Backend.Action() {
                     @Override
                     public void onSuccess() {
@@ -227,12 +228,12 @@ public class WaitingListFragment extends Fragment {
         int hours = (int)(difference / 3600);
         int minutes = (int)(difference % 3600) / 60;
 
-        String time=" Before ";
+        String time=" ";
         if (days>0)
-            time +=days+" d ";
+            time +=days+"d ";
         if (hours>0)
-            time+= hours+" h ";
-        time+=minutes+" m ";
+            time+= hours+"h ";
+        time+=minutes+"m ago ";
         ((TextView) dialog.findViewById(R.id.time_textView)).setText(time);
         Toast.makeText(getActivity(),String.valueOf( hours)+" "+ String.valueOf(minutes)
                 , Toast.LENGTH_SHORT).show();
