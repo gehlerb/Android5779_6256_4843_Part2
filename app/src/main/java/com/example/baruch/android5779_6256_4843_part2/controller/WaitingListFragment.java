@@ -7,6 +7,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -125,7 +127,7 @@ public class WaitingListFragment extends Fragment {
 
         backend = BackendFactory.getBackend();
         backend.notifyWaitingRidesList(new Backend.NotifyDataChange<Ride>() {
-            //TODO find simple implemntion
+
             @Override
             public void OnDataChanged(Ride ride) {
                 for (int i = 0; i < mRideList.size(); ++i){
@@ -210,9 +212,13 @@ public class WaitingListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ride.setRideState(IN_PROCESS);
+                ride.setDriverKey(GlobalVariables.getDriver().getId());
                 backend.updateClientRequestToDataBase(ride, new Backend.Action() {
                     @Override
                     public void onSuccess() {
+                        Intent intent = new Intent(getActivity(), inDrive.class);
+                        intent.putExtra("Ride", ride);
+                        startActivity(intent);
                         Toast.makeText(getActivity(), "onSuccess", Toast.LENGTH_SHORT).show();
                     }
 
@@ -233,15 +239,16 @@ public class WaitingListFragment extends Fragment {
         int hours = (int)(difference / 3600);
         int minutes = (int)(difference % 3600) / 60;
 
-        String time=" Before ";
-        if (days>0)
-            time +=days+" d ";
-        if (hours>0)
-            time+= hours+" h ";
-        time+=minutes+" m ";
-        ((TextView) dialog.findViewById(R.id.time_textView)).setText(time);
-        Toast.makeText(getActivity(),String.valueOf( hours)+" "+ String.valueOf(minutes)
-                , Toast.LENGTH_SHORT).show();
+
+        if (days>0) {
+            ((TextView) dialog.findViewById(R.id.d_textView)).setVisibility(View.VISIBLE);
+            ((TextView) dialog.findViewById(R.id.days_textView)).setText(String.valueOf(days));
+        }
+        if (hours>0) {
+            ((TextView) dialog.findViewById(R.id.h_textView)).setVisibility(View.VISIBLE);
+            ((TextView) dialog.findViewById(R.id.hours_textView)).setText(String.valueOf(hours));
+        }
+        ((TextView) dialog.findViewById(R.id.minutes_TextView)).setText(String.valueOf(minutes));
 
         dialog.show();
     }

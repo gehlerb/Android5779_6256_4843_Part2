@@ -126,20 +126,13 @@ public class HistoryListFragment extends Fragment {
             }
         });
 
-        backend.notifyWaitingRidesList(new Backend.NotifyDataChange<Ride>() {
-            //TODO find simple implemntion
+        backend.notifyRidesListByDriverKey(new Backend.NotifyDataChange<Ride>() {
             @Override
             public void OnDataChanged(Ride ride) {
                 for (int i =0 ;i < rieds.size();++i){
                     if(ride.getKey().equals( rieds.get(i).getKey())){
-                        if (ride.getRideState()== ClientRequestStatus.WAITING){
-                            rieds.set(i,ride);
-                            adapter.notifyDataSetChanged();
-                        }
-                        else {
-                            rieds.remove(i);
-                            adapter.notifyDataSetChanged();
-                        }
+                        rieds.set(i,ride);
+                        adapter.notifyDataSetChanged();
                         break;
                     }
                 }
@@ -165,7 +158,7 @@ public class HistoryListFragment extends Fragment {
             @Override
             public void onFailure(Exception exception) {
             }
-        });
+        },activity.getmDriver().getId());
 
         return view;
     }

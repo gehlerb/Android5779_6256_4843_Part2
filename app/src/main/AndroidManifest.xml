@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.baruch.android5779_6256_4843_part2">
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-feature android:name="android.hardware.location.gps" />
+
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
     <application
@@ -22,10 +26,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.CreateAccount" />
-        <activity android:name=".controller.RidesManagerActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".controller.RidesManagerActivity"
+            android:launchMode="singleTop" />
+
         <service android:name=".controller.NewRideService" />
-        <activity android:name=".controller.ExitApp"/>
+
+        <activity android:name=".controller.ExitApp" />
+        <activity android:name=".controller.inDrive"></activity>
     </application>
 
 </manifest>
