@@ -2,6 +2,7 @@ package com.example.baruch.android5779_6256_4843_part2.controller;
 
 import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -209,6 +210,9 @@ public class WaitingListFragment extends Fragment {
                 backend.updateClientRequestToDataBase(ride, new Backend.Action() {
                     @Override
                     public void onSuccess() {
+                        Intent intent = new Intent(getActivity(), inDrive.class);
+                        intent.putExtra("Ride", ride);
+                        startActivity(intent);
                         Toast.makeText(getActivity(), "onSuccess", Toast.LENGTH_SHORT).show();
                     }
 
@@ -231,12 +235,12 @@ public class WaitingListFragment extends Fragment {
 
 
         if (days>0) {
-            ((EditText) dialog.findViewById(R.id.d_textView)).setVisibility(View.VISIBLE);
-            ((EditText) dialog.findViewById(R.id.days_textView)).setText(String.valueOf(days));
+            ((TextView) dialog.findViewById(R.id.d_textView)).setVisibility(View.VISIBLE);
+            ((TextView) dialog.findViewById(R.id.days_textView)).setText(String.valueOf(days));
         }
         if (hours>0) {
-            ((EditText) dialog.findViewById(R.id.h_textView)).setVisibility(View.VISIBLE);
-            ((EditText) dialog.findViewById(R.id.hours_textView)).setText(String.valueOf(hours));
+            ((TextView) dialog.findViewById(R.id.h_textView)).setVisibility(View.VISIBLE);
+            ((TextView) dialog.findViewById(R.id.hours_textView)).setText(String.valueOf(hours));
         }
         ((TextView) dialog.findViewById(R.id.minutes_TextView)).setText(String.valueOf(minutes));
 
