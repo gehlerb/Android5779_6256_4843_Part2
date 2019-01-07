@@ -19,25 +19,19 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentDriver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.widget.Toast.LENGTH_LONG;
 
 public class HistoryListFragment extends Fragment {
     private View view;
@@ -158,7 +152,7 @@ public class HistoryListFragment extends Fragment {
             @Override
             public void onFailure(Exception exception) {
             }
-        },GlobalVariables.getDriver().getId());
+        }, CurrentDriver.getDriver().getId());
 
         return view;
     }

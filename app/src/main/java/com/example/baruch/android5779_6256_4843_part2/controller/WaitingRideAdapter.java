@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.text.DecimalFormat;
@@ -22,23 +23,23 @@ import java.util.List;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.ViewHolder> implements Filterable{
+public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.ViewHolder> implements Filterable, CurrentLocation.ChangeListener{
 
     private List<Ride> mRides;
     private List<Ride> orgiRides;
     private Filter rideFilterByDis;
     private Location driverLocation;
     private OnItemClickListener listener;
+    private CurrentLocation mCurrentLocation;
 
     public WaitingRideAdapter(List<Ride> rides) {
         mRides = rides;
         orgiRides=rides;
-        driverLocation=GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
+        mCurrentLocation=new CurrentLocation();
+        mCurrentLocation.setChangeListener(this);
+        driverLocation= CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
     }
 
-    public void setDriverLocation(Location driverLocation) {
-        this.driverLocation = driverLocation;
-    }
 
     @NonNull
     @Override
@@ -75,6 +76,12 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
     @Override
     public int getItemCount() {
         return mRides.size();
+    }
+
+    @Override
+    public void onChangeHappened() {
+        driverLocation=CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
+        notifyDataSetChanged();
     }
 
     public interface OnItemClickListener {

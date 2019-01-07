@@ -15,8 +15,8 @@ import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
-import static com.example.baruch.android5779_6256_4843_part2.controller.GlobalVariables.FOREGROUND_CHANNEL_ID;
-import static com.example.baruch.android5779_6256_4843_part2.controller.GlobalVariables.NEW_RIDE_CHANNEL_ID;
+import static com.example.baruch.android5779_6256_4843_part2.controller.appChannels.FOREGROUND_CHANNEL_ID;
+import static com.example.baruch.android5779_6256_4843_part2.controller.appChannels.NEW_RIDE_CHANNEL_ID;
 
 public class NewRideService extends Service {
 

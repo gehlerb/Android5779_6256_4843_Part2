@@ -25,6 +25,8 @@ import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentDriver;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.text.DecimalFormat;
@@ -32,10 +34,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import static com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus.IN_PROCESS;
 
-public class WaitingListFragment extends Fragment {
+public class WaitingListFragment extends Fragment implements CurrentLocation.ChangeListener {
     private View view;
     private List<Ride> mRideList;
     private Backend backend;
@@ -44,11 +48,13 @@ public class WaitingListFragment extends Fragment {
     private TextView TextViewShowProgress;
     private SwipeRefreshLayout swipeContainer;
     private TextView currentLoc;
+    private CurrentLocation mCurrentLocation;
     int progressSeekBar;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-
+        mCurrentLocation=new CurrentLocation();
+        mCurrentLocation.setChangeListener(this);
         view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
         mRideList = new ArrayList<Ride>();
         rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesWaitingList);
@@ -58,10 +64,11 @@ public class WaitingListFragment extends Fragment {
         currentLoc=(TextView)view.findViewById(R.id.current_loc);
         progressSeekBar=seekBarDis.getProgress();
         TextViewShowProgress.setText(Integer.toString(progressSeekBar)+" km");
-
+        String currentAddress = CurrentLocation.getCurrentLocation().getAddress();
+        currentLoc.setText("  " + currentAddress);
         final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList);
 
-        currentLoc.setText("  " + GlobalVariables.getCurrentLocation().getAddress());
+
 
         seekBarDis.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -158,6 +165,12 @@ public class WaitingListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onChangeHappened() {
+        String currentAddress = CurrentLocation.getCurrentLocation().getAddress();
+        currentLoc.setText("  " + currentAddress);
+    }
+
 
     private class Refresh extends AsyncTask<Void, Void, Boolean>{
 
@@ -190,7 +203,7 @@ public class WaitingListFragment extends Fragment {
 
         Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
         Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().location();
-        double dis=pickup.distanceTo(new Location(GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().location()))/1000;
+        double dis=pickup.distanceTo(new Location(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location()))/1000;
         ((TextView) dialog.findViewById(R.id.dis_textview)).setText(new DecimalFormat("##.#").format(dis));
         dis=pickup.distanceTo(dest)/1000;
         ((TextView) dialog.findViewById(R.id.dis_pick_dest_dialog)).setText(new DecimalFormat("##.#").format(dis)+ " km");
@@ -199,19 +212,17 @@ public class WaitingListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ride.setRideState(IN_PROCESS);
-                ride.setDriverKey(GlobalVariables.getDriver().getId());
+                ride.setDriverKey(CurrentDriver.getDriver().getId());
                 backend.updateClientRequestToDataBase(ride, new Backend.Action() {
                     @Override
                     public void onSuccess() {
                         Intent intent = new Intent(getActivity(), inDriveActivity.class);
                         intent.putExtra("Ride", ride);
                         startActivity(intent);
-                        Toast.makeText(getActivity(), "onSuccess", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure() {
-                        Toast.makeText(getActivity(), "onFailure", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

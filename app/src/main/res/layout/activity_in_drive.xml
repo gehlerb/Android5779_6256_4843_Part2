@@ -100,11 +100,19 @@
 
         <ImageButton
             android:id="@+id/call_image_btn"
-            android:layout_width="match_parent"
+            android:layout_width="50dp"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:background="@android:color/background_light"
             android:src="@drawable/phone_icon" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/navigate_button"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:src="@drawable/ic_navigation_black"/>
 
         <Chronometer
             android:id="@+id/chronometer"
@@ -129,7 +137,7 @@
                 android:src="@drawable/ic_send" />
 
             <EditText
-                android:id="@+id/sms_budy_edit_text"
+                android:id="@+id/sms_body_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="8"

@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentDriver;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Exceptions;
 
@@ -31,11 +33,28 @@ public class CreateAccount extends AppCompatActivity {
     private Button createAccountButton;
     private Driver mDriver;
     private static Backend backend;
+    private boolean isLocated=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
+        if(CurrentLocation.getCurrentLocation()!=null)
+            isLocated=true;
+        else
+        {
+            CurrentLocation.setCurrentLocation(this, new Backend.Action() {
+                @Override
+                public void onSuccess() {
+                    isLocated=true;
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            });
+        }
 
         backend= BackendFactory.getBackend();
         mDriver =new Driver();
@@ -202,11 +221,13 @@ public class CreateAccount extends AppCompatActivity {
 
                    @Override
                    public void onSuccess() {
-                       Toast.makeText(getBaseContext(),"Welcome to RideTaxi Community!",LENGTH_LONG).show();
-                       Intent intent=new Intent(CreateAccount.this,RidesManagerActivity.class);
-                       startActivity(intent);
+                       Toast.makeText(getBaseContext(), "Welcome to RideTaxi Community!", LENGTH_LONG).show();
+                       CurrentDriver.setDriver(mDriver);
+                       if (isLocated) {
+                           Intent intent = new Intent(CreateAccount.this, RidesManagerActivity.class);
+                           startActivity(intent);
+                       }
                    }
-
                    @Override
                    public void onFailure() {
 

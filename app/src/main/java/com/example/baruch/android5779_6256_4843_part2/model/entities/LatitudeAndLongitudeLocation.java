@@ -10,6 +10,11 @@ public class LatitudeAndLongitudeLocation implements Parcelable {
 
     public LatitudeAndLongitudeLocation() { }
 
+    @Override
+    public String toString() {
+        return Double.toString(mLatitude)+", "+Double.toString(mLongitude);
+    }
+
     public LatitudeAndLongitudeLocation(Location location){
         mLatitude=location.getLatitude();
         mLongitude=location.getLongitude();
