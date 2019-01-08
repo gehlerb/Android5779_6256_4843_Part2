@@ -28,6 +28,8 @@ import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentDriver;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.text.DecimalFormat;
@@ -35,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import static com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus.IN_PROCESS;
 
@@ -49,13 +53,14 @@ public class WaitingListFragment extends Fragment {
     private TextView currentLoc;
     private ImageView logoEmptyList;
     private Animation aniBlik;
+    private CurrentLocation mCurrentLocation;
     int progressSeekBar;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-
         view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
         mRideList = new ArrayList<Ride>();
+        final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList);
         rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesWaitingList);
         seekBarDis = (SeekBar)view.findViewById(R.id.seekBarDis);
         TextViewShowProgress =(TextView) view.findViewById(R.id.showProgress);
@@ -65,10 +70,12 @@ public class WaitingListFragment extends Fragment {
 
         progressSeekBar=seekBarDis.getProgress();
         TextViewShowProgress.setText(Integer.toString(progressSeekBar)+" km");
+        mCurrentLocation=new CurrentLocation();
+        String currentAddress = CurrentLocation.getCurrentLocation().getAddress();
+        currentLoc.setText("  " + currentAddress);
 
-        final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList);
 
-        currentLoc.setText("  " + GlobalVariables.getCurrentLocation().getAddress());
+
 
         seekBarDis.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -181,8 +188,19 @@ public class WaitingListFragment extends Fragment {
             public void onFailure(Exception exception) {
             }
         });
+
+        mCurrentLocation.setChangeListener(new CurrentLocation.ChangeListener() {
+            @Override
+            public void onChangeHappened() {
+                String currentAddress = CurrentLocation.getCurrentLocation().getAddress();
+                currentLoc.setText("  " + currentAddress);
+                adapter.getFilter().filter(Integer.toString(progressSeekBar));
+            }
+        });
+
         return view;
     }
+
 
 
     private class Refresh extends AsyncTask<Void, Void, Boolean>{
@@ -216,7 +234,7 @@ public class WaitingListFragment extends Fragment {
 
         Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
         Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().location();
-        double dis=pickup.distanceTo(new Location(GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().location()))/1000;
+        double dis=pickup.distanceTo(new Location(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location()))/1000;
         ((TextView) dialog.findViewById(R.id.dis_textview)).setText(new DecimalFormat("##.#").format(dis));
         dis=pickup.distanceTo(dest)/1000;
         ((TextView) dialog.findViewById(R.id.dis_pick_dest_dialog)).setText(new DecimalFormat("##.#").format(dis)+ " km");
@@ -225,7 +243,7 @@ public class WaitingListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ride.setRideState(IN_PROCESS);
-                ride.setDriverKey(GlobalVariables.getDriver().getId());
+                ride.setDriverKey(CurrentDriver.getDriver().getId());
                 backend.updateClientRequestToDataBase(ride, new Backend.Action() {
                     @Override
                     public void onSuccess() {
@@ -233,12 +251,10 @@ public class WaitingListFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), inDriveActivity.class);
                         intent.putExtra("Ride", ride);
                         startActivity(intent);
-                        Toast.makeText(getActivity(), "onSuccess", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure() {
-                        Toast.makeText(getActivity(), "onFailure", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

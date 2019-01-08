@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.text.DecimalFormat;
@@ -27,14 +28,14 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
     private List<Ride> mRides;
     private List<Ride> orgiRides;
     private Filter rideFilterByDis;
-    private Location driverLocation;
     private OnItemClickListener listener;
+    private CurrentLocation mCurrentLocation;
 
     public WaitingRideAdapter(List<Ride> rides) {
         mRides = rides;
         orgiRides=rides;
-        driverLocation=GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
-    }
+        mCurrentLocation=new CurrentLocation();
+        }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public void setIsEmptyListListener(WaitingRideAdapter.isEmptyListListener isEmptyListListener) {
@@ -49,9 +50,6 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
     }
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public void setDriverLocation(Location driverLocation) {
-        this.driverLocation = driverLocation;
-    }
 
     @NonNull
     @Override
@@ -76,7 +74,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
 
         Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
         Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().location();
-        double dis=pickup.distanceTo(driverLocation)/1000;
+        double dis=pickup.distanceTo(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location())/1000;
         disTextView.setText(new DecimalFormat("##.#").format(dis));
         dis=pickup.distanceTo(dest)/1000;
         disPickDestTextView.setText(new DecimalFormat("##.#").format(dis)+ " km");
@@ -89,6 +87,8 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
     public int getItemCount() {
         return mRides.size();
     }
+
+
 
     public interface OnItemClickListener {
         void onItemClick(View itemView, Ride ride);
@@ -140,7 +140,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
             int dis = Integer.parseInt(constraint.toString());
 
             for (Ride p : orgiRides) {
-                if (filterByDis(driverLocation, p.getPickupAddress().getmLatitudeAndLongitudeLocation().location(), dis))
+                if (filterByDis(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location(), p.getPickupAddress().getmLatitudeAndLongitudeLocation().location(), dis))
                     nRideList.add(p);
             }
 
@@ -149,7 +149,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
                 public int compare(Ride o1, Ride o2) {
                     Location pickup1=o1.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
                     Location pickup2=o2.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
-                    return (int)(pickup1.distanceTo(driverLocation)-pickup2.distanceTo(driverLocation));
+                    return (int)(pickup1.distanceTo(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location())-pickup2.distanceTo(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location()));
                 }
             });
 

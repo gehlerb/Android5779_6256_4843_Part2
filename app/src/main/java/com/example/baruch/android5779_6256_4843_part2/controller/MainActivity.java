@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentDriver;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Exceptions;
 
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GlobalVariables.setCurrentLocation(this, new Backend.Action() {
+        CurrentLocation.setCurrentLocation(this, new Backend.Action() {
             @Override
             public void onSuccess() {
                 isLocated=true;
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(Driver driver) {
                     mDriver = driver;
 
-                    GlobalVariables.setDriver(mDriver);
+                    CurrentDriver.setDriver(mDriver);
                     startActivity(intent);
                 }
 

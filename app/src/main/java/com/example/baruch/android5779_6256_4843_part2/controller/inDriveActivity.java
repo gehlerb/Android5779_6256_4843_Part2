@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.text.DecimalFormat;
@@ -28,6 +29,7 @@ public class inDriveActivity extends AppCompatActivity {
 
     private ImageButton callImageBtn;
     private ImageButton sendSmsImageBtn;
+    private ImageButton navigateBtn;
     private TextView to_textview;
     private TextView fromTextView;
     private TextView disPickDestTextView;
@@ -52,18 +54,19 @@ public class inDriveActivity extends AppCompatActivity {
         to_textview=(TextView)findViewById(R.id.to_textview);
         fromTextView=(TextView)findViewById(R.id.from_textview);
         disPickDestTextView=(TextView)findViewById(R.id.dis_pick_dest);
-        smsBudyEditText=(EditText)findViewById(R.id.sms_budy_edit_text);
+        smsBudyEditText=(EditText)findViewById(R.id.sms_body_edit_text);
         startDriveBtn=(Button)findViewById(R.id.start_drive);
         finishDriveBtn=(Button)findViewById(R.id.finish_drive);
         chronometer=(Chronometer)findViewById(R.id.chronometer);
         driverLocationTextView =(TextView)findViewById(R.id.driver_location);
         disDriverToPick=(TextView)findViewById(R.id.dis_driver_to_pick);
+        navigateBtn=(ImageButton)findViewById(R.id.navigate_button);
         ride = getIntent().getParcelableExtra("Ride");
-        driverLocation =GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
+        driverLocation = CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
 
         nameTextView.setText(ride.getClientFirstName()+ " "+ ride.getClientLastName());
 
-        driverLocationTextView.setText(GlobalVariables.getCurrentLocation().getAddress());
+        driverLocationTextView.setText(CurrentLocation.getCurrentLocation().getAddress());
 
         to_textview.setText(ride.getDestinationAddress().getAddress());
         fromTextView.setText(ride.getDestinationAddress().getAddress());
@@ -71,9 +74,15 @@ public class inDriveActivity extends AppCompatActivity {
         Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().location();
         double dis=pickup.distanceTo(dest)/1000;
         disPickDestTextView.setText(new DecimalFormat("##.#").format(dis)+ " km");
-
         dis=driverLocation.distanceTo(pickup)/1000;
         disDriverToPick.setText(new DecimalFormat("##.#").format(dis)+ " km");
+        navigateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigate();
+            }
+        });
+        
         callImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +110,13 @@ public class inDriveActivity extends AppCompatActivity {
                 chronometer.stop();
             }
         });
+    }
+
+    private void navigate() {
+        String pickupAddress=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().toString();
+        String uri = "waze://?ll="+pickupAddress+"&navigate=yes";
+        startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse(uri)));
     }
 
     public void sendSms(String phnum,String msg){
