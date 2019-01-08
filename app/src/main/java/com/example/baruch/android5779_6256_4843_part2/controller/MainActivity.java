@@ -19,7 +19,6 @@ import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentDriver;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Driver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Exceptions;
 
@@ -30,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private Button loginButton;
     private TextView createAccountTextView;
     private Driver mDriver;
-    private boolean isLocated=false;
     private static Backend backend;
 
 
@@ -43,17 +41,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        CurrentLocation.setCurrentLocation(this, new Backend.Action() {
-            @Override
-            public void onSuccess() {
-                isLocated=true;
-            }
-
-            @Override
-            public void onFailure() {
-
-            }
-        });
 
         backend= BackendFactory.getBackend();
         findViews();
@@ -128,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openNextActivity() {
-        if (isLocated) {
             final Intent intent = new Intent(MainActivity.this, RidesManagerActivity.class);
             backend.getCurrentUser(new Backend.ActionResult() {
                 @Override
@@ -145,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-    }
 
     private void storeUserData() {
         String email=emailEditText.getText().toString();

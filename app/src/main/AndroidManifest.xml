@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-feature android:name="android.hardware.location.gps" />
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
     <application
@@ -34,6 +34,14 @@
 
         <activity android:name=".controller.ExitApp" />
         <activity android:name=".controller.inDriveActivity"></activity>
+        <receiver android:name=".controller.MyBroadcastReceiver" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

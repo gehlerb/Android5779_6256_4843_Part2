@@ -7,7 +7,6 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -31,7 +30,6 @@ import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFacto
 import com.example.baruch.android5779_6256_4843_part2.model.entities.AddressAndLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentDriver;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 import com.example.baruch.android5779_6256_4843_part2.model.location.GoogleLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.location.LocationHandler;
@@ -41,8 +39,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 import static com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus.IN_PROCESS;
 
@@ -144,6 +140,7 @@ public class WaitingListFragment extends Fragment {
 
             @Override
             public void OnDataChanged(Ride ride) {
+                Toast.makeText(getActivity(), "OnDataChanged", Toast.LENGTH_LONG).show();
                 for (int i = 0; i < mRideList.size(); ++i){
                     if(ride.getKey().equals( mRideList.get(i).getKey())){
                         if (ride.getRideState()== ClientRequestStatus.WAITING){
@@ -152,7 +149,7 @@ public class WaitingListFragment extends Fragment {
                         }
                         else {
                             mRideList.remove(i);
-                            Toast.makeText(getActivity(), "OnDataChanged", Toast.LENGTH_SHORT).show();
+
                             adapter.getFilter().filter(Integer.toString(progressSeekBar));
                         }
                         break;
@@ -261,7 +258,7 @@ public class WaitingListFragment extends Fragment {
 
         Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
         Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().location();
-        double dis=pickup.distanceTo(new Location(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location()))/1000;
+        double dis=pickup.distanceTo(new Location(driverAddressAndLocation.getmLatitudeAndLongitudeLocation().location()))/1000;
         ((TextView) dialog.findViewById(R.id.dis_textview)).setText(new DecimalFormat("##.#").format(dis));
         dis=pickup.distanceTo(dest)/1000;
         ((TextView) dialog.findViewById(R.id.dis_pick_dest_dialog)).setText(new DecimalFormat("##.#").format(dis)+ " km");
@@ -277,6 +274,7 @@ public class WaitingListFragment extends Fragment {
                         dialog.dismiss();
                         Intent intent = new Intent(getActivity(), inDriveActivity.class);
                         intent.putExtra("Ride", ride);
+                        intent.putExtra("Location",driverAddressAndLocation);
                         startActivity(intent);
                     }
 
