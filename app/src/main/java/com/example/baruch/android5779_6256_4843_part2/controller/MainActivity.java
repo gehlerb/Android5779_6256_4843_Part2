@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,17 +101,21 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((RelativeLayout)findViewById(R.id.loadingPanel)).setVisibility(View.VISIBLE);
+                loginButton.setEnabled(false);
                 storeUserData();
                 backend.signIn(emailEditText.getText().toString(), passwordEditText.getText().toString(),
                         new Backend.Action() {
                     @Override
                     public void onSuccess() {
-                            openNextActivity();
+                        openNextActivity();
                     }
 
                     @Override
                     public void onFailure() {
-                            Toast.makeText(getBaseContext(),"Incorrect email or password!",Toast.LENGTH_LONG).show();
+                        ((RelativeLayout)findViewById(R.id.loadingPanel)).setVisibility(View.GONE);
+                        Toast.makeText(getBaseContext(),"Incorrect email or password!",Toast.LENGTH_LONG).show();
+                        loginButton.setEnabled(true);
                     }
                 });
 

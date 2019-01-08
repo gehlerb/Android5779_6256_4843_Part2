@@ -27,7 +27,7 @@ import java.util.concurrent.Executor;
 
 public class Firebase_DBManager implements Backend {
 
-    private static ChildEventListener rideRefChildEventListener;
+    // private static ChildEventListener rideRefChildEventListener;
     private static DatabaseReference OrdersTaxiRef;
     private static DatabaseReference DriversRef;
     private static FirebaseAuth auth;
@@ -168,13 +168,13 @@ public class Firebase_DBManager implements Backend {
 
     }
 
-    @Override
+/*    @Override
     public void stopNotifyNewRide() {
         if (rideRefChildEventListener != null) {
             OrdersTaxiRef.removeEventListener(rideRefChildEventListener);
             rideRefChildEventListener = null;
         }
-    }
+    }*/
 
     @Override
     public void notifyWaitingRidesList(final NotifyDataChange<Ride> notifyDataChange){

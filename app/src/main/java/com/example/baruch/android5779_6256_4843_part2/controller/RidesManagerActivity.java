@@ -98,4 +98,5 @@ public class RidesManagerActivity extends AppCompatActivity implements Navigatio
     protected void onDestroy() {
         super.onDestroy();
     }
+
 }

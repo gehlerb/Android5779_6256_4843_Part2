@@ -55,14 +55,13 @@ public class WaitingListFragment extends Fragment {
     private ImageView logoEmptyList;
     private Animation aniBlik;
 
-    private List<Ride> mRideList;
+    private List<Ride> mRideList=new ArrayList<Ride>();
     private Backend backend;
     private AddressAndLocation driverAddressAndLocation;
     private LocationHandler locationHandler;
     int progressSeekBar;
 
     private void onLocationFound(){
-        mRideList = new ArrayList<Ride>();
         final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList,driverAddressAndLocation.
                 getmLatitudeAndLongitudeLocation().location());
 
@@ -144,17 +143,10 @@ public class WaitingListFragment extends Fragment {
 
             @Override
             public void OnDataChanged(Ride ride) {
+                Toast.makeText(getActivity(), "OnDataChanged", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < mRideList.size(); ++i){
                     if(ride.getKey().equals( mRideList.get(i).getKey())){
-                        if (ride.getRideState()== ClientRequestStatus.WAITING){
-                            mRideList.set(i,ride);
-                            adapter.getFilter().filter(Integer.toString(progressSeekBar));
-                        }
-                        else {
-                            mRideList.remove(i);
-                            Toast.makeText(getActivity(), "OnDataChanged", Toast.LENGTH_SHORT).show();
-                            adapter.getFilter().filter(Integer.toString(progressSeekBar));
-                        }
+                        adapter.getFilter().filter(Integer.toString(progressSeekBar));
                         break;
                     }
                 }
@@ -162,18 +154,21 @@ public class WaitingListFragment extends Fragment {
 
             @Override
             public void onDataAdded(Ride ride) {
+                Toast.makeText(getActivity(), "onDataAdded\n"+ride.getPickupAddress().getAddress(), Toast.LENGTH_SHORT).show();
                 mRideList.add(0,ride);
                 adapter.getFilter().filter(Integer.toString(progressSeekBar));
             }
 
             @Override
             public void onDataRemoved(Ride ride) {
+                 Toast.makeText(getActivity(),"\n+++++++++++++++++"+ride.getClientFirstName()+"\n+++++++++++++++++", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < mRideList.size(); ++i){
                     if(ride.getKey().equals( mRideList.get(i).getKey())){
                         mRideList.remove(i);
+                        Toast.makeText(getActivity(),ride.getClientFirstName(), Toast.LENGTH_SHORT).show();
                         adapter.getFilter().filter(Integer.toString(progressSeekBar));
+                        break;
                     }
-                    break;
                 }
             }
 
@@ -196,7 +191,6 @@ public class WaitingListFragment extends Fragment {
             }
         });
     }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;

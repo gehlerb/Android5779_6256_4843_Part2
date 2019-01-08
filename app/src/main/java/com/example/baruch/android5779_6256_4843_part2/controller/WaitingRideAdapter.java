@@ -52,6 +52,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
         void onNonEmptyList();
     }
 
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -168,13 +169,13 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
                 mRides = (List<Ride>) results.values;
+                notifyDataSetChanged();
                 if(results.count==0){
                     isEmptyListListener.onEmptyList();
                 }
                 else {
                     isEmptyListListener.onNonEmptyList();
                 }
-                notifyDataSetChanged();
         }
     }
 
