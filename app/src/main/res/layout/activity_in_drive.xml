@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="horizontal"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
@@ -30,10 +30,9 @@
                 android:orientation="vertical"
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp">
-
                 <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/shape_round_outline" />
 
                 <View
@@ -43,8 +42,19 @@
                     android:background="@color/colorPrimaryDark" />
 
                 <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/shape_round_outline" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark" />
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/shape_round_solid" />
             </LinearLayout>
             <LinearLayout
@@ -52,7 +62,28 @@
                 android:layout_height="match_parent"
                 android:layout_weight="6"
                 android:orientation="vertical">
+                <TextView
+                    android:id="@+id/driver_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:maxLines="2"
+                    android:autoSizeTextType="uniform"
+                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeMaxTextSize="100sp"
+                    android:autoSizeStepGranularity="2sp"/>
 
+                <TextView
+                    android:id="@+id/dis_driver_to_pick"
+                    android:gravity="center_vertical|right"
+                    android:textSize="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+                </TextView>
                 <TextView
                     android:id="@+id/from_textview"
                     android:layout_width="wrap_content"
@@ -61,13 +92,16 @@
                     android:gravity="bottom"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"
-                    android:maxLines="1"
-                    android:textSize="40dp"/>
+                    android:maxLines="2"
+                    android:autoSizeTextType="uniform"
+                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeMaxTextSize="100sp"
+                    android:autoSizeStepGranularity="2sp"/>
 
                 <TextView
                     android:id="@+id/dis_pick_dest"
                     android:gravity="center_vertical|right"
-                    android:textSize="10dp"
+                    android:textSize="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1">
@@ -75,14 +109,17 @@
 
                 <TextView
                     android:id="@+id/to_textview"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="top"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"
-                    android:textSize="40dp"/>
+                    android:autoSizeTextType="uniform"
+                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeMaxTextSize="100sp"
+                    android:autoSizeStepGranularity="2sp"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -102,7 +139,7 @@
             android:id="@+id/call_image_btn"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:background="@android:color/background_light"
             android:src="@drawable/phone_icon" />
 

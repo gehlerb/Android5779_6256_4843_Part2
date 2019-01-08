@@ -36,6 +36,19 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
         driverLocation=GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
     }
 
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public void setIsEmptyListListener(WaitingRideAdapter.isEmptyListListener isEmptyListListener) {
+        this.isEmptyListListener = isEmptyListListener;
+    }
+
+    private isEmptyListListener isEmptyListListener;
+
+    public interface isEmptyListListener{
+        void onEmptyList();
+        void onNonEmptyList();
+    }
+
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public void setDriverLocation(Location driverLocation) {
         this.driverLocation = driverLocation;
     }
@@ -156,10 +169,18 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-
                 mRides = (List<Ride>) results.values;
+                //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                if(results.count==0){
+                    isEmptyListListener.onEmptyList();
+                }
+                else {
+                    isEmptyListListener.onNonEmptyList();
+                }
+                //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                 notifyDataSetChanged();
         }
+
     }
 
     @Override

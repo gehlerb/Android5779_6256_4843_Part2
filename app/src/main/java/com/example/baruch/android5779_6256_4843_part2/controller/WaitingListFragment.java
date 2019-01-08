@@ -16,7 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +47,8 @@ public class WaitingListFragment extends Fragment {
     private TextView TextViewShowProgress;
     private SwipeRefreshLayout swipeContainer;
     private TextView currentLoc;
+    private ImageView logoEmptyList;
+    private Animation aniBlik;
     int progressSeekBar;
 
 
@@ -56,6 +61,8 @@ public class WaitingListFragment extends Fragment {
         TextViewShowProgress =(TextView) view.findViewById(R.id.showProgress);
         swipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.swipeContainer);
         currentLoc=(TextView)view.findViewById(R.id.current_loc);
+        logoEmptyList=(ImageView)view.findViewById(R.id.logo_empty_list);
+
         progressSeekBar=seekBarDis.getProgress();
         TextViewShowProgress.setText(Integer.toString(progressSeekBar)+" km");
 
@@ -103,6 +110,26 @@ public class WaitingListFragment extends Fragment {
                   showCustomDialog(ride);
             }
         });
+
+        adapter.setIsEmptyListListener(new WaitingRideAdapter.isEmptyListListener(){
+                                           @Override
+                                           public void onEmptyList() {
+                                               rvRieds.setVisibility(View.GONE);
+                                               View view = (View) WaitingListFragment.this.view.findViewById(R.id.empty_list_view);
+                                               view.setVisibility(View.VISIBLE);
+                                               aniBlik= AnimationUtils.loadAnimation(getActivity().getApplicationContext()
+                                                       ,R.anim.blink);
+                                               logoEmptyList.startAnimation(aniBlik);
+                                           }
+
+                                           @Override
+                                           public void onNonEmptyList() {
+                                               rvRieds.setVisibility(View.VISIBLE);
+                                               View view = (View) WaitingListFragment.this.view.findViewById(R.id.empty_list_view);
+                                               view.setVisibility(View.GONE);
+                                           }
+                                       }
+        );
 
         rvRieds.setAdapter(adapter);
         rvRieds.setLayoutManager(new LinearLayoutManager(this.getActivity()));
@@ -154,7 +181,6 @@ public class WaitingListFragment extends Fragment {
             public void onFailure(Exception exception) {
             }
         });
-
         return view;
     }
 
@@ -203,6 +229,7 @@ public class WaitingListFragment extends Fragment {
                 backend.updateClientRequestToDataBase(ride, new Backend.Action() {
                     @Override
                     public void onSuccess() {
+                        dialog.dismiss();
                         Intent intent = new Intent(getActivity(), inDriveActivity.class);
                         intent.putExtra("Ride", ride);
                         startActivity(intent);

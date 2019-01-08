@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,8 +24,6 @@ import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.text.DecimalFormat;
 
-import static android.widget.Toast.LENGTH_LONG;
-
 public class inDriveActivity extends AppCompatActivity {
 
     private ImageButton callImageBtn;
@@ -32,6 +31,8 @@ public class inDriveActivity extends AppCompatActivity {
     private TextView to_textview;
     private TextView fromTextView;
     private TextView disPickDestTextView;
+    private TextView driverLocationTextView;
+    private TextView disDriverToPick;
     private TextView nameTextView;
     private EditText smsBudyEditText;
     private Chronometer chronometer;
@@ -39,7 +40,7 @@ public class inDriveActivity extends AppCompatActivity {
     private Button finishDriveBtn;
 
     private Ride ride;
-
+    private Location driverLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +56,15 @@ public class inDriveActivity extends AppCompatActivity {
         startDriveBtn=(Button)findViewById(R.id.start_drive);
         finishDriveBtn=(Button)findViewById(R.id.finish_drive);
         chronometer=(Chronometer)findViewById(R.id.chronometer);
+        driverLocationTextView =(TextView)findViewById(R.id.driver_location);
+        disDriverToPick=(TextView)findViewById(R.id.dis_driver_to_pick);
         ride = getIntent().getParcelableExtra("Ride");
+        driverLocation =GlobalVariables.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
 
         nameTextView.setText(ride.getClientFirstName()+ " "+ ride.getClientLastName());
+
+        driverLocationTextView.setText(GlobalVariables.getCurrentLocation().getAddress());
+
         to_textview.setText(ride.getDestinationAddress().getAddress());
         fromTextView.setText(ride.getDestinationAddress().getAddress());
         Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
@@ -65,6 +72,8 @@ public class inDriveActivity extends AppCompatActivity {
         double dis=pickup.distanceTo(dest)/1000;
         disPickDestTextView.setText(new DecimalFormat("##.#").format(dis)+ " km");
 
+        dis=driverLocation.distanceTo(pickup)/1000;
+        disDriverToPick.setText(new DecimalFormat("##.#").format(dis)+ " km");
         callImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +90,7 @@ public class inDriveActivity extends AppCompatActivity {
         startDriveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
             }
         });
