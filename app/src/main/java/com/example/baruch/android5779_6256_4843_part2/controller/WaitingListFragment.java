@@ -39,7 +39,7 @@ import java.util.Observer;
 
 import static com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus.IN_PROCESS;
 
-public class WaitingListFragment extends Fragment implements CurrentLocation.ChangeListener {
+public class WaitingListFragment extends Fragment {
     private View view;
     private List<Ride> mRideList;
     private Backend backend;
@@ -53,10 +53,9 @@ public class WaitingListFragment extends Fragment implements CurrentLocation.Cha
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        mCurrentLocation=new CurrentLocation();
-        mCurrentLocation.setChangeListener(this);
         view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
         mRideList = new ArrayList<Ride>();
+        final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList);
         rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesWaitingList);
         seekBarDis = (SeekBar)view.findViewById(R.id.seekBarDis);
         TextViewShowProgress =(TextView) view.findViewById(R.id.showProgress);
@@ -64,9 +63,10 @@ public class WaitingListFragment extends Fragment implements CurrentLocation.Cha
         currentLoc=(TextView)view.findViewById(R.id.current_loc);
         progressSeekBar=seekBarDis.getProgress();
         TextViewShowProgress.setText(Integer.toString(progressSeekBar)+" km");
+        mCurrentLocation=new CurrentLocation();
         String currentAddress = CurrentLocation.getCurrentLocation().getAddress();
         currentLoc.setText("  " + currentAddress);
-        final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList);
+
 
 
 
@@ -162,14 +162,18 @@ public class WaitingListFragment extends Fragment implements CurrentLocation.Cha
             }
         });
 
+        mCurrentLocation.setChangeListener(new CurrentLocation.ChangeListener() {
+            @Override
+            public void onChangeHappened() {
+                String currentAddress = CurrentLocation.getCurrentLocation().getAddress();
+                currentLoc.setText("  " + currentAddress);
+                adapter.getFilter().filter(Integer.toString(progressSeekBar));
+            }
+        });
+
         return view;
     }
 
-    @Override
-    public void onChangeHappened() {
-        String currentAddress = CurrentLocation.getCurrentLocation().getAddress();
-        currentLoc.setText("  " + currentAddress);
-    }
 
 
     private class Refresh extends AsyncTask<Void, Void, Boolean>{

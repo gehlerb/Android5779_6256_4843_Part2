@@ -23,12 +23,11 @@ import java.util.List;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.ViewHolder> implements Filterable, CurrentLocation.ChangeListener{
+public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.ViewHolder> implements Filterable{
 
     private List<Ride> mRides;
     private List<Ride> orgiRides;
     private Filter rideFilterByDis;
-    private Location driverLocation;
     private OnItemClickListener listener;
     private CurrentLocation mCurrentLocation;
 
@@ -36,9 +35,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
         mRides = rides;
         orgiRides=rides;
         mCurrentLocation=new CurrentLocation();
-        mCurrentLocation.setChangeListener(this);
-        driverLocation= CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
-    }
+        }
 
 
     @NonNull
@@ -64,7 +61,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
 
         Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
         Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().location();
-        double dis=pickup.distanceTo(driverLocation)/1000;
+        double dis=pickup.distanceTo(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location())/1000;
         disTextView.setText(new DecimalFormat("##.#").format(dis));
         dis=pickup.distanceTo(dest)/1000;
         disPickDestTextView.setText(new DecimalFormat("##.#").format(dis)+ " km");
@@ -78,11 +75,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
         return mRides.size();
     }
 
-    @Override
-    public void onChangeHappened() {
-        driverLocation=CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
-        notifyDataSetChanged();
-    }
+
 
     public interface OnItemClickListener {
         void onItemClick(View itemView, Ride ride);
@@ -134,7 +127,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
             int dis = Integer.parseInt(constraint.toString());
 
             for (Ride p : orgiRides) {
-                if (filterByDis(driverLocation, p.getPickupAddress().getmLatitudeAndLongitudeLocation().location(), dis))
+                if (filterByDis(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location(), p.getPickupAddress().getmLatitudeAndLongitudeLocation().location(), dis))
                     nRideList.add(p);
             }
 
@@ -143,7 +136,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
                 public int compare(Ride o1, Ride o2) {
                     Location pickup1=o1.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
                     Location pickup2=o2.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
-                    return (int)(pickup1.distanceTo(driverLocation)-pickup2.distanceTo(driverLocation));
+                    return (int)(pickup1.distanceTo(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location())-pickup2.distanceTo(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location()));
                 }
             });
 

@@ -11,8 +11,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class CurrentLocation {
+
     public interface ChangeListener {
-        public void onChangeHappened();
+         void onChangeHappened();
     }
 
     private static ArrayList<ChangeListener> listListener=new ArrayList<>();
