@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -27,10 +28,13 @@ import android.widget.Toast;
 import com.example.baruch.android5779_6256_4843_part2.R;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
 import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.AddressAndLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentDriver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
+import com.example.baruch.android5779_6256_4843_part2.model.location.GoogleLocation;
+import com.example.baruch.android5779_6256_4843_part2.model.location.LocationHandler;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -44,38 +48,27 @@ import static com.example.baruch.android5779_6256_4843_part2.model.entities.Clie
 
 public class WaitingListFragment extends Fragment {
     private View view;
-    private List<Ride> mRideList;
-    private Backend backend;
     private SeekBar seekBarDis;
     private RecyclerView rvRieds;
-    private TextView TextViewShowProgress;
+    private TextView TextViewShowProgress ,currentLoc;
     private SwipeRefreshLayout swipeContainer;
-    private TextView currentLoc;
     private ImageView logoEmptyList;
     private Animation aniBlik;
-    private CurrentLocation mCurrentLocation;
+
+    private List<Ride> mRideList;
+    private Backend backend;
+    private AddressAndLocation driverAddressAndLocation;
+    private LocationHandler locationHandler;
     int progressSeekBar;
 
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
+    private void onLocationFound(){
         mRideList = new ArrayList<Ride>();
-        final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList);
-        rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesWaitingList);
-        seekBarDis = (SeekBar)view.findViewById(R.id.seekBarDis);
-        TextViewShowProgress =(TextView) view.findViewById(R.id.showProgress);
-        swipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.swipeContainer);
-        currentLoc=(TextView)view.findViewById(R.id.current_loc);
-        logoEmptyList=(ImageView)view.findViewById(R.id.logo_empty_list);
+        final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList,driverAddressAndLocation.
+                getmLatitudeAndLongitudeLocation().location());
 
         progressSeekBar=seekBarDis.getProgress();
         TextViewShowProgress.setText(Integer.toString(progressSeekBar)+" km");
-        mCurrentLocation=new CurrentLocation();
-        String currentAddress = CurrentLocation.getCurrentLocation().getAddress();
-        currentLoc.setText("  " + currentAddress);
-
-
-
+        currentLoc.setText("  " + driverAddressAndLocation.getAddress());
 
         seekBarDis.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -114,7 +107,7 @@ public class WaitingListFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemClick(View view, Ride ride) {
-                  showCustomDialog(ride);
+                showCustomDialog(ride);
             }
         });
 
@@ -188,20 +181,53 @@ public class WaitingListFragment extends Fragment {
             public void onFailure(Exception exception) {
             }
         });
-
-        mCurrentLocation.setChangeListener(new CurrentLocation.ChangeListener() {
+        locationHandler.getAddressAndLocation(new LocationHandler.ActionResult() {
             @Override
-            public void onChangeHappened() {
-                String currentAddress = CurrentLocation.getCurrentLocation().getAddress();
-                currentLoc.setText("  " + currentAddress);
+            public void onSuccess(AddressAndLocation addressAndLocation) {
+                driverAddressAndLocation=addressAndLocation;
+                currentLoc.setText("  " + driverAddressAndLocation.getAddress());
+                adapter.setDriverLocation(addressAndLocation.getmLatitudeAndLongitudeLocation().location());
                 adapter.getFilter().filter(Integer.toString(progressSeekBar));
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
+    }
+
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
+        findView();
+
+        locationHandler=new GoogleLocation(getActivity());
+        locationHandler.getAddressAndLocation(new LocationHandler.ActionResult() {
+            @Override
+            public void onSuccess(AddressAndLocation addressAndLocation) {
+                driverAddressAndLocation=addressAndLocation;
+                onLocationFound();
+                locationHandler.stopTracking();
+            }
+
+            @Override
+            public void onFailure() {
+
             }
         });
 
         return view;
     }
 
-
+    private void findView() {
+        rvRieds = (RecyclerView) view.findViewById(R.id.rvRidesWaitingList);
+        seekBarDis = (SeekBar)view.findViewById(R.id.seekBarDis);
+        TextViewShowProgress =(TextView) view.findViewById(R.id.showProgress);
+        swipeContainer = (SwipeRefreshLayout)view.findViewById(R.id.swipeContainer);
+        currentLoc=(TextView)view.findViewById(R.id.current_loc);
+        logoEmptyList=(ImageView)view.findViewById(R.id.logo_empty_list);
+    }
 
     private class Refresh extends AsyncTask<Void, Void, Boolean>{
 
@@ -221,6 +247,7 @@ public class WaitingListFragment extends Fragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
+
     private void showCustomDialog(final Ride ride) {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

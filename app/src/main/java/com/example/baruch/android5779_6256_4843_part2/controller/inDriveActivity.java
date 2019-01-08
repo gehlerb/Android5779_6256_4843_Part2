@@ -82,7 +82,7 @@ public class inDriveActivity extends AppCompatActivity {
                 navigate();
             }
         });
-        
+
         callImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

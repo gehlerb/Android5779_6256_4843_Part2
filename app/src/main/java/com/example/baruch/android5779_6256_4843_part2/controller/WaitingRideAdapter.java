@@ -1,5 +1,6 @@
 package com.example.baruch.android5779_6256_4843_part2.controller;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
 import android.os.Build;
@@ -29,27 +30,27 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
     private List<Ride> orgiRides;
     private Filter rideFilterByDis;
     private OnItemClickListener listener;
-    private CurrentLocation mCurrentLocation;
+    private Location driverLocation;
+    private isEmptyListListener isEmptyListListener;
 
-    public WaitingRideAdapter(List<Ride> rides) {
+    public void setDriverLocation(Location driverLocation) {
+        this.driverLocation = driverLocation;
+    }
+
+    public WaitingRideAdapter(List<Ride> rides,Location l) {
         mRides = rides;
         orgiRides=rides;
-        mCurrentLocation=new CurrentLocation();
-        }
+        driverLocation=l;
+    }
 
-    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public void setIsEmptyListListener(WaitingRideAdapter.isEmptyListListener isEmptyListListener) {
         this.isEmptyListListener = isEmptyListListener;
     }
-
-    private isEmptyListListener isEmptyListListener;
 
     public interface isEmptyListListener{
         void onEmptyList();
         void onNonEmptyList();
     }
-
-    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @NonNull
     @Override
@@ -63,6 +64,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
         return viewHolder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         Ride ride = mRides.get(position);
@@ -74,13 +76,15 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
 
         Location pickup=ride.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
         Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().location();
-        double dis=pickup.distanceTo(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location())/1000;
+
+        double dis=pickup.distanceTo(driverLocation)/1000;
         disTextView.setText(new DecimalFormat("##.#").format(dis));
+
         dis=pickup.distanceTo(dest)/1000;
         disPickDestTextView.setText(new DecimalFormat("##.#").format(dis)+ " km");
+
         fromTextView.setText(ride.getPickupAddress().getAddress());
         toTextView.setText(ride.getDestinationAddress().getAddress());
-
     }
 
     @Override
@@ -88,18 +92,12 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
         return mRides.size();
     }
 
-
-
     public interface OnItemClickListener {
         void onItemClick(View itemView, Ride ride);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
-    }
-
-    public void remove(int position){
-        mRides.remove(position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -149,7 +147,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
                 public int compare(Ride o1, Ride o2) {
                     Location pickup1=o1.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
                     Location pickup2=o2.getPickupAddress().getmLatitudeAndLongitudeLocation().location();
-                    return (int)(pickup1.distanceTo(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location())-pickup2.distanceTo(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location()));
+                    return (int)(pickup1.distanceTo(driverLocation)-pickup2.distanceTo(driverLocation));
                 }
             });
 
@@ -170,17 +168,14 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
                 mRides = (List<Ride>) results.values;
-                //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                 if(results.count==0){
                     isEmptyListListener.onEmptyList();
                 }
                 else {
                     isEmptyListListener.onNonEmptyList();
                 }
-                //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                 notifyDataSetChanged();
         }
-
     }
 
     @Override
@@ -190,5 +185,4 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
 
         return rideFilterByDis;
     }
-
 }
