@@ -95,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
                         new Backend.Action() {
                     @Override
                     public void onSuccess() {
+                        loginButton.setEnabled(true);
+                        ((RelativeLayout)findViewById(R.id.loadingPanel)).setVisibility(View.GONE);
                         openNextActivity();
                     }
 
@@ -125,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Driver driver) {
                     mDriver = driver;
-
                     CurrentDriver.setDriver(mDriver);
                     startActivity(intent);
                 }
