@@ -35,7 +35,7 @@
             android:layout_height="15dp"
             android:src="@drawable/shape_round_solid" />
     </LinearLayout>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="6"
@@ -44,33 +44,31 @@
         <TextView
             android:id="@+id/from_textview"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:gravity="bottom"
             android:textColor="@android:color/black"
             android:textStyle="bold"
-            android:maxLines="1" />
+            android:layout_marginTop="15dp"
+             />
 
         <TextView
             android:id="@+id/dis_pick_dest"
-            android:gravity="center_vertical|right"
-            android:textSize="10dp"
+            android:layout_centerInParent="true"
+            android:textSize="10sp"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content">
         </TextView>
 
         <TextView
             android:id="@+id/to_textview"
-            android:maxLines="1"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="top"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:textColor="@android:color/black"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginBottom="15dp"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="0dp"

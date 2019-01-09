@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
     android:layout_height="450dp"
-    android:background="@android:color/white"
+    android:background="@drawable/rounded_layout"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,7 +15,8 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp"
-        android:layout_weight="2">
+        android:layout_weight="2"
+        android:background="@drawable/rounded_layout">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -158,74 +159,80 @@
         android:layout_weight="1"
         android:drawableRight="@drawable/phone_icon"
         android:gravity="right|center" />
-    <LinearLayout
+    <RelativeLayout
         android:paddingRight="20dp"
         android:paddingLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
-        android:orientation="horizontal"
-        android:gravity="right">
+        android:orientation="horizontal">
         <ImageView
+            android:id="@+id/clock"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_time"
+            android:layout_alignParentRight="true"
             android:layout_gravity="bottom"/>
         <TextView
+            android:id="@+id/text_min_ago"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:paddingRight="2dp"
-            android:paddingBottom="3dp"
-            android:text="m ago "/>
+            android:layout_toLeftOf="@id/clock"
+            android:layout_margin="5dp"
+            android:padding="2dp"
+            android:text="min ago"/>
 
         <TextView
             android:id="@+id/minutes_TextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="right|bottom"
+            android:layout_toLeftOf="@id/text_min_ago"
             android:textStyle="bold"
-            android:textSize="18dp"
-            android:paddingBottom="3dp"/>
+            android:textSize="18sp"
+            android:padding="2dp"
+            android:layout_toStartOf="@id/text_min_ago" />
         <TextView
             android:id="@+id/h_textView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:textSize="14dp"
-            android:paddingRight="2dp"
+            android:layout_toLeftOf="@+id/minutes_TextView"
+            android:textSize="18sp"
+            android:padding="2dp"
             android:text="h"
             android:visibility="gone"
-            android:paddingBottom="3dp"/>
+            android:layout_toStartOf="@+id/minutes_TextView" />
 
         <TextView
             android:id="@+id/hours_textView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="right|bottom"
+            android:layout_toLeftOf="@+id/h_textView"
             android:textStyle="bold"
-            android:textSize="18dp"
-            android:paddingBottom="3dp"/>
+            android:textSize="18sp"
+            android:padding="2dp"
+            android:layout_toStartOf="@+id/h_textView" />
         <TextView
             android:id="@+id/d_textView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="right|bottom"
-            android:textSize="16dp"
+            android:layout_toLeftOf="@id/hours_textView"
+            android:textSize="18sp"
             android:text="d"
-            android:paddingRight="2dp"
+            android:padding="2dp"
             android:visibility="gone"
-            android:paddingBottom="3dp"/>
+            android:paddingBottom="3dp"
+            android:layout_toStartOf="@id/hours_textView" />
 
         <TextView
             android:id="@+id/days_textView"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="right|bottom"
+            android:layout_toLeftOf="@id/d_textView"
             android:textStyle="bold"
-            android:paddingBottom="3dp"/>
-    </LinearLayout>
+            android:padding="2dp"
+            android:layout_toStartOf="@id/d_textView" />
+    </RelativeLayout>
     <Button
         android:id="@+id/get_order_button"
         android:layout_width="match_parent"

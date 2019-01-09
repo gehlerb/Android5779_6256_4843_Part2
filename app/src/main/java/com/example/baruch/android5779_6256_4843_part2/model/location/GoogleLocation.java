@@ -130,7 +130,7 @@ public class GoogleLocation implements LocationHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return "No address found! More accuracy needed";
     }
 
     public void stopTracking(){

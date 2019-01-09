@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.inDriveActivity">
-
+    tools:context=".controller.inDriveActivity"
+    android:background="@android:color/background_light">
 
 
     <LinearLayout
@@ -134,23 +134,30 @@
             android:textSize="36sp"
             android:textStyle="bold"
             android:textAlignment="center"/>
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
         <ImageButton
             android:id="@+id/call_image_btn"
             android:layout_width="50dp"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@android:color/background_light"
-            android:src="@drawable/phone_icon" />
+            android:src="@drawable/ic_phone_black"
+            android:padding="20dp"
+            android:layout_margin="8dp"
+            android:layout_centerHorizontal="true"/>
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/navigate_button"
             android:layout_weight="1"
+            android:src="@drawable/ic_waze"
             android:background="@android:color/background_light"
-            android:src="@drawable/ic_navigation_black"/>
-
+            android:padding="20dp"
+            android:layout_margin="8dp"/>
+</RelativeLayout>
         <Chronometer
             android:id="@+id/chronometer"
             android:layout_width="match_parent"
@@ -170,15 +177,16 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_margin="8dp"
                 android:background="@android:color/background_light"
                 android:src="@drawable/ic_send" />
 
             <EditText
                 android:id="@+id/sms_body_edit_text"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="8"
-                android:text="on the way to you" />
+                android:text="Thank you for choosing Ride Taxi! Your taxi is coming soon" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

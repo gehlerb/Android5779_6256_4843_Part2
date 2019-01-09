@@ -87,6 +87,11 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isEmptyInput()){
+                    Toast.makeText(getBaseContext(),"Please fill all the fields!",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 storeUserData();
                 backend.signIn(emailEditText.getText().toString(), passwordEditText.getText().toString(),
                         new Backend.Action() {

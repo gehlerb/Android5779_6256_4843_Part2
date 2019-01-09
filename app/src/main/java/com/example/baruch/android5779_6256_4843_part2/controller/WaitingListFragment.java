@@ -132,7 +132,7 @@ public class WaitingListFragment extends Fragment {
         rvRieds.setHasFixedSize(true);
 
         RecyclerView.ItemDecoration itemDecoration = new
-                DividerItemDecoration(this.getActivity(), DividerItemDecoration.VERTICAL);
+                DividerItemDecoration(rvRieds.getContext(), DividerItemDecoration.VERTICAL);
         rvRieds.addItemDecoration(itemDecoration);
 
         backend = BackendFactory.getBackend();

@@ -86,7 +86,8 @@ public class RidesManagerActivity extends AppCompatActivity implements Navigatio
                 Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.contact_us:
-                Toast.makeText(this, "Contact Us", Toast.LENGTH_SHORT).show();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ContactUsFragment()).commit();
                 break;
         }
 

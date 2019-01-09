@@ -59,7 +59,13 @@ public class Firebase_DBManager implements Backend {
     }
 
 
-
+    /**
+     * This function register a new driver using firebase authentication.
+     *
+     * @param driver a Driver
+     * @param password a String
+     * @param action Action interface to intercept the callback from the database
+     */
     @Override
     public void register(final Driver driver, String password, final Action action) {
         auth.createUserWithEmailAndPassword(driver.getEmail(),password)
@@ -89,6 +95,12 @@ public class Firebase_DBManager implements Backend {
 
     }
 
+    /**
+     * This function authenticate the user
+     * @param email a String
+     * @param password a String
+     * @param action Action interface to intercept the callback from the database
+     */
     @Override
     public void signIn(String email, String password, final Action action) {
             auth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -109,6 +121,10 @@ public class Firebase_DBManager implements Backend {
 
     }
 
+    /**
+     * This function return the user logged in the app
+     * @param actionResult ActionResult interface to intercept the callback from the database
+     */
     @Override
     public void getCurrentUser(final ActionResult actionResult) {
         FirebaseUser user=auth.getCurrentUser();
@@ -125,6 +141,11 @@ public class Firebase_DBManager implements Backend {
         });
     }
 
+    /**
+     * This function update the data of a driver
+     * @param driver a Driver
+     * @param action Action interface to intercept the callback from the database
+     */
     @Override
     public void updateProfile(Driver driver, Action action) {
 
@@ -135,6 +156,11 @@ public class Firebase_DBManager implements Backend {
 
     }
 
+
+    /**
+     * This function notify the driver for new rides
+     * @param notifyDataChange NotifyDataChange interface to intercept the callback from the database
+     */
     @Override
     public void notifyNewRide(final NotifyDataChange<Ride> notifyDataChange) {
         OrdersTaxiRef.orderByChild("timestamp").startAt(Calendar.getInstance()
@@ -168,6 +194,9 @@ public class Firebase_DBManager implements Backend {
 
     }
 
+    /**
+     * This function disconnect the listener to new rides
+     */
     @Override
     public void stopNotifyNewRide() {
         if (rideRefChildEventListener != null) {
@@ -176,6 +205,10 @@ public class Firebase_DBManager implements Backend {
         }
     }
 
+    /**
+     * This function notify for all the rides who are waiting for a driver
+     * @param notifyDataChange interface to intercept the callback from the database
+     */
     @Override
     public void notifyWaitingRidesList(final NotifyDataChange<Ride> notifyDataChange){
         OrdersTaxiRef.orderByChild("rideState").equalTo("WAITING")
@@ -211,6 +244,11 @@ public class Firebase_DBManager implements Backend {
                 });
     }
 
+    /**
+     * This function notify all the rides who where taken by a driver
+     * @param notifyDataChange interface to intercept the callback from the database
+     * @param driverKey a String
+     */
     @Override
     public void notifyRidesListByDriverKey(final NotifyDataChange<Ride> notifyDataChange, String driverKey) {
         OrdersTaxiRef.orderByChild("driverKey").equalTo("1234")
@@ -246,6 +284,11 @@ public class Firebase_DBManager implements Backend {
                 });
     }
 
+    /**
+     * This function update the data of the rid
+     * @param ride a Ride
+     * @param action interface to intercept the callback from the database
+     */
     @Override
     public void updateClientRequestToDataBase(final Ride ride, final Action action) {
         String key=ride.getKey();
