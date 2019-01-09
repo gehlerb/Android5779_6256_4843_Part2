@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/background_light"
     tools:context=".controller.inDriveActivity">
-
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -30,6 +31,7 @@
                 android:orientation="vertical"
                 android:paddingBottom="18dp"
                 android:paddingTop="18dp">
+
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -57,69 +59,70 @@
                     android:layout_height="25dp"
                     android:src="@drawable/shape_round_solid" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/driver_location"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:gravity="bottom"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:maxLines="2"
-                    android:autoSizeTextType="uniform"
-                    android:autoSizeMinTextSize="12sp"
                     android:autoSizeMaxTextSize="100sp"
-                    android:autoSizeStepGranularity="2sp"/>
+                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="bottom"
+                    android:maxLines="2"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/dis_driver_to_pick"
-                    android:gravity="center_vertical|right"
-                    android:textSize="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1">
-                </TextView>
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:textSize="20dp"></TextView>
+
                 <TextView
                     android:id="@+id/from_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:gravity="bottom"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:maxLines="2"
-                    android:autoSizeTextType="uniform"
-                    android:autoSizeMinTextSize="12sp"
                     android:autoSizeMaxTextSize="100sp"
-                    android:autoSizeStepGranularity="2sp"/>
+                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="bottom"
+                    android:maxLines="2"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/dis_pick_dest"
-                    android:gravity="center_vertical|right"
-                    android:textSize="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1">
-                </TextView>
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:textSize="20dp"></TextView>
 
                 <TextView
                     android:id="@+id/to_textview"
-                    android:maxLines="2"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:gravity="top"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:autoSizeTextType="uniform"
-                    android:autoSizeMinTextSize="12sp"
                     android:autoSizeMaxTextSize="100sp"
-                    android:autoSizeStepGranularity="2sp"/>
+                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="top"
+                    android:maxLines="2"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold" />
 
             </LinearLayout>
         </LinearLayout>
@@ -130,34 +133,42 @@
             android:layout_height="0dp"
             android:layout_weight="0.5"
             android:text="ברוך ביכמן"
+            android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="36sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
+            android:textStyle="bold" />
 
-        <ImageButton
-            android:id="@+id/call_image_btn"
-            android:layout_width="50dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:background="@android:color/background_light"
-            android:src="@drawable/phone_icon" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/navigate_button"
             android:layout_weight="1"
-            android:background="@android:color/background_light"
-            android:src="@drawable/ic_navigation_black"/>
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/call_image_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/background_light"
+                android:src="@drawable/phone_icon" />
+
+            <ImageButton
+                android:id="@+id/navigate_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/background_light"
+                android:src="@drawable/ic_navigation_black" />
+
+        </LinearLayout>
 
         <Chronometer
             android:id="@+id/chronometer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"
-            android:textSize="30dp"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textSize="30dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -180,31 +191,34 @@
                 android:layout_weight="8"
                 android:text="on the way to you" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.5"
             android:orientation="horizontal">
+
             <Button
                 android:id="@+id/start_drive"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="START"
-                android:background="@drawable/rounded_button"
-                android:textColor="@color/primary_material_light"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="10dp"
-                android:layout_marginHorizontal="20dp"/>
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:text="START"
+                android:textColor="@color/primary_material_light" />
+
             <Button
                 android:id="@+id/finish_drive"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="FINISH"
-                android:background="@drawable/rounded_button"
-                android:textColor="@color/primary_material_light"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="10dp"
-                android:layout_marginHorizontal="20dp"/>
+                android:layout_weight="1"
+                android:background="@drawable/rounded_button"
+                android:text="FINISH"
+                android:textColor="@color/primary_material_light" />
         </LinearLayout>
     </LinearLayout>
 
