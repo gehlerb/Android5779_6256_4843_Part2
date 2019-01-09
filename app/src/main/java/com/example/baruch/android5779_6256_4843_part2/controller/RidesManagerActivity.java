@@ -31,7 +31,7 @@ public class RidesManagerActivity extends AppCompatActivity implements Navigatio
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction().
-                    add(R.id.fragment_container, new WaitingListFragment(),"SOMEDAY").
+                    add(R.id.fragment_container, new WaitingListFragment(),"WAITING_TAG").
                     commit();
         }
         startService(new Intent(RidesManagerActivity.this,NewRideService.class));
@@ -72,22 +72,35 @@ public class RidesManagerActivity extends AppCompatActivity implements Navigatio
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        HistoryListFragment historyFragment=(HistoryListFragment) getFragmentManager().findFragmentByTag("HISTORY_TAG");
+        WaitingListFragment waitingFragment=(WaitingListFragment)getFragmentManager().findFragmentByTag("WAITING_TAG");
+
         switch (item.getItemId()) {
             case R.id.available_rides:
-
-                WaitingListFragment fragment=(WaitingListFragment)getFragmentManager().findFragmentByTag("SOMEDAY");
-                if(fragment==null) {
-                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            new WaitingListFragment()).commit();
+                if(waitingFragment!=null) {
+                    getFragmentManager().beginTransaction().show(waitingFragment).commit();
                 }
                 else {
-                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            fragment).commit();
+                    getFragmentManager().beginTransaction().add(R.id.fragment_container,
+                            new WaitingListFragment(),"WAITING_TAG").commit();
                 }
+                if (historyFragment!=null){
+                    getFragmentManager().beginTransaction().hide(historyFragment).commit();
+                }
+                setTitle("AVAILABLE RIDES");
                 break;
             case R.id.history_rides:
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HistoryListFragment()).commit();
+                if(historyFragment!=null) {
+                    getFragmentManager().beginTransaction().show(historyFragment).commit();
+                }
+                else {
+                    getFragmentManager().beginTransaction().add(R.id.fragment_container,
+                            new HistoryListFragment(),"HISTORY_TAG").commit();
+                }
+                if (waitingFragment!=null){
+                    getFragmentManager().beginTransaction().hide(waitingFragment).commit();
+                }
+                setTitle("HISTORY");
                 break;
 
             case R.id.nav_share:

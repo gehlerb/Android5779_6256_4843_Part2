@@ -188,20 +188,20 @@ public class WaitingListFragment extends Fragment {
             public void onFailure(Exception exception) {
             }
         });
-//        locationHandler.getAddressAndLocation(new LocationHandler.ActionResult() {
-//            @Override
-//            public void onSuccess(AddressAndLocation addressAndLocation) {
-//                driverAddressAndLocation=addressAndLocation;
-//                currentLoc.setText("  " + driverAddressAndLocation.getAddress());
-//                adapter.setDriverLocation(addressAndLocation.getmLatitudeAndLongitudeLocation().location());
-//                adapter.getFilter().filter(Integer.toString(progressSeekBar));
-//            }
-//
-//            @Override
-//            public void onFailure() {
-//
-//            }
-//        });
+        locationHandler.getAddressAndLocation(new LocationHandler.ActionResult() {
+            @Override
+            public void onSuccess(AddressAndLocation addressAndLocation) {
+                driverAddressAndLocation=addressAndLocation;
+                currentLoc.setText("  " + driverAddressAndLocation.getAddress());
+                adapter.setDriverLocation(addressAndLocation.getmLatitudeAndLongitudeLocation().location());
+                adapter.getFilter().filter(Integer.toString(progressSeekBar));
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
     }
 
     @Override
