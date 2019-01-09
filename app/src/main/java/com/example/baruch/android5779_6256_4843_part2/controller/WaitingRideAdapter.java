@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.text.DecimalFormat;
@@ -90,6 +89,8 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
 
     @Override
     public int getItemCount() {
+        if(mRides==null)
+            return 0;
         return mRides.size();
     }
 
@@ -139,7 +140,7 @@ public class WaitingRideAdapter extends RecyclerView.Adapter<WaitingRideAdapter.
             int dis = Integer.parseInt(constraint.toString());
 
             for (Ride p : orgiRides) {
-                if (filterByDis(CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location(), p.getPickupAddress().getmLatitudeAndLongitudeLocation().location(), dis))
+                if (filterByDis(driverLocation, p.getPickupAddress().getmLatitudeAndLongitudeLocation().location(), dis))
                     nRideList.add(p);
             }
 

@@ -20,10 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.baruch.android5779_6256_4843_part2.R;
-import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentLocation;
+import com.example.baruch.android5779_6256_4843_part2.model.backend.Backend;
+import com.example.baruch.android5779_6256_4843_part2.model.backend.BackendFactory;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.AddressAndLocation;
+import com.example.baruch.android5779_6256_4843_part2.model.entities.CurrentDriver;
 import com.example.baruch.android5779_6256_4843_part2.model.entities.Ride;
 
 import java.text.DecimalFormat;
+
+import static com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus.FINISH;
+import static com.example.baruch.android5779_6256_4843_part2.model.entities.ClientRequestStatus.IN_PROCESS;
 
 public class inDriveActivity extends AppCompatActivity {
 
@@ -40,9 +46,10 @@ public class inDriveActivity extends AppCompatActivity {
     private Chronometer chronometer;
     private Button startDriveBtn;
     private Button finishDriveBtn;
+    private Backend mBackend;
 
     private Ride ride;
-    private Location driverLocation;
+    private AddressAndLocation mAddressAndLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +69,12 @@ public class inDriveActivity extends AppCompatActivity {
         disDriverToPick=(TextView)findViewById(R.id.dis_driver_to_pick);
         navigateBtn=(ImageButton)findViewById(R.id.navigate_button);
         ride = getIntent().getParcelableExtra("Ride");
-        driverLocation = CurrentLocation.getCurrentLocation().getmLatitudeAndLongitudeLocation().location();
+        mAddressAndLocation = getIntent().getParcelableExtra("Location");
+        mBackend= BackendFactory.getBackend();
 
         nameTextView.setText(ride.getClientFirstName()+ " "+ ride.getClientLastName());
 
-        driverLocationTextView.setText(CurrentLocation.getCurrentLocation().getAddress());
+        driverLocationTextView.setText(mAddressAndLocation.getAddress());
 
         to_textview.setText(ride.getDestinationAddress().getAddress());
         fromTextView.setText(ride.getDestinationAddress().getAddress());
@@ -74,7 +82,7 @@ public class inDriveActivity extends AppCompatActivity {
         Location dest=ride.getDestinationAddress().getmLatitudeAndLongitudeLocation().location();
         double dis=pickup.distanceTo(dest)/1000;
         disPickDestTextView.setText(new DecimalFormat("##.#").format(dis)+ " km");
-        dis=driverLocation.distanceTo(pickup)/1000;
+        dis=mAddressAndLocation.getmLatitudeAndLongitudeLocation().location().distanceTo(pickup)/1000;
         disDriverToPick.setText(new DecimalFormat("##.#").format(dis)+ " km");
         navigateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +116,20 @@ public class inDriveActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 chronometer.stop();
+                ride.setRideState(FINISH);
+                ride.setDriverKey(CurrentDriver.getDriver().getId());
+                mBackend.updateClientRequestToDataBase(ride, new Backend.Action() {
+                    @Override
+                    public void onSuccess() {
+                        startActivity(new Intent(getApplicationContext(),RidesManagerActivity.class));
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+
+                });
             }
         });
     }
