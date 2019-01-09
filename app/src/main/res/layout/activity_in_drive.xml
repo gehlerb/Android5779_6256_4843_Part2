@@ -160,7 +160,7 @@
                 android:src="@drawable/ic_waze" />
 
         </LinearLayout>
-        
+
         <Chronometer
             android:id="@+id/chronometer"
             android:layout_width="match_parent"

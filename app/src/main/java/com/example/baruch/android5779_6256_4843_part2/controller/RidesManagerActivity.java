@@ -74,6 +74,7 @@ public class RidesManagerActivity extends AppCompatActivity implements Navigatio
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         HistoryListFragment historyFragment=(HistoryListFragment) getFragmentManager().findFragmentByTag("HISTORY_TAG");
         WaitingListFragment waitingFragment=(WaitingListFragment)getFragmentManager().findFragmentByTag("WAITING_TAG");
+        ContactUsFragment contactUsFragment=(ContactUsFragment)getFragmentManager().findFragmentByTag("CONTACT_US_TAG");
 
         switch (item.getItemId()) {
             case R.id.available_rides:
@@ -87,8 +88,12 @@ public class RidesManagerActivity extends AppCompatActivity implements Navigatio
                 if (historyFragment!=null){
                     getFragmentManager().beginTransaction().hide(historyFragment).commit();
                 }
+                if (contactUsFragment!=null){
+                    getFragmentManager().beginTransaction().hide(contactUsFragment).commit();
+                }
                 setTitle("AVAILABLE RIDES");
                 break;
+
             case R.id.history_rides:
                 if(historyFragment!=null) {
                     getFragmentManager().beginTransaction().show(historyFragment).commit();
@@ -100,15 +105,31 @@ public class RidesManagerActivity extends AppCompatActivity implements Navigatio
                 if (waitingFragment!=null){
                     getFragmentManager().beginTransaction().hide(waitingFragment).commit();
                 }
+                if (contactUsFragment!=null){
+                    getFragmentManager().beginTransaction().hide(contactUsFragment).commit();
+                }
                 setTitle("HISTORY");
                 break;
 
             case R.id.nav_share:
                 Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
                 break;
+
             case R.id.contact_us:
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ContactUsFragment()).commit();
+                if(contactUsFragment!=null) {
+                    getFragmentManager().beginTransaction().show(contactUsFragment).commit();
+                }
+                else {
+                    getFragmentManager().beginTransaction().add(R.id.fragment_container,
+                            new ContactUsFragment(),"CONTACT_US_TAG").commit();
+                }
+                if (waitingFragment!=null){
+                    getFragmentManager().beginTransaction().hide(waitingFragment).commit();
+                }
+                if (historyFragment!=null){
+                    getFragmentManager().beginTransaction().hide(historyFragment).commit();
+                }
+                setTitle("CONTACT US");
                 break;
         }
 
