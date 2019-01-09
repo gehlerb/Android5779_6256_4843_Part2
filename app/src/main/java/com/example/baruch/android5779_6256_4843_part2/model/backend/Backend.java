@@ -17,7 +17,7 @@ public interface Backend {
     void updateClientRequestToDataBase(final Ride ride, final Action action);
     void notifyNewRide(final NotifyDataChange<Ride> notifyDataChange);
 
-    void stopNotifyNewRide();
+    //void stopNotifyNewRide();
 
     void notifyWaitingRidesList(final NotifyDataChange<Ride> notifyDataChange);
 

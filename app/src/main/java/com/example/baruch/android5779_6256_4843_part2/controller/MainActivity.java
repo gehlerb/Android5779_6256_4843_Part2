@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,18 +92,23 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(),"Please fill all the fields!",Toast.LENGTH_LONG).show();
                     return;
                 }
-
+                ((RelativeLayout)findViewById(R.id.loadingPanel)).setVisibility(View.VISIBLE);
+                loginButton.setEnabled(false);
                 storeUserData();
                 backend.signIn(emailEditText.getText().toString(), passwordEditText.getText().toString(),
                         new Backend.Action() {
                     @Override
                     public void onSuccess() {
-                            openNextActivity();
+                        loginButton.setEnabled(true);
+                        ((RelativeLayout)findViewById(R.id.loadingPanel)).setVisibility(View.GONE);
+                        openNextActivity();
                     }
 
                     @Override
                     public void onFailure() {
-                            Toast.makeText(getBaseContext(),"Incorrect email or password!",Toast.LENGTH_LONG).show();
+                        ((RelativeLayout)findViewById(R.id.loadingPanel)).setVisibility(View.GONE);
+                        Toast.makeText(getBaseContext(),"Incorrect email or password!",Toast.LENGTH_LONG).show();
+                        loginButton.setEnabled(true);
                     }
                 });
 
@@ -125,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Driver driver) {
                     mDriver = driver;
-
                     CurrentDriver.setDriver(mDriver);
                     startActivity(intent);
                 }

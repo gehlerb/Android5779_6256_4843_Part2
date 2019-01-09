@@ -16,9 +16,12 @@
         android:textStyle="bold"
         android:drawableRight="@drawable/ic_gps_location"
         android:paddingLeft="10dp"
-        android:maxLines="1"
+        android:maxLines="2"
         android:paddingTop="10dp"
-        android:paddingRight="20dp" />
+        android:paddingRight="20dp"
+        android:text="Finding your address..."
+        android:textAlignment="center"
+        />
 
     <TextView
         android:layout_width="match_parent"

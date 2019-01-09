@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,20 +52,22 @@ public class WaitingListFragment extends Fragment {
     private ImageView logoEmptyList;
     private Animation aniBlik;
 
-    private List<Ride> mRideList;
+    private List<Ride> mRideList=new ArrayList<Ride>();
     private Backend backend;
     private AddressAndLocation driverAddressAndLocation;
     private LocationHandler locationHandler;
     int progressSeekBar;
 
+    private static final String TAG = "WaitingListFragment";
+
     private void onLocationFound(){
-        mRideList = new ArrayList<Ride>();
         final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList,driverAddressAndLocation.
                 getmLatitudeAndLongitudeLocation().location());
 
         progressSeekBar=seekBarDis.getProgress();
         TextViewShowProgress.setText(Integer.toString(progressSeekBar)+" km");
         currentLoc.setText("  " + driverAddressAndLocation.getAddress());
+        currentLoc.clearAnimation();
 
         seekBarDis.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -113,7 +116,7 @@ public class WaitingListFragment extends Fragment {
                                                rvRieds.setVisibility(View.GONE);
                                                View view = (View) WaitingListFragment.this.view.findViewById(R.id.empty_list_view);
                                                view.setVisibility(View.VISIBLE);
-                                               aniBlik= AnimationUtils.loadAnimation(getActivity().getApplicationContext()
+                                               aniBlik= AnimationUtils.loadAnimation(getActivity()
                                                        ,R.anim.blink);
                                                logoEmptyList.startAnimation(aniBlik);
                                            }
@@ -140,18 +143,12 @@ public class WaitingListFragment extends Fragment {
 
             @Override
             public void OnDataChanged(Ride ride) {
-                Toast.makeText(getActivity(), "OnDataChanged", Toast.LENGTH_LONG).show();
+
+                Toast.makeText(getActivity(), "OnDataChanged", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < mRideList.size(); ++i){
                     if(ride.getKey().equals( mRideList.get(i).getKey())){
-                        if (ride.getRideState()== ClientRequestStatus.WAITING){
-                            mRideList.set(i,ride);
-                            adapter.getFilter().filter(Integer.toString(progressSeekBar));
-                        }
-                        else {
-                            mRideList.remove(i);
-
-                            adapter.getFilter().filter(Integer.toString(progressSeekBar));
-                        }
+                        mRideList.set(i,ride);
+                        adapter.getFilter().filter(Integer.toString(progressSeekBar));
                         break;
                     }
                 }
@@ -160,6 +157,7 @@ public class WaitingListFragment extends Fragment {
             @Override
             public void onDataAdded(Ride ride) {
                 mRideList.add(0,ride);
+                Log.d(TAG, ride.getClientFirstName());
                 adapter.getFilter().filter(Integer.toString(progressSeekBar));
             }
 
@@ -169,8 +167,8 @@ public class WaitingListFragment extends Fragment {
                     if(ride.getKey().equals( mRideList.get(i).getKey())){
                         mRideList.remove(i);
                         adapter.getFilter().filter(Integer.toString(progressSeekBar));
+                        break;
                     }
-                    break;
                 }
             }
 
@@ -178,6 +176,8 @@ public class WaitingListFragment extends Fragment {
             public void onFailure(Exception exception) {
             }
         });
+
+        LocationHandler locationHandler=new GoogleLocation(getActivity());
         locationHandler.getAddressAndLocation(new LocationHandler.ActionResult() {
             @Override
             public void onSuccess(AddressAndLocation addressAndLocation) {
@@ -185,6 +185,7 @@ public class WaitingListFragment extends Fragment {
                 currentLoc.setText("  " + driverAddressAndLocation.getAddress());
                 adapter.setDriverLocation(addressAndLocation.getmLatitudeAndLongitudeLocation().location());
                 adapter.getFilter().filter(Integer.toString(progressSeekBar));
+                Log.d(TAG, "GoogleLocation2");
             }
 
             @Override
@@ -194,16 +195,17 @@ public class WaitingListFragment extends Fragment {
         });
     }
 
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
-        findView();
-
+    @Override
+    public void onCreate( Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        Log.d(TAG, "onCreate");
         locationHandler=new GoogleLocation(getActivity());
         locationHandler.getAddressAndLocation(new LocationHandler.ActionResult() {
             @Override
             public void onSuccess(AddressAndLocation addressAndLocation) {
                 driverAddressAndLocation=addressAndLocation;
+                Log.d(TAG, "GoogleLocation1");
                 onLocationFound();
                 locationHandler.stopTracking();
             }
@@ -213,7 +215,14 @@ public class WaitingListFragment extends Fragment {
 
             }
         });
+    }
 
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
+        findView();
+        aniBlik= AnimationUtils.loadAnimation(getActivity(),R.anim.blink);
+        currentLoc.clearAnimation();
+        currentLoc.setAnimation(aniBlik);
         return view;
     }
 
