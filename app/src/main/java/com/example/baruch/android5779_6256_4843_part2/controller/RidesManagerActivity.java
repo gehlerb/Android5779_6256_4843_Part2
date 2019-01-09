@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,12 +30,11 @@ public class RidesManagerActivity extends AppCompatActivity implements Navigatio
         setMenu();
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new WaitingListFragment()).commit();
-            navigationView.setCheckedItem(R.id.available_rides);
+            getFragmentManager().beginTransaction().
+                    add(R.id.fragment_container, new WaitingListFragment(),"SOMEDAY").
+                    commit();
         }
         startService(new Intent(RidesManagerActivity.this,NewRideService.class));
-
 
         setCurrentDriver();
     }
@@ -74,8 +74,16 @@ public class RidesManagerActivity extends AppCompatActivity implements Navigatio
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.available_rides:
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new WaitingListFragment()).commit();
+
+                WaitingListFragment fragment=(WaitingListFragment)getFragmentManager().findFragmentByTag("SOMEDAY");
+                if(fragment==null) {
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            new WaitingListFragment()).commit();
+                }
+                else {
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            fragment).commit();
+                }
                 break;
             case R.id.history_rides:
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container,

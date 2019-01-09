@@ -13,6 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,8 @@ public class WaitingListFragment extends Fragment {
     private AddressAndLocation driverAddressAndLocation;
     private LocationHandler locationHandler;
     int progressSeekBar;
+
+    private static final String TAG = "WaitingListFragment";
 
     private void onLocationFound(){
         final WaitingRideAdapter adapter = new WaitingRideAdapter(mRideList,driverAddressAndLocation.
@@ -116,7 +119,7 @@ public class WaitingListFragment extends Fragment {
                                                rvRieds.setVisibility(View.GONE);
                                                View view = (View) WaitingListFragment.this.view.findViewById(R.id.empty_list_view);
                                                view.setVisibility(View.VISIBLE);
-                                               aniBlik= AnimationUtils.loadAnimation(getActivity().getApplicationContext()
+                                               aniBlik= AnimationUtils.loadAnimation(getActivity()
                                                        ,R.anim.blink);
                                                logoEmptyList.startAnimation(aniBlik);
                                            }
@@ -135,7 +138,7 @@ public class WaitingListFragment extends Fragment {
         rvRieds.setHasFixedSize(true);
 
         RecyclerView.ItemDecoration itemDecoration = new
-                DividerItemDecoration(this.getActivity(), DividerItemDecoration.VERTICAL);
+                DividerItemDecoration(rvRieds.getContext(), DividerItemDecoration.VERTICAL);
         rvRieds.addItemDecoration(itemDecoration);
 
         backend = BackendFactory.getBackend();
@@ -146,6 +149,7 @@ public class WaitingListFragment extends Fragment {
                 Toast.makeText(getActivity(), "OnDataChanged", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < mRideList.size(); ++i){
                     if(ride.getKey().equals( mRideList.get(i).getKey())){
+                        mRideList.set(i,ride);
                         adapter.getFilter().filter(Integer.toString(progressSeekBar));
                         break;
                     }
@@ -154,18 +158,15 @@ public class WaitingListFragment extends Fragment {
 
             @Override
             public void onDataAdded(Ride ride) {
-                Toast.makeText(getActivity(), "onDataAdded\n"+ride.getPickupAddress().getAddress(), Toast.LENGTH_SHORT).show();
                 mRideList.add(0,ride);
                 adapter.getFilter().filter(Integer.toString(progressSeekBar));
             }
 
             @Override
             public void onDataRemoved(Ride ride) {
-                 Toast.makeText(getActivity(),"\n+++++++++++++++++"+ride.getClientFirstName()+"\n+++++++++++++++++", Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < mRideList.size(); ++i){
                     if(ride.getKey().equals( mRideList.get(i).getKey())){
                         mRideList.remove(i);
-                        Toast.makeText(getActivity(),ride.getClientFirstName(), Toast.LENGTH_SHORT).show();
                         adapter.getFilter().filter(Integer.toString(progressSeekBar));
                         break;
                     }
@@ -176,13 +177,35 @@ public class WaitingListFragment extends Fragment {
             public void onFailure(Exception exception) {
             }
         });
+//        locationHandler.getAddressAndLocation(new LocationHandler.ActionResult() {
+//            @Override
+//            public void onSuccess(AddressAndLocation addressAndLocation) {
+//                driverAddressAndLocation=addressAndLocation;
+//                currentLoc.setText("  " + driverAddressAndLocation.getAddress());
+//                adapter.setDriverLocation(addressAndLocation.getmLatitudeAndLongitudeLocation().location());
+//                adapter.getFilter().filter(Integer.toString(progressSeekBar));
+//            }
+//
+//            @Override
+//            public void onFailure() {
+//
+//            }
+//        });
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        Log.d(TAG, "onCreate");
+        locationHandler=new GoogleLocation(getActivity());
         locationHandler.getAddressAndLocation(new LocationHandler.ActionResult() {
             @Override
             public void onSuccess(AddressAndLocation addressAndLocation) {
                 driverAddressAndLocation=addressAndLocation;
-                currentLoc.setText("  " + driverAddressAndLocation.getAddress());
-                adapter.setDriverLocation(addressAndLocation.getmLatitudeAndLongitudeLocation().location());
-                adapter.getFilter().filter(Integer.toString(progressSeekBar));
+                Log.d(TAG, "GoogleLocation");
+                onLocationFound();
+                locationHandler.stopTracking();
             }
 
             @Override
@@ -195,22 +218,6 @@ public class WaitingListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.fragment_witing_list, container, false) ;
         findView();
-
-        locationHandler=new GoogleLocation(getActivity());
-        locationHandler.getAddressAndLocation(new LocationHandler.ActionResult() {
-            @Override
-            public void onSuccess(AddressAndLocation addressAndLocation) {
-                driverAddressAndLocation=addressAndLocation;
-                onLocationFound();
-                locationHandler.stopTracking();
-            }
-
-            @Override
-            public void onFailure() {
-
-            }
-        });
-
         return view;
     }
 
